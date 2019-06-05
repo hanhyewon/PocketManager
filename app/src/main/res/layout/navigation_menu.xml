@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#eaeaea">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#62c9f8"
+        android:gravity="right">
+        <ImageView
+            android:id="@+id/menu_close"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_close"
+            android:layout_gravity="center_vertical"
+            android:padding="5dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="#ffffff">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/person"
+            android:scaleType="center"
+            android:background="@drawable/circle_border"/>
+
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:columnCount="1"
+            android:rowCount="2"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_marginLeft="30dp">
+
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:orientation="horizontal"
+                android:rowCount="1">
+                <TextView
+                    android:id="@+id/nav_userName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="윤한김김님"
+                    android:textSize="22dp"
+                    android:textColor="#333333"
+                    android:textStyle="bold"
+                    android:gravity="center"/>
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_settings"
+                    android:layout_marginLeft="10dp"
+                    android:layout_gravity="center"/>
+            </GridLayout>
+
+            <TextView
+                android:id="@+id/nav_userEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </GridLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_right"
+            android:layout_marginLeft="30dp"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#ccc"/>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:rowCount="1"
+        android:columnCount="4"
+        android:orientation="horizontal"
+        android:background="#ffffff"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp">
+        <Button
+            android:layout_width="103dp"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:drawableTop="@drawable/ic_wallet"
+            android:paddingBottom="12dp"
+            android:paddingTop="8dp"
+            android:text="판매관리"
+            android:textColor="#333333"
+            android:textSize="18dp"/>
+        <Button
+            android:layout_width="103dp"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:drawableTop="@drawable/ic_money"
+            android:paddingBottom="12dp"
+            android:paddingTop="8dp"
+            android:text="매출관리"
+            android:textColor="#333333"
+            android:textSize="18dp" />
+        <Button
+            android:layout_width="103dp"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:drawableTop="@drawable/ic_event"
+            android:paddingBottom="12dp"
+            android:paddingTop="8dp"
+            android:text="행사정보"
+            android:textColor="#333333"
+            android:textSize="18dp"/>
+        <Button
+            android:layout_width="103dp"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:drawableTop="@drawable/ic_community"
+            android:paddingBottom="12dp"
+            android:paddingTop="8dp"
+            android:text="커뮤니티"
+            android:textColor="#333333"
+            android:textSize="18dp"/>
+    </GridLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:background="#eaeaea"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="#ffffff">
+        <TextView
+            android:layout_width="340dp"
+            android:layout_height="40dp"
+            android:text="공지사항"
+            android:gravity="center_vertical"
+            android:textColor="#333333"
+            android:textSize="18dp" />
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/arrow_right"
+            android:scaleType="fitCenter" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="#ffffff">
+        <TextView
+            android:layout_width="340dp"
+            android:layout_height="40dp"
+            android:text="회원탈퇴하기"
+            android:gravity="center_vertical"
+            android:textColor="#333333"
+            android:textSize="18dp"/>
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/arrow_right"
+            android:scaleType="fitCenter" />
+    </LinearLayout>
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        android:keepScreenOn="true"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/logoutBtn"
+            android:layout_width="380dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/logout_btn"
+            android:text="로그아웃"
+            android:textColor="#5e5e5e"
+            android:textSize="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+    </RelativeLayout>
+</LinearLayout>

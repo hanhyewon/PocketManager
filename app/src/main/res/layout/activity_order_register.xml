@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/gray_2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:fillViewport="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:padding="20dp"
+                android:background="@drawable/button_shape_03_box_gray"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:textSize="16dp"
+                    android:text="전체 주문 목록"
+                    android:textColor="@color/gray_8"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:textSize="16dp"
+                    android:text="주문등록"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="#0000ff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:background="@color/colorPrimary"
+                    android:padding="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:background="@drawable/button_shape_03_box_gray"
+                        android:padding="10dp"
+                        android:textSize="16dp"
+                        android:text="찾고자 하는 상품명 검색"
+                        android:gravity="center|left"
+                        android:textColor="@color/gray_8"
+                        android:drawableLeft="@drawable/ic_search_black_24dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <LinearLayout
+                        android:padding="10dp"
+                        android:background="@color/gray_3"
+                        android:layout_marginTop="10dp"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:textSize="16dp"
+                            android:text="상품명A"
+                            android:textColor="@color/gray_8"
+                            android:gravity="center|left"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:id="@+id/lblMinus1"
+                                android:src="@drawable/ic_indeterminate_check_box_black_24dp"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp" />
+                            <TextView
+                                android:id="@+id/lblCount1"
+                                android:layout_gravity="center"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:paddingTop="10dp"
+                                android:paddingBottom="10dp"
+                                android:textSize="20dp"
+                                android:text="1"
+                                android:textColor="@color/gray_8"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                            <ImageView
+                                android:id="@+id/lblPlus1"
+                                android:src="@drawable/ic_add_box_black_24dp"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp" />
+
+                            <View
+                                android:layout_weight="1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="1dp"/>
+
+                            <TextView
+                                android:layout_gravity="center"
+                                android:paddingLeft="15dp"
+                                android:paddingRight="15dp"
+                                android:textSize="20dp"
+                                android:text="5000원"
+                                android:textColor="@color/gray_8"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_gravity="center"
+                                android:paddingLeft="15dp"
+                                android:paddingRight="15dp"
+                                android:textSize="20dp"
+                                android:text="X"
+                                android:textColor="@color/gray_8"
+                                android:background="@drawable/button_shape_03_box_gray"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:padding="10dp"
+                        android:background="@color/gray_3"
+                        android:layout_marginTop="10dp"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:textSize="16dp"
+                            android:text="상품명F"
+                            android:textColor="@color/gray_8"
+                            android:gravity="center|left"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:id="@+id/lblMinus2"
+                                android:src="@drawable/ic_indeterminate_check_box_black_24dp"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp" />
+                            <TextView
+                                android:id="@+id/lblCount2"
+                                android:layout_gravity="center"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:paddingTop="10dp"
+                                android:paddingBottom="10dp"
+                                android:textSize="20dp"
+                                android:text="1"
+                                android:textColor="@color/gray_8"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                            <ImageView
+                                android:id="@+id/lblPlus2"
+                                android:src="@drawable/ic_add_box_black_24dp"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp" />
+
+                            <View
+                                android:layout_weight="1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="1dp"/>
+
+                            <TextView
+                                android:layout_gravity="center"
+                                android:paddingLeft="15dp"
+                                android:paddingRight="15dp"
+                                android:textSize="20dp"
+                                android:text="3900원"
+                                android:textColor="@color/gray_8"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_gravity="center"
+                                android:paddingLeft="15dp"
+                                android:paddingRight="15dp"
+                                android:textSize="20dp"
+                                android:text="X"
+                                android:textColor="@color/gray_8"
+                                android:background="@drawable/button_shape_03_box_gray"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:background="@color/white"
+                        android:layout_marginTop="10dp"
+                        android:padding="10dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:padding="10dp"
+                            android:textColor="@color/gray_8"
+                            android:text="결제수단"
+                            android:textSize="16dp"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <LinearLayout
+                            android:id="@+id/layoutCash"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:id="@+id/imgCash"
+                                android:src="@drawable/radio_xml"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp" />
+                            <TextView
+                                android:padding="10dp"
+                                android:textColor="@color/gray_8"
+                                android:text="현금"
+                                android:textSize="16dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/layoutAccount"
+                            android:gravity="center"
+                            android:layout_marginLeft="30dp"
+                            android:orientation="horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:id="@+id/imgAccount"
+                                android:src="@drawable/radio_xml"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp" />
+                            <TextView
+                                android:padding="10dp"
+                                android:textColor="@color/gray_8"
+                                android:text="계좌이체"
+                                android:textSize="16dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:background="@color/white"
+                        android:layout_marginTop="10dp"
+                        android:padding="10dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:padding="10dp"
+                            android:textColor="@color/gray_8"
+                            android:text="총 결제금액"
+                            android:textSize="16dp"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:padding="10dp"
+                            android:textColor="@color/gray_8"
+                            android:text="12,800원"
+                            android:textSize="16dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/lblOk"
+                        android:padding="20dp"
+                        android:text="결제하기"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/blue"
+                        android:textSize="18dp"
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </LinearLayout>
+    </RelativeLayout>
+    </ScrollView>
+</LinearLayout>

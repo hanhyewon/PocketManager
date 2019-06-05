@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:padding="20dp"
+    android:gravity="center"
+    android:background="@drawable/button_shape_03_box_gray"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="130dp"
+    android:layout_height="130dp">
+    <TextView
+        android:id="@+id/title"
+        android:textSize="14dp"
+        android:text="상품명A"
+        android:textColor="@color/gray_8"
+        android:layout_gravity="center|top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>
