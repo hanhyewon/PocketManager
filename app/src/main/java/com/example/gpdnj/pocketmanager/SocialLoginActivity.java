@@ -36,6 +36,7 @@ public class SocialLoginActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth firebaseAuth;
     private CallbackManager mCallbackManager;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +85,23 @@ public class SocialLoginActivity extends AppCompatActivity {
                 //Log.d(TAG, "facebook:onError", error);
             }
         });
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Intent intent = new Intent(SocialLoginActivity.this,HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    // User is signed out
+
+                }
+                // ...
+            }
+        };
 
     }
 
