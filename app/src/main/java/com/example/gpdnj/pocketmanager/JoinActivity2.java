@@ -1,5 +1,6 @@
 package com.example.gpdnj.pocketmanager;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.regex.Pattern;
 
@@ -42,6 +44,8 @@ public class JoinActivity2 extends AppCompatActivity {
     private String password = "";
 
     private Button signup_btn;
+
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
 
     @Override
@@ -78,7 +82,9 @@ public class JoinActivity2 extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     // 회원가입 성공
-                                    Toast.makeText(JoinActivity2.this, "회원가입 성공", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(JoinActivity2.this,HomeActivity.class);
+                                    startActivity(intent);
+                                    finish();
                                 } else {
                                     // 회원가입 실패
                                     Toast.makeText(JoinActivity2.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
@@ -87,6 +93,24 @@ public class JoinActivity2 extends AppCompatActivity {
                         });
             }
         });
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Intent intent = new Intent(JoinActivity2.this,HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    // User is signed out
+
+                }
+                // ...
+            }
+        };
+
     }
 
     //툴바 select

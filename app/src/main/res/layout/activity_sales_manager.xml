@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:textSize="16dp"
+            android:textSize="20dp"
             android:text="판매"
             android:textColor="@color/gray_8"
             android:layout_width="match_parent"
@@ -35,10 +35,10 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:textSize="16dp"
+            android:textSize="20dp"
             android:text="판매기간"
             android:textColor="@color/gray_8"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <LinearLayout
@@ -80,13 +80,15 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
+
     <TextView
         android:id="@+id/lblOk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/navy"
+        android:gravity="center"
         android:padding="20dp"
         android:text="등록하기"
-        android:background="@color/gray_cc"
-        android:textSize="18dp"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:textColor="@color/white"
+        android:textSize="22dp" />
 </LinearLayout>

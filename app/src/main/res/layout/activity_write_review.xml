@@ -59,8 +59,8 @@
                     android:layout_height="70dp"
                     android:ems="10"
                     android:textSize="23dp"
-                    android:text="종로 청년숲 픞리마켓"
-                    android:background="@drawable/back"
+                    android:text="종로 청년숲 플리마켓"
+                    android:background="@color/mint_1"
                     android:padding="15dp"
                     android:gravity="center"
                     android:inputType="textMultiLine" />
@@ -69,178 +69,187 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp">
-
-
-                <EditText
-                    android:layout_gravity="center"
-                    android:id="@+id/tag"
-                    android:layout_width="150dp"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:hint="#해시태그 입력"
-                    android:textSize="15dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginLeft="8dp"/>
-
-                <Button
-                    android:id="@+id/addTag"
-                    android:layout_marginTop="15dp"
-                    android:layout_gravity="center"
-                    android:layout_width="35dp"
-                    android:text="+"
-                    android:layout_height="40dp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/hashtag"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_margin="10dp">
+                android:background="@color/gray_2">
 
-                <TextView
-                    android:id="@+id/textView8"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="15dp"
-                    android:text=" 1. 참여한 행사명을 정확하게 입력해주세요.(*필수)
+                    android:layout_margin="10dp">
+
+
+                    <EditText
+                        android:layout_gravity="center"
+                        android:id="@+id/tag"
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:gravity="center"
+                        android:hint="#해시태그 입력"
+                        android:textSize="15dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginLeft="8dp"/>
+
+                    <Button
+                        android:id="@+id/addTag"
+                        android:layout_marginTop="15dp"
+                        android:layout_gravity="center"
+                        android:layout_width="35dp"
+                        android:text="+"
+                        android:layout_height="40dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/hashtag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_margin="10dp">
+
+                    <TextView
+                        android:id="@+id/textView8"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15dp"
+                        android:text=" 1. 참여한 행사명을 정확하게 입력해주세요.(*필수)
                                               \n      기타 판매자는 '기타'라고 입력하세요." />
 
-                <EditText
-                    android:id="@+id/editText6"
+                    <EditText
+                        android:id="@+id/editText6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:text="종로 청년숲 플리마켓" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="종로 청년숲 플리마켓" />
+                    android:orientation="vertical"
+                    android:layout_margin="10dp">
+
+                    <TextView
+                        android:id="@+id/textView9"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15dp"
+                        android:text="2. 판매기간" />
+
+                    <TextView
+                        android:id="@+id/textView10"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="2018.04.20 - 04.28" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_margin="10dp">
+                    <TextView
+                        android:id="@+id/textView11"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15dp"
+                        android:text="3. 주요 소비자 연령대 (중복 선택 가능)" />
+
+
+                    <CheckBox
+                        android:text="10~20대"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <CheckBox
+                        android:text="20~30대"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <CheckBox
+                        android:text="30~40대"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <CheckBox
+                        android:text="40~50대"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <CheckBox
+                        android:text="50~노년층"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_margin="10dp">
+
+                    <TextView
+                        android:id="@+id/textView12"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15dp"
+                        android:text="4. 위치 (*필수)" />
+
+                    <TextView
+                        android:id="@+id/textView13"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="1) 장소명을 입력해주세요. (애매하면 '기타'라고 입력)"
+                        android:textSize="15dp" />
+
+                    <EditText
+                        android:id="@+id/editText14"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:text="에이랜드 가로수길점" />
+
+                    <TextView
+                        android:id="@+id/textView15"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:textSize="15dp"
+                        android:text="2.위치 검색" />
+
+                    <SearchView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp">
+                    </SearchView>
+
+                    <com.google.android.gms.maps.MapView
+                        android:id="@+id/mapView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1" />
+
+                </LinearLayout>
+
+            </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_margin="10dp">
 
-                <TextView
-                    android:id="@+id/textView9"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="15dp"
-                    android:text="2. 판매기간" />
-
-                <TextView
-                    android:id="@+id/textView10"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="2018.04.20 - 04.28" />
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_margin="10dp">
-                <TextView
-                    android:id="@+id/textView11"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="15dp"
-                    android:text="3. 주요 소비자 연령대 (중복 선택 가능)" />
-
-
-                <CheckBox
-                    android:text="10~20대"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <CheckBox
-                    android:text="20~30대"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <CheckBox
-                    android:text="30~40대"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <CheckBox
-                    android:text="40~50대"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <CheckBox
-                    android:text="50~노년층"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_margin="10dp">
-
-                <TextView
-                    android:id="@+id/textView12"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="15dp"
-                    android:text="4. 위치 (*필수)" />
-
-                <TextView
-                    android:id="@+id/textView13"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="1) 장소명을 입력해주세요. (애매하면 '기타'라고 입력)"
-                    android:textSize="15dp" />
-
-                <EditText
-                    android:id="@+id/editText14"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="에이랜드 가로수길점" />
-
-                <TextView
-                    android:id="@+id/textView15"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:textSize="15dp"
-                    android:text="2.위치 검색" />
-
-                <SearchView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
-                </SearchView>
-
-                <com.google.android.gms.maps.MapView
-                    android:id="@+id/mapView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1" />
-
-            </LinearLayout>
-
-        </LinearLayout>
 
     </ScrollView>
 

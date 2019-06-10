@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:textSize="16dp"
+                    android:textSize="20dp"
                     android:text="전체 주문 목록"
                     android:textColor="@color/gray_8"
                     android:layout_weight="1"
@@ -38,11 +38,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
-                    android:textSize="16dp"
+                    android:textSize="20dp"
                     android:text="주문등록"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:textColor="#0000ff"
+                    android:textColor="@color/blue_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content">
 
                 <LinearLayout
-                    android:background="@color/colorPrimary"
+                    android:background="@color/mint_1"
                     android:padding="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -310,8 +310,9 @@
                         android:text="결제하기"
                         android:layout_marginBottom="10dp"
                         android:layout_marginTop="10dp"
-                        android:background="@color/blue"
-                        android:textSize="18dp"
+                        android:background="@color/navy"
+                        android:textColor="@color/white"
+                        android:textSize="22dp"
                         android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />

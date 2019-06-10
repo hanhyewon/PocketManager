@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -17,100 +14,90 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="9"
+        android:layout_weight="1"
         android:orientation="vertical"
-        tools:ignore="MissingConstraints">
+        android:paddingTop="20dp">
 
         <TextView
             android:id="@+id/tv_ProductName"
             android:layout_width="350dp"
-            android:layout_height="50dp"
-            android:layout_margin="10dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
+            android:layout_marginTop="10dp"
             android:text="상품명"
-            android:textSize="30dp" />
+            android:textSize="25dp" />
 
         <EditText
             android:id="@+id/et_ProductName"
             android:layout_width="350dp"
-            android:layout_height="50dp"
-            android:layout_margin="10dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
-            android:textSize="30dp" />
+            android:textSize="25dp" />
 
         <TextView
             android:id="@+id/tv_ProductPrice"
             android:layout_width="350dp"
-            android:layout_height="50dp"
-            android:layout_margin="10dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
+            android:layout_marginTop="10dp"
             android:text="가격"
-            android:textSize="30dp" />
+            android:textSize="25dp" />
 
         <EditText
             android:id="@+id/et_ProductPrice"
             android:layout_width="350dp"
-            android:layout_height="50dp"
-            android:layout_margin="10dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
-            android:textSize="30dp" />
+            android:textSize="25dp" />
 
         <TextView
             android:id="@+id/tv_ProductImage"
             android:layout_width="350dp"
-            android:layout_height="50dp"
-            android:layout_margin="10dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
+            android:layout_marginTop="10dp"
             android:text="상품 사진 수정(선택)"
-            android:textSize="30dp" />
+            android:textSize="25dp" />
 
         <Button
             android:id="@+id/et_ProductImage"
             android:layout_width="350dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_marginTop="12dp"
             android:background="@drawable/product_button"
-            android:textSize="30dp" />
+            android:textSize="25dp" />
 
     </LinearLayout>
 
-
+    <!-- 삭제 버튼만 두고, 수정 버튼은 툴바에 추가할 예정 -->
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight ="1"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
-        tools:ignore="MissingConstraints">
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_pushProductEdit"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="205dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="#5d6c7e"
-            android:textColor="#FFFFFF"
-            android:text="상품 수정하기"
-            android:textSize="30sp"
-            android:padding="10dp"
-            android:layout_marginRight="5dp"
-            tools:ignore="MissingConstraints" />
+            android:background="@color/navy"
+            android:textColor="@color/white"
+            android:text="상품 수정"
+            android:textSize="22dp"
+            android:padding="20dp" />
 
         <Button
             android:id="@+id/btn_pushProductDelete"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="205dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="#5d6c7e"
-            android:textColor="#FFFFFF"
-            android:text="상품 삭제하기"
-            android:textSize="30sp"
-            android:padding="10dp"
-            android:layout_marginLeft="5dp"
-            tools:ignore="MissingConstraints" />
+            android:textColor="@color/white"
+            android:text="상품 삭제"
+            android:textSize="22dp"
+            android:padding="20dp" />
 
     </LinearLayout>
 
 </LinearLayout>
-
-</android.support.constraint.ConstraintLayout>

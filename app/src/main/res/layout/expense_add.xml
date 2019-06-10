@@ -1,180 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingTop="20dp">
 
-        <include
-            layout="@layout/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="9"
-            android:orientation="vertical">
+            android:fillViewport="true">
 
-            <ScrollView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:fillViewport="true">
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tv_ExpenseAddDate"
+                    android:layout_width="350dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:text="날짜"
+                    android:textSize="25dp" />
 
-                    <TextView
-                        android:id="@+id/tv_ExpenseAddDate"
-                        android:layout_width="350dp"
-                        android:layout_height="40dp"
-                        android:layout_margin="10dp"
-                        android:layout_gravity="center"
-                        android:text="날짜"
-                        android:textSize="30dp" />
+                <EditText
+                    android:id="@+id/et_ExpenseAddDate"
+                    android:layout_width="350dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:textSize="25dp" />
 
-                    <EditText
-                        android:id="@+id/et_ExpenseAddDate"
-                        android:layout_width="350dp"
-                        android:layout_height="40dp"
-                        android:layout_margin="10dp"
-                        android:layout_gravity="center"
-                        android:textSize="30dp" />
+                <TextView
+                    android:id="@+id/tv_ExpenseAddText"
+                    android:layout_width="350dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:text="내용"
+                    android:textSize="25dp" />
 
-                    <TextView
-                        android:id="@+id/tv_ExpenseAddText"
-                        android:layout_width="350dp"
-                        android:layout_height="40dp"
-                        android:layout_margin="10dp"
-                        android:layout_gravity="center"
-                        android:text="내용"
-                        android:textSize="30dp" />
+                <EditText
+                    android:id="@+id/et_ExpenseAddText"
+                    android:layout_width="350dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:textSize="25dp" />
 
-                    <EditText
-                        android:id="@+id/et_ExpenseAddText"
-                        android:layout_width="350dp"
-                        android:layout_height="40dp"
-                        android:layout_margin="10dp"
-                        android:layout_gravity="center"
-                        android:textSize="30dp" />
+                <TextView
+                    android:id="@+id/tv_ExpenseAddPrice"
+                    android:layout_width="350dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:text="금액"
+                    android:textSize="25dp" />
 
-                    <TextView
-                        android:id="@+id/tv_ExpenseAddPrice"
-                        android:layout_width="350dp"
-                        android:layout_height="40dp"
-                        android:layout_margin="10dp"
-                        android:layout_gravity="center"
-                        android:text="금액"
-                        android:textSize="30dp" />
+                <EditText
+                    android:id="@+id/et_ExpenseAddPrice"
+                    android:layout_width="350dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:textSize="25dp" />
 
-                    <EditText
-                        android:id="@+id/et_ExpenseAddPrice"
-                        android:layout_width="350dp"
-                        android:layout_height="40dp"
-                        android:layout_margin="10dp"
-                        android:layout_gravity="center"
-                        android:textSize="30dp" />
+                <TextView
+                    android:id="@+id/tv_ExpenseAddDetail"
+                    android:layout_width="350dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:text="비고(선택)"
+                    android:textSize="25dp" />
 
-                    <TextView
-                        android:id="@+id/tv_ExpenseAddDetail"
-                        android:layout_width="350dp"
-                        android:layout_height="40dp"
-                        android:layout_margin="10dp"
-                        android:layout_gravity="center"
-                        android:text="비고(선택)"
-                        android:textSize="30dp" />
+                <EditText
+                    android:id="@+id/et_ExpenseAddDetail"
+                    android:layout_width="350dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:textSize="25dp" />
 
-                    <EditText
-                        android:id="@+id/et_ExpenseAddDetail"
-                        android:layout_width="350dp"
-                        android:layout_height="40dp"
-                        android:layout_margin="10dp"
-                        android:layout_gravity="center"
-                        android:textSize="30dp" />
+                <TextView
+                    android:id="@+id/tv_ExpenseAddClassification"
+                    android:layout_width="350dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:text="지출분류"
+                    android:textSize="25dp" />
 
-                    <TextView
-                        android:id="@+id/tv_ExpenseAddClassification"
-                        android:layout_width="350dp"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_gravity="center"
-                        android:text="지출분류"
-                        android:textSize="30dp" />
+                <!--여기에 horizontal 리니어 레이아웃 추가하고 라디오 버튼 두개-->
 
-                    <TextView
-                        android:layout_width="350dp"
+                <RadioGroup
+                    android:id="@+id/rbt_ExpenseAddClassification"
+                    android:layout_width="350dp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:gravity="center_vertical"
+                    android:layout_height="40dp">
+
+                    <RadioButton
+                        android:id="@+id/rb_Fixed"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="지출분류를 정확히 설정하여야 손익분기점 그래프를 확인할 수 있습니다!"
-                        android:textSize="15dp" />
-                    <TextView
-                        android:layout_width="350dp"
+                        android:textSize="20dp"
+                        android:text="고정비"/>
+
+                    <RadioButton
+                        android:id="@+id/rb_Variable"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="고정비 : 인건비, 자릿세 등 변하지 않는 항목"
-                        android:textSize="15dp" />
-                    <TextView
-                        android:layout_width="350dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="재료비, 외주가공비, 수수료 등 매출에 따라 변하는 항목"
-                        android:textSize="15dp" />
+                        android:textSize="20dp"
+                        android:text="변동비"/>
 
-                    //여기에 horizontal 리니어 레이아웃 추가하고 라디오 버튼 두개
+                </RadioGroup>
 
-                    <RadioGroup
-                        android:id="@+id/rbt_ExpenseAddClassification"
-                        android:layout_width="350dp"
-                        android:orientation="horizontal"
-                        android:layout_gravity="center"
-                        android:layout_height="40dp">
+                <TextView
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="※손익분기점 그래프 제공을 위해 꼭 입력해주세요"
+                    android:textSize="15dp"
+                    android:textColor="@color/blue_2"/>
 
-                        <RadioButton
-                            android:id="@+id/rb_Fixed"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="20dp"
-                            android:text="고정비"/>
+                <TextView
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="2dp"
+                    android:text="고정비 : 인건비, 자릿세 등 변하지 않는 항목"
+                    android:textSize="15dp" />
 
-                        <RadioButton
-                            android:id="@+id/rb_Variable"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="20dp"
-                            android:text="변동비"/>
+                <TextView
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="재료비, 외주가공비, 수수료 등 매출에 따라 변하는 항목"
+                    android:textSize="15dp" />
 
-                    </RadioGroup>
+            </LinearLayout>
 
-                </LinearLayout>
-
-            </ScrollView>
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight ="1"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/btn_ExpenseReturnByAdd"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="#5d6c7e"
-                android:textColor="#FFFFFF"
-                android:text="지출 등록하기"
-                android:textSize="30sp"
-                android:padding="10dp"/>
-
-        </LinearLayout>
+        </ScrollView>
 
     </LinearLayout>
-</android.support.constraint.ConstraintLayout>
+
+    <Button
+        android:id="@+id/btn_ExpenseReturnByAdd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/navy"
+        android:textColor="#FFFFFF"
+        android:text="지출 등록하기"
+        android:textSize="22dp"
+        android:padding="20dp"/>
+
+</LinearLayout>

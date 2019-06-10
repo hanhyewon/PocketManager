@@ -18,13 +18,22 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.example.gpdnj.pocketmanager.MainActivity;
 import com.example.gpdnj.pocketmanager.R;
+import com.example.hyejin.SalesManagerMainActivity;
+import com.example.jiyeong.pastSalesMode;
+import com.google.firebase.auth.FirebaseAuth;
+import com.navdrawer.SimpleSideDrawer;
 
 import java.util.ArrayList;
 
 public class MainProduct extends AppCompatActivity {
 
     Toolbar toolbar;
+    SimpleSideDrawer slide_menu;
+    private FirebaseAuth firebaseAuth;
+    private TextView nav_userName;
+    private TextView nav_userEmail;
 
     //리스트뷰를 담을 어댑터뷰 생성
     private ListView pListView = null;
@@ -35,6 +44,7 @@ public class MainProduct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_main);
+        firebaseAuth = FirebaseAuth.getInstance();
 
         //툴바 사용 설정
         toolbar = (Toolbar)findViewById(R.id.toolbar);
@@ -47,6 +57,10 @@ public class MainProduct extends AppCompatActivity {
         TextView toolbar_title = (TextView)findViewById(R.id.toolbar_title);
         toolbar_title.setText("상품관리");
 
+        //툴바 메뉴 클릭 시, 나타날 navigation 화면 설정
+        slide_menu = new SimpleSideDrawer(this);
+        slide_menu.setLeftBehindContentView(R.layout.navigation_menu);
+
         final Intent intent_PEdit = new Intent(this, EditProduct.class);
         final Intent intent_PAdd = new Intent(this, AddProduct.class);
         final Intent intent_EMain = new Intent(this, MainExpense.class);
@@ -58,8 +72,8 @@ public class MainProduct extends AppCompatActivity {
         pAdapter = new ListViewAdapter(this.getBaseContext());
 
         pAdapter.addItem(getResources().getDrawable(R.drawable.ic_launcher_background),
-                "예시 게시글",
-                "2014-02-18");
+                "상품명A",
+                "7,000원");
 
         pListView.setAdapter(pAdapter);
         registerForContextMenu(pListView);
@@ -186,4 +200,64 @@ public class MainProduct extends AppCompatActivity {
 
     }
 
+    /**
+     * 툴바에 있는 항목과 메뉴 네비게이션의 select 이벤트를 처리하는 메소드
+     * */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home : //왼쪽 메뉴 버튼을 눌렀을 때
+                slide_menu.toggleLeftDrawer(); //슬라이드 동작
+
+                //navigation_menu.xml 이벤트 처리
+                //현재 회원의 정보 설정
+                nav_userName = (TextView) findViewById(R.id.nav_userName);
+                nav_userEmail = (TextView) findViewById(R.id.nav_userEmail);
+                nav_userName.setText(firebaseAuth.getCurrentUser().getDisplayName() + "님");
+                nav_userEmail.setText(firebaseAuth.getCurrentUser().getEmail());
+
+                ImageView menu_close = (ImageView)findViewById(R.id.menu_close);
+                menu_close.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        slide_menu.closeLeftSide();
+                    }
+                });
+
+                //로그아웃
+                Button logoutBtn = (Button) findViewById(R.id.logoutBtn);
+                logoutBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        FirebaseAuth.getInstance().signOut();
+                        finish();
+                        Intent intent = new Intent(MainProduct.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+                //판매관리
+                Button salesManagerBtn = (Button) findViewById(R.id.salesManagerBtn);
+                salesManagerBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finish();
+                        Intent intent = new Intent(MainProduct.this, SalesManagerMainActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+                //매출관리
+                Button moneyTotalManagerBtn = (Button)findViewById(R.id.moneyTotalBtn);
+                moneyTotalManagerBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finish();
+                        Intent intent = new Intent(MainProduct.this, pastSalesMode.class);
+                        startActivity(intent);
+                    }
+                });
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

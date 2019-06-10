@@ -15,5 +15,9 @@
     <color name="gray_7">#ff797979</color>
     <color name="gray_8">#ff575753</color>
     <color name="transparent">#00000000</color>
-    <color name="blue">#ff62b5f9</color>
+    <color name="navy">#4c6278</color>
+    <color name="mint_1">#5ee0d3</color>
+    <color name="mint_2">#00D8FF</color>
+    <color name="blue_1">#0000ff</color>
+    <color name="blue_2">#333393</color>
 </resources>

@@ -15,8 +15,13 @@
         android:layout_weight="1"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+
+        <!-- DB 작업하려면 ListView로 수정해야함-->
+
+       <LinearLayout
+           android:id="@+id/salesDetailMain"
             android:padding="20dp"
             android:background="@color/white"
             android:orientation="horizontal"
@@ -24,7 +29,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:textSize="16dp"
+                android:textSize="20dp"
                 android:text="KT$G 상상마당 프리마켓"
                 android:layout_weight="1"
                 android:textColor="@color/gray_8"
@@ -33,11 +38,11 @@
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:textSize="16dp"
+                android:textSize="20dp"
                 android:text="4/27 ~ 4/28"
                 android:gravity="center|left"
                 android:textColor="@color/gray_8"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
@@ -50,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:textSize="16dp"
+                android:textSize="20dp"
                 android:text="종로 청년숲"
                 android:layout_weight="1"
                 android:textColor="@color/gray_8"
@@ -59,24 +64,27 @@
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:textSize="16dp"
+                android:textSize="20dp"
                 android:text="5/4 ~ 5/8"
                 android:textColor="@color/gray_8"
                 android:gravity="center|left"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
 
     </LinearLayout>
 
+
     <TextView
+        android:id="@+id/salesManagerEventInsert"
         android:padding="20dp"
-        android:text="수정"
-        android:background="@color/gray_cc"
-        android:textSize="18dp"
+        android:text="판매 행사 등록하기"
+        android:background="@color/navy"
+        android:textSize="22dp"
         android:gravity="center"
-        android:textColor="@color/gray_8"
+        android:textColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
 </LinearLayout>

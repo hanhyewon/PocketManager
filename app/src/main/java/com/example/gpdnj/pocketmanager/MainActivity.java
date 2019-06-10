@@ -4,13 +4,22 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -19,10 +28,14 @@ public class MainActivity extends AppCompatActivity {
 
     //private static final String TAG = "tag";
 
+    private EditText editEmail, editPassword;
+    private FirebaseAuth firebaseAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        firebaseAuth = FirebaseAuth.getInstance();
         //getHashKey();
 
         Button socialLoginBtn = (Button) findViewById(R.id.socialLoginBtn);
@@ -34,12 +47,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button loginBtn = (Button) findViewById(R.id.loginBtn);
-        loginBtn.setOnClickListener(new View.OnClickListener() {
+        editEmail = (EditText) findViewById(R.id.email);
+        editPassword = (EditText) findViewById(R.id.password);
+
+        Button emailLoginBtn = (Button) findViewById(R.id.emailLoginBtn);
+        emailLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                startActivity(intent);
+                emailLogin(editEmail.getText().toString(), editPassword.getText().toString());
             }
         });
 
@@ -49,6 +64,23 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, JoinActivity1.class);
                 startActivity(intent);
+            }
+        });
+
+    }
+
+    private void emailLogin(String email, String password) {
+        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()) {
+                    finish();
+                    Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    Toast.makeText(MainActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

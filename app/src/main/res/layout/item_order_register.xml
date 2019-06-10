@@ -8,7 +8,7 @@
     android:layout_height="130dp">
     <TextView
         android:id="@+id/title"
-        android:textSize="14dp"
+        android:textSize="15dp"
         android:text="상품명A"
         android:textColor="@color/gray_8"
         android:layout_gravity="center|top"
