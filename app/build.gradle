@@ -47,6 +47,7 @@ dependencies {
     implementation 'com.baoyz.swipemenulistview:library:1.3.0'
     implementation files('libs/gradle-wrapper.jar')
 
+    implementation 'com.google.firebase:firebase-database:16.0.1'
 
 }
 apply plugin: 'com.google.gms.google-services'
