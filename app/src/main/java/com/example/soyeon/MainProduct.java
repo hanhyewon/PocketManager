@@ -2,7 +2,6 @@ package com.example.soyeon;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -71,9 +70,9 @@ public class MainProduct extends AppCompatActivity {
         pListView = findViewById(R.id.pListView);
         pAdapter = new ListViewAdapter(this.getBaseContext());
 
-        pAdapter.addItem(getResources().getDrawable(R.drawable.ic_launcher_background),
-                "상품명A",
-                "7,000원");
+        //pAdapter.addItem(getResources().getDrawable(R.drawable.ic_launcher_background),
+        //        "상품명A",
+        //        "7,000원");
 
         pListView.setAdapter(pAdapter);
         registerForContextMenu(pListView);
@@ -165,29 +164,21 @@ public class MainProduct extends AppCompatActivity {
 
             ProductListData pData = pListData.get(position);
 
-            if (pData.pImage != null) {
-                holder.pImage.setVisibility(View.VISIBLE);
-                holder.pImage.setImageDrawable(pData.pImage);
-            }else{
-                holder.pImage.setVisibility(View.GONE);
-            }
+            //if (pData.pImage != null) {
+            //    holder.pImage.setVisibility(View.VISIBLE);
+            //    holder.pImage.setImageDrawable(pData.pImage);
+            //}else{
+            //    holder.pImage.setVisibility(View.GONE);
+            //}
 
-            holder.pName.setText(pData.pName);
-            holder.pPrice.setText(pData.pPrice);
+            //holder.pName.setText(pData.pName);
+            //holder.pPrice.setText(pData.pPrice);
 
             return convertView;
         }
         //////////
         //임의추가
-        public void addItem(Drawable pImage, String pName, String pPrice){
-            ProductListData addInfo = null;
-            addInfo = new ProductListData();
-            addInfo.pImage = pImage;
-            addInfo.pName = pName;
-            addInfo.pPrice = pPrice;
 
-            pListData.add(addInfo);
-        }
         //임의삭제
         public void remove(int position){
             pListData.remove(position);

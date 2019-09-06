@@ -1,6 +1,10 @@
 package com.example.soyeon;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -8,13 +12,24 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.gpdnj.pocketmanager.MainActivity;
 import com.example.gpdnj.pocketmanager.R;
 import com.example.hyejin.SalesManagerMainActivity;
 import com.example.jiyeong.pastSalesMode;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.navdrawer.SimpleSideDrawer;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class AddProduct extends AppCompatActivity {
 
@@ -24,11 +39,23 @@ public class AddProduct extends AppCompatActivity {
     private TextView nav_userName;
     private TextView nav_userEmail;
 
+    Button btn_ProductAdd;
+    Button btn_ProductImgAdd;
+    ImageView ivPreview;
+
+    Uri pImage;
+    String pName;
+    String pPrice;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_add);
         firebaseAuth = FirebaseAuth.getInstance();
+
+        btn_ProductAdd = (Button) findViewById(R.id.btn_pushProductAdd);
+        btn_ProductImgAdd = (Button) findViewById(R.id.btn_ProductAddImage);
+        ivPreview = (ImageView) findViewById(R.id.iv_preview);
 
         //툴바 사용 설정
         toolbar = (Toolbar)findViewById(R.id.toolbar);
@@ -44,6 +71,94 @@ public class AddProduct extends AppCompatActivity {
         //툴바 메뉴 클릭 시, 나타날 navigation 화면 설정
         slide_menu = new SimpleSideDrawer(this);
         slide_menu.setLeftBehindContentView(R.layout.navigation_menu);
+
+        //이미지 선택 버튼 클릭시
+        btn_ProductImgAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //이미지를 선택
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "이미지를 선택하세요."), 0);
+            }
+        });
+
+        //상품등록
+        btn_ProductAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //상품이미지업로드 -> 파일 링크 가지고 와서 같이 DB에 넣어야함
+                uploadFile();
+            }
+        });
+
+    }
+
+    /**
+     * 이미지 선택 된 파일을 화면에 바로 보여주는 메소드
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //request코드가 0이고 OK를 선택했고 data에 뭔가가 들어 있다면
+        if(requestCode == 0 && resultCode == RESULT_OK){
+            pImage = data.getData();
+            try {
+                //Uri 파일을 Bitmap으로 만들어서 ImageView에 집어 넣는다.
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), pImage);
+                ivPreview.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    //이미지 업로드
+    private void uploadFile() {
+        //업로드할 파일이 있으면 수행
+        if (pImage != null) {
+
+            //storage
+            FirebaseStorage storage = FirebaseStorage.getInstance("gs://pocket-manager-9207f.appspot.com/");
+
+            //Unique한 파일명
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMHH_mmss");
+            Date now = new Date();
+            String filename = formatter.format(now) + ".png";
+            //storage 주소와 폴더 파일명을 지정해 준다.
+            StorageReference storageRef = storage.getReferenceFromUrl("gs://pocket-manager-9207f.appspot.com").child("Product/" + filename);
+            //올라가거라...
+            storageRef.putFile(pImage)
+                    //성공시
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                            Toast.makeText(getApplicationContext(), "저장 완료!", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    //실패시
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                            Toast.makeText(getApplicationContext(), "업로드 실패!", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    //진행중
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            @SuppressWarnings("VisibleForTests") //이걸 넣어 줘야 아랫줄에 에러가 사라진다.
+                                    double progress = (100 * taskSnapshot.getBytesTransferred()) /  taskSnapshot.getTotalByteCount();
+                            //dialog에 진행률을 퍼센트로 출력해 준다
+
+                        }
+                    });
+        } else {
+            Toast.makeText(getApplicationContext(), "파일을 먼저 선택하세요.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
