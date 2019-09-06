@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.soyeon.MainProduct;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -30,8 +29,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //실험용 추가 인텐트
-        final Intent intent_PMain = new Intent(this, MainProduct.class);
-        startActivity(intent_PMain);
+        //final Intent intent_PMain = new Intent(this, MainProduct.class);
+        //startActivity(intent_PMain);
 
         firebaseAuth = FirebaseAuth.getInstance();
         //getHashKey();
