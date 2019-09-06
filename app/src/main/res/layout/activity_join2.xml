@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <!-- 아이디, 비밀번호, 비밀번호 확인 -->
+    <!-- 이메일, 비밀번호, 비밀번호 확인 -->
     <LinearLayout
         android:layout_width="350dp"
         android:layout_height="wrap_content"
@@ -23,8 +23,28 @@
         android:layout_marginTop="30dp"
         android:padding="10dp">
 
+        <!-- 이름 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="이름"
+                android:textSize="25dp"
+                android:layout_gravity="left"
+                android:gravity="center_vertical"/>
 
-        <!-- 아이디 -->
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/edittext_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"/>
+
+        <!-- 이메일 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -61,7 +81,7 @@
             android:layout_height="wrap_content"
             android:ems="15"
             android:inputType="textPassword"
-            android:hint="6~20자 이내로 입력"/>
+            android:hint="6~20자 영문 대소문자, 숫자만 사용"/>
 
         <!-- 비밀번호 확인 -->
         <TextView
@@ -74,13 +94,14 @@
             android:layout_marginTop="10dp"/>
 
         <EditText
+            android:id="@+id/edittext_pwCheck"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="15"
             android:inputType="textPassword"/>
 
     </LinearLayout>
-    <!-- //아이디, 비밀번호, 비밀번호 확인 -->
+    <!-- //이메일, 비밀번호, 비밀번호 확인 -->
 
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"

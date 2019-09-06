@@ -21,7 +21,10 @@ public class MainActivity extends AppCompatActivity {
     //private static final String TAG = "tag";
 
     private EditText editEmail, editPassword;
+    private TextView join;
+    private Button emailLoginBtn;
     private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
 
     @Override
@@ -36,19 +39,25 @@ public class MainActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         //getHashKey();
 
-        Button socialLoginBtn = (Button) findViewById(R.id.socialLoginBtn);
-        socialLoginBtn.setOnClickListener(new View.OnClickListener() {
+        //로그인 세션을 체크하는 부분
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SocialLoginActivity.class);
-                startActivity(intent);
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    //로그인 한 상태
+                    Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
-        });
+        };
 
+        //이메일 계정으로 로그인
         editEmail = (EditText) findViewById(R.id.email);
         editPassword = (EditText) findViewById(R.id.password);
+        emailLoginBtn = (Button) findViewById(R.id.emailLoginBtn);
 
-        Button emailLoginBtn = (Button) findViewById(R.id.emailLoginBtn);
         emailLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,7 +65,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        TextView join = (TextView)findViewById(R.id.join);
+        // 회원가입 이동
+        join = (TextView)findViewById(R.id.join);
+
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,22 +76,47 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //소셜 계정으로 로그인
+        Button socialLoginBtn = (Button) findViewById(R.id.socialLoginBtn);
+        socialLoginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SocialLoginActivity.class);
+                startActivity(intent);
+            }
+        });
     }
+
 
     private void emailLogin(String email, String password) {
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()) {
-                    finish();
                     Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                     startActivity(intent);
                 }
                 else {
-                    Toast.makeText(MainActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "이메일 또는 비밀번호가 틀렸습니다", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    // 앱이 실행될 때 Listener를 설정
+    @Override
+    public void onStart() {
+        super.onStart();
+        firebaseAuth.addAuthStateListener(mAuthListener);
+    }
+
+    // 앱이 중지될 때 Listener를 해지
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            firebaseAuth.removeAuthStateListener(mAuthListener);
+        }
     }
 
     /*
