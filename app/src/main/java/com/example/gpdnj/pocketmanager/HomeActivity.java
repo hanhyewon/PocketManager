@@ -16,6 +16,7 @@ import com.example.hyejin.SalesManagerMainActivity;
 import com.example.hyejin.SalesManagerModifyActivity;
 import com.example.jiyeong.pastSalesMode;
 import com.example.jiyeong.writeReview;
+import com.example.soyeon.AddProduct;
 import com.google.firebase.auth.FirebaseAuth;
 import com.navdrawer.SimpleSideDrawer;
 import com.viewpagerindicator.CirclePageIndicator;
