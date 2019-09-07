@@ -31,6 +31,8 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class JoinActivity1 extends AppCompatActivity {
 
@@ -44,10 +46,12 @@ public class JoinActivity1 extends AppCompatActivity {
     private CallbackManager mCallbackManager;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join1);
+
         firebaseAuth = FirebaseAuth.getInstance();
 
         //툴바 사용 설정
@@ -173,28 +177,45 @@ public class JoinActivity1 extends AppCompatActivity {
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (!task.isSuccessful()) {
-                            Toast.makeText(JoinActivity1.this, "실패", Toast.LENGTH_SHORT).show();
+                        if (task.isSuccessful()) {
+                            createUser();
+                        }
+                        else {
+                            Toast.makeText(JoinActivity1.this, "Google 인증에 실패하였습니다", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
 
-    private void handleFacebookAccessToken(AccessToken token) {
-        //Log.d(TAG, "handleFacebookAccessToken:" + token);
+    private void createUser() {
+        DatabaseReference userDB = FirebaseDatabase.getInstance().getReference();
+        //DatabaseReference newUserDB = userDB.push();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
 
+        String uid = firebaseAuth.getUid();
+        String name = user.getDisplayName();
+        String email = user.getEmail();
+        String photoUrl = user.getPhotoUrl().toString();
+
+        UserDTO userDTO = new UserDTO(name, email, photoUrl);
+        userDB.child("users").child(uid).setValue(userDTO);
+    }
+
+    private void handleFacebookAccessToken(AccessToken token) {
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (!task.isSuccessful()) {
-                    Toast.makeText(JoinActivity1.this, "실패", Toast.LENGTH_SHORT).show();
+                if (task.isSuccessful()) {
+                    createUser();
+                }
+                else {
+                    Toast.makeText(JoinActivity1.this, "Facebook 인증에 실패하였습니다", Toast.LENGTH_SHORT).show();
                 }
             }
         });
