@@ -123,9 +123,10 @@ public class JoinActivity1 extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
+                    finish();
                     Intent intent = new Intent(JoinActivity1.this,HomeActivity.class);
                     startActivity(intent);
-                    finish();
+
                 }
             }
         };
@@ -193,8 +194,8 @@ public class JoinActivity1 extends AppCompatActivity {
     }
 
     private void createUser() {
-        DatabaseReference userDB = FirebaseDatabase.getInstance().getReference();
-        //DatabaseReference newUserDB = userDB.push();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        //DatabaseReference newDatabase = userDB.push();
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
         String uid = firebaseAuth.getUid();
@@ -203,7 +204,7 @@ public class JoinActivity1 extends AppCompatActivity {
         String photoUrl = user.getPhotoUrl().toString();
 
         UserDTO userDTO = new UserDTO(name, email, photoUrl);
-        userDB.child("users").child(uid).setValue(userDTO);
+        mDatabase.child("users").child(uid).setValue(userDTO);
     }
 
     private void handleFacebookAccessToken(AccessToken token) {

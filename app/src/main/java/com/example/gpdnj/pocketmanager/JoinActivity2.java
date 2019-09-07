@@ -131,7 +131,7 @@ public class JoinActivity2 extends AppCompatActivity {
     }
 
     private void createUser() {
-        DatabaseReference userDB = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         //DatabaseReference newUserDB = userDB.push();
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
@@ -141,7 +141,7 @@ public class JoinActivity2 extends AppCompatActivity {
         //String photoUrl = user.getPhotoUrl().toString();
 
         UserDTO userDTO = new UserDTO(name, email);
-        userDB.child("users").child(uid).setValue(userDTO);
+        mDatabase.child("users").child(uid).setValue(userDTO);
     }
 
     //툴바 select

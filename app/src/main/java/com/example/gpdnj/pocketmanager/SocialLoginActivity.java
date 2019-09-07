@@ -102,9 +102,9 @@ public class SocialLoginActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
+                    finish();
                     Intent intent = new Intent(SocialLoginActivity.this,HomeActivity.class);
                     startActivity(intent);
-                    finish();
                 }
             }
         };
@@ -151,8 +151,8 @@ public class SocialLoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(SocialLoginActivity.this, "Google 아이디 연동 성공", Toast.LENGTH_SHORT).show();
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(SocialLoginActivity.this, "Google 아이디 연동 실패", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -165,10 +165,25 @@ public class SocialLoginActivity extends AppCompatActivity {
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(SocialLoginActivity.this, "Facebook 아이디 연동 성공", Toast.LENGTH_SHORT).show();
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(SocialLoginActivity.this, "Facebook 아이디 연동 실패", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        firebaseAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            firebaseAuth.removeAuthStateListener(mAuthListener);
+        }
     }
 }
