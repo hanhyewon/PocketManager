@@ -54,7 +54,7 @@
                         android:layout_height="wrap_content"
                         android:text="윤한김김님"
                         android:textColor="#000000"
-                        android:textSize="17dp"
+                        android:textSize="17sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -62,7 +62,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:textSize="16dp"/>
+                        android:textSize="16sp"/>
 
                 </GridLayout>
 
@@ -93,7 +93,7 @@
                         android:gravity="center_vertical"
                         android:text="판매 참여 행사"
                         android:textColor="#ffffff"
-                        android:textSize="22dp" />
+                        android:textSize="22sp" />
 
                     <View
                         android:layout_width="0dp"
@@ -104,7 +104,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
                         android:layout_gravity="right"
-                        android:text="등록하기" />
+                        android:text="등록하기"
+                        android:stateListAnimator="@null" />
                 </LinearLayout>
 
                 <ListView
@@ -143,7 +144,7 @@
                         android:text="매출관리"
                         android:layout_gravity="center"
                         android:paddingTop="5dp"
-                        android:textSize="22dp"
+                        android:textSize="22sp"
                         android:textColor="#333333"/>
 
                 </LinearLayout>
@@ -174,7 +175,7 @@
                         android:text="커뮤니티"
                         android:layout_gravity="center"
                         android:paddingTop="5dp"
-                        android:textSize="22dp"
+                        android:textSize="22sp"
                         android:textColor="#333333"/>
 
                 </LinearLayout>
@@ -203,7 +204,7 @@
                         android:gravity="center_vertical"
                         android:text="행사정보"
                         android:textColor="#333333"
-                        android:textSize="22dp" />
+                        android:textSize="22sp" />
 
                     <View
                         android:layout_width="0dp"
@@ -216,7 +217,7 @@
                         android:layout_gravity="right"
                         android:gravity="center_vertical"
                         android:text="더보기 +"
-                        android:textSize="16dp"
+                        android:textSize="16sp"
                         />
 
                 </LinearLayout>

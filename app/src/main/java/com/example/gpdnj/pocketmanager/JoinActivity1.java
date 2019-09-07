@@ -21,10 +21,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -37,6 +35,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class JoinActivity1 extends AppCompatActivity {
 
     Toolbar toolbar;
+    private SignInButton googleLoginBtn;
+    private LoginButton facebookLoginBtn;
 
     private static final int RC_SIGN_IN = 10;
     private GoogleSignInClient mGoogleSignInClient;
@@ -51,17 +51,17 @@ public class JoinActivity1 extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         //툴바 사용 설정
-        toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //툴바 타이틀명 설정
-        TextView toolbar_title = (TextView)findViewById(R.id.toolbar_title);
+        TextView toolbar_title = findViewById(R.id.toolbar_title);
         toolbar_title.setText("회원가입");
 
         //이메일 계정으로 시작하기 화면 전환
-        Button joinBtn = (Button)findViewById(R.id.joinBtn);
+        Button joinBtn = findViewById(R.id.joinBtn);
         joinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,6 +71,9 @@ public class JoinActivity1 extends AppCompatActivity {
         });
 
         // Configure Google Sign In
+        googleLoginBtn = findViewById(R.id.googleLoginBtn);
+        setGooglePlusButtonText(googleLoginBtn, "Google 계정으로 시작하기");
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -78,7 +81,6 @@ public class JoinActivity1 extends AppCompatActivity {
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        SignInButton googleLoginBtn = (SignInButton)findViewById(R.id.googleLoginBtn);
         googleLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,10 +92,10 @@ public class JoinActivity1 extends AppCompatActivity {
 
 
         // Initialize Facebook Login button
+        facebookLoginBtn = findViewById(R.id.facebookLoginBtn);
         mCallbackManager = CallbackManager.Factory.create();
-        LoginButton loginButton = findViewById(R.id.facebookLoginBtn);
-        loginButton.setReadPermissions("email", "public_profile");
-        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+        facebookLoginBtn.setReadPermissions("email", "public_profile");
+        facebookLoginBtn.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 //Log.d(TAG, "facebook:onSuccess:" + loginResult);
@@ -120,14 +122,23 @@ public class JoinActivity1 extends AppCompatActivity {
                     Intent intent = new Intent(JoinActivity1.this,HomeActivity.class);
                     startActivity(intent);
                     finish();
-                } else {
-                    // User is signed out
-
                 }
-                // ...
             }
         };
 
+    }
+
+    protected void setGooglePlusButtonText(SignInButton signInButton, String buttonText) {
+        // Find the TextView that is inside of the SignInButton and set its text
+        for (int i = 0; i < signInButton.getChildCount(); i++) {
+            View v = signInButton.getChildAt(i);
+
+            if (v instanceof TextView) {
+                TextView tv = (TextView) v;
+                tv.setText(buttonText);
+                return;
+            }
+        }
     }
 
     @Override
@@ -168,9 +179,7 @@ public class JoinActivity1 extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-
-                        }else {
+                        if (!task.isSuccessful()) {
                             Toast.makeText(JoinActivity1.this, "실패", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -184,9 +193,7 @@ public class JoinActivity1 extends AppCompatActivity {
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    // Sign in success, update UI with the signed-in user's information
-                } else {
+                if (!task.isSuccessful()) {
                     Toast.makeText(JoinActivity1.this, "실패", Toast.LENGTH_SHORT).show();
                 }
             }
