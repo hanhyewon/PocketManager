@@ -33,6 +33,8 @@ import java.util.Date;
 
 public class AddProduct extends AppCompatActivity {
 
+
+
     Toolbar toolbar;
     SimpleSideDrawer slide_menu;
     private FirebaseAuth firebaseAuth;
@@ -89,6 +91,8 @@ public class AddProduct extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //상품이미지업로드 -> 파일 링크 가지고 와서 같이 DB에 넣어야함
+                //인텐트로 회원 아이디(로받을건지 이메일로 받을건지 정해야함) + 해당 판매코드 받아와서 child()하고 그 하단에 데이터 넣어야함
+
                 uploadFile();
             }
         });
@@ -160,6 +164,10 @@ public class AddProduct extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "파일을 먼저 선택하세요.", Toast.LENGTH_SHORT).show();
         }
     }
+
+    /**
+     * DB에 상품정보 등록하는 메소드
+     */
 
     /**
      * 툴바에 있는 항목과 메뉴 네비게이션의 select 이벤트를 처리하는 메소드
