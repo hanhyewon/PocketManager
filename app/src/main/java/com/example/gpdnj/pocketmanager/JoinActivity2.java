@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -18,12 +19,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.regex.Pattern;
 
 public class JoinActivity2 extends AppCompatActivity {
+
+    private static final String TAG = "tag";
 
     Toolbar toolbar;
     private Button signup_btn;
@@ -100,10 +104,6 @@ public class JoinActivity2 extends AppCompatActivity {
                                         public void onComplete(@NonNull Task<AuthResult> task) {
                                             if (task.isSuccessful()) {
                                                 createUser();
-                                                Toast.makeText(JoinActivity2.this, "회원가입 성공!", Toast.LENGTH_SHORT).show();
-                                                Intent intent = new Intent(JoinActivity2.this, MainActivity.class);
-                                                startActivity(intent);
-                                                finish();
                                             } else {
                                                 Toast.makeText(JoinActivity2.this, "이미 등록된 이메일 입니다", Toast.LENGTH_SHORT).show();
                                             }
@@ -132,7 +132,6 @@ public class JoinActivity2 extends AppCompatActivity {
 
     private void createUser() {
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        //DatabaseReference newUserDB = userDB.push();
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
         String uid = firebaseAuth.getUid();
@@ -140,8 +139,21 @@ public class JoinActivity2 extends AppCompatActivity {
         String email = user.getEmail();
         //String photoUrl = user.getPhotoUrl().toString();
 
+        //DB에 유저정보 등록
         UserDTO userDTO = new UserDTO(name, email);
         mDatabase.child("users").child(uid).setValue(userDTO);
+
+        //이메일 회원가입 유저의 프로필 이름 세팅
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
+        user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(JoinActivity2.this, "회원가입 성공!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(JoinActivity2.this, HomeActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     //툴바 select
