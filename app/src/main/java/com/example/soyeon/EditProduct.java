@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +16,8 @@ import com.example.gpdnj.pocketmanager.R;
 import com.example.hyejin.SalesManagerMainActivity;
 import com.example.jiyeong.pastSalesMode;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.navdrawer.SimpleSideDrawer;
 
 public class EditProduct extends AppCompatActivity {
@@ -22,8 +25,13 @@ public class EditProduct extends AppCompatActivity {
     Toolbar toolbar;
     SimpleSideDrawer slide_menu;
     private FirebaseAuth firebaseAuth;
+    private FirebaseDatabase database;
+
     private TextView nav_userName;
     private TextView nav_userEmail;
+
+    private EditText ed_productName_ed;
+    private EditText ed_productPrice_ed;
 
     private Button btn_PushProductEdit = null;
     private Button btn_PushProductDelete = null;
@@ -33,6 +41,18 @@ public class EditProduct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_edit);
         firebaseAuth = FirebaseAuth.getInstance();
+
+        final int position = getIntent().getIntExtra("position",1);
+        final String pId = getIntent().getStringExtra("pId");
+        final String pName = getIntent().getStringExtra("pName");
+        final String pPrice = getIntent().getStringExtra("pPrice");
+        final String pImage = getIntent().getStringExtra("pImage");
+
+        ed_productName_ed = (EditText) findViewById(R.id.et_ProductEditName);
+        ed_productPrice_ed = (EditText) findViewById(R.id.et_ProductEditPrice);
+
+        ed_productName_ed.setText(pName);
+        ed_productPrice_ed.setText(pPrice);
 
         //툴바 사용 설정
         toolbar = (Toolbar)findViewById(R.id.toolbar);
@@ -55,14 +75,20 @@ public class EditProduct extends AppCompatActivity {
         btn_PushProductEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //수정 버튼 눌렸다는 신호를 main에 폼에 적힌 정보들과 함께 보내면 메인에서 DB연동후 처리
+                String uid = "abc123";
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                mDatabase.child("상품").child(uid).child(pId).child("pname").setValue(ed_productName_ed.getText().toString());
+                mDatabase.child("상품").child(uid).child(pId).child("price").setValue(ed_productPrice_ed.getText().toString());
+                //이미지 수정 추가 예정
             }
         });
 
         btn_PushProductDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //삭제 버튼 눌렸다는 신호를 main에 주면 메인에서 해당 데이터 삭제처리(DB연동해도 같은 방식으로)
+                String uid = "abc123";
+                String ref = "상품/" + uid +"/"+ pId;
+                database.getReference(ref).removeValue();
             }
         });
     }

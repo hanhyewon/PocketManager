@@ -1,10 +1,11 @@
 package com.example.gpdnj.pocketmanager;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,12 +13,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.hyejin.SalesManagerMainActivity;
 import com.example.hyejin.SalesManagerModifyActivity;
 import com.example.jiyeong.pastSalesMode;
 import com.example.jiyeong.writeReview;
-import com.example.soyeon.AddProduct;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.navdrawer.SimpleSideDrawer;
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -36,6 +40,7 @@ public class HomeActivity extends AppCompatActivity {
     private ArrayList<ImageModel> imageModelArrayList;
 
     private int[] myImageList = new int[]{R.drawable.test1, R.drawable.test2, R.drawable.test3};
+    private String name = "";
 
     private TextView userName;
     private TextView userEmail;
@@ -51,7 +56,7 @@ public class HomeActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         //툴바 사용 설정
-        toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); //왼쪽 버튼 사용 여부 true
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_white); //왼쪽 버튼 이미지 설정
@@ -71,10 +76,32 @@ public class HomeActivity extends AppCompatActivity {
         init();
 
         //현재 회원의 정보 설정
-        userName = (TextView) findViewById(R.id.userName);
-        userEmail = (TextView) findViewById(R.id.userEmail);
+        userName = findViewById(R.id.userName);
+        userEmail = findViewById(R.id.userEmail);
+
+        //파이어베이스에 저장된 데이터(name)를 가져올 경우
+        //메뉴화면에는 데이터(name)이 잘뜨나, 홈화면은 null인 문제가 있음 -> 해당 메소드 실행문 주석처리 해놓음
+        //구글, 페이스북 상으로는 유저이름이 뜨게 하기위해서 임의로 작성한 상태임
+        //getUserName();
+
         userName.setText(firebaseAuth.getCurrentUser().getDisplayName() + "님");
         userEmail.setText(firebaseAuth.getCurrentUser().getEmail());
+    }
+
+    private void getUserName() {
+        String userId = firebaseAuth.getCurrentUser().getUid();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("users").child(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                name = dataSnapshot.child("name").getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     /**
@@ -88,9 +115,9 @@ public class HomeActivity extends AppCompatActivity {
 
                 //navigation_menu.xml 이벤트 처리
                 //현재 회원의 정보 설정
-                nav_userName = (TextView) findViewById(R.id.nav_userName);
-                nav_userEmail = (TextView) findViewById(R.id.nav_userEmail);
-                nav_userName.setText(firebaseAuth.getCurrentUser().getDisplayName() + "님");
+                nav_userName = findViewById(R.id.nav_userName);
+                nav_userEmail = findViewById(R.id.nav_userEmail);
+                nav_userName.setText(name + "님");
                 nav_userEmail.setText(firebaseAuth.getCurrentUser().getEmail());
 
                 ImageView menu_close = (ImageView)findViewById(R.id.menu_close);

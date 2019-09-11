@@ -22,17 +22,28 @@ import com.example.gpdnj.pocketmanager.R;
 import com.example.hyejin.SalesManagerMainActivity;
 import com.example.jiyeong.pastSalesMode;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
 import com.navdrawer.SimpleSideDrawer;
 
 import java.util.ArrayList;
 
 public class MainProduct extends AppCompatActivity {
 
+    private FirebaseDatabase database;
+
     Toolbar toolbar;
     SimpleSideDrawer slide_menu;
     private FirebaseAuth firebaseAuth;
     private TextView nav_userName;
     private TextView nav_userEmail;
+
+    ArrayList<String> pIds = new ArrayList<String>();
+    ArrayList<String> pImages = new ArrayList<String>();
+    ArrayList<String> pNames = new ArrayList<String>();
+    ArrayList<String> pPrices = new ArrayList<String>();
 
     //리스트뷰를 담을 어댑터뷰 생성
     private ListView pListView = null;
@@ -44,6 +55,7 @@ public class MainProduct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_main);
         firebaseAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
 
         //툴바 사용 설정
         toolbar = (Toolbar)findViewById(R.id.toolbar);
@@ -64,18 +76,14 @@ public class MainProduct extends AppCompatActivity {
         final Intent intent_PAdd = new Intent(this, AddProduct.class);
         final Intent intent_EMain = new Intent(this, MainExpense.class);
 
-        //startActivity(intent_EMain);
-
         btn_ProductPush = findViewById(R.id.btn_ProductPush);
         pListView = findViewById(R.id.pListView);
         pAdapter = new ListViewAdapter(this.getBaseContext());
 
-        //pAdapter.addItem(getResources().getDrawable(R.drawable.ic_launcher_background),
-        //        "상품명A",
-        //        "7,000원");
-
         pListView.setAdapter(pAdapter);
         registerForContextMenu(pListView);
+
+        displayProduct();
 
         //리스너
         pListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -90,6 +98,10 @@ public class MainProduct extends AppCompatActivity {
                         switch(item.getItemId()){
                             case R.id.pModify:
                                 intent_PEdit.putExtra("position",position);
+                                intent_PEdit.putExtra("pId",pIds.get(position));
+                                intent_PEdit.putExtra("pName",pNames.get(position));
+                                intent_PEdit.putExtra("pPrice",pPrices.get(position));
+                                intent_PEdit.putExtra("pImage",pImages.get(position));
                                 startActivity(intent_PEdit);
                                 break;
                             case R.id.pdelete:
@@ -119,7 +131,7 @@ public class MainProduct extends AppCompatActivity {
         public TextView pPrice;
     }
 
-    //리스트뷰 어댑터
+    //커스텀
     private class ListViewAdapter extends BaseAdapter {
         private Context pContext = null;
         private ArrayList<ProductListData> pListData = new ArrayList<ProductListData>();
@@ -131,12 +143,12 @@ public class MainProduct extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return pListData.size();
+            return pIds.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return pListData.get(position);
+            return pIds.get(position);
         }
 
         @Override
@@ -162,26 +174,17 @@ public class MainProduct extends AppCompatActivity {
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            ProductListData pData = pListData.get(position);
-
-            //if (pData.pImage != null) {
-            //    holder.pImage.setVisibility(View.VISIBLE);
-            //    holder.pImage.setImageDrawable(pData.pImage);
-            //}else{
-            //    holder.pImage.setVisibility(View.GONE);
-            //}
-
-            //holder.pName.setText(pData.pName);
-            //holder.pPrice.setText(pData.pPrice);
-
+            holder.pName.setText(pNames.get(position));
+            holder.pPrice.setText(pPrices.get(position));
             return convertView;
         }
-        //////////
-        //임의추가
 
         //임의삭제
         public void remove(int position){
-            pListData.remove(position);
+            //나중에 uid랑 판매코드 추가해야함
+            String uid = "abc123";
+            String ref = "상품/" + uid +"/"+ pIds.get(position);
+            database.getReference(ref).removeValue();
             dataChange();
         }
         //임의수정
@@ -189,6 +192,48 @@ public class MainProduct extends AppCompatActivity {
             pAdapter.notifyDataSetChanged();
         }
 
+    }
+
+    /**
+     * 리스트 가지고 오는 함수
+     */
+    public void displayProduct(){
+        //uid랑 pid 가지고 와서 추가 해야 함
+        String uid = "abc123";
+        database.getReference("상품/"+uid)
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                        pIds.add(dataSnapshot.getKey());
+
+                        pImages.add(dataSnapshot.child("pimage").getValue().toString());
+                        pNames.add(dataSnapshot.child("pname").getValue().toString());
+                        pPrices.add(dataSnapshot.child("price").getValue().toString());
+
+                        pAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
     }
 
     /**

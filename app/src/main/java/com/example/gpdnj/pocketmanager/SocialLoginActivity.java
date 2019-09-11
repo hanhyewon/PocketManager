@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +20,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -32,6 +30,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 public class SocialLoginActivity extends AppCompatActivity {
+
+    private SignInButton googleLoginBtn;
+    private LoginButton facebookLoginBtn;
 
     private static final int RC_SIGN_IN = 10;
     private GoogleSignInClient mGoogleSignInClient;
@@ -45,7 +46,7 @@ public class SocialLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_social_login);
         firebaseAuth = FirebaseAuth.getInstance();
 
-        TextView socialJoinText = (TextView) findViewById(R.id.socialJoinText);
+        TextView socialJoinText = findViewById(R.id.socialJoinText);
         socialJoinText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,16 +55,17 @@ public class SocialLoginActivity extends AppCompatActivity {
         });
 
         // Configure Google Sign In
+        googleLoginBtn = findViewById(R.id.googleLoginBtn);
+        setGooglePlusButtonText(googleLoginBtn, "Google 계정으로 로그인");
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        SignInButton button = (SignInButton)findViewById(R.id.googleLoginBtn);
-
-        button.setOnClickListener(new View.OnClickListener() {
+        googleLoginBtn = findViewById(R.id.googleLoginBtn);
+        googleLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //System.out.println("클릭테스트");
@@ -72,12 +74,11 @@ public class SocialLoginActivity extends AppCompatActivity {
             }
         });
 
-
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
-        LoginButton loginButton = findViewById(R.id.facebookLoginBtn);
-        loginButton.setReadPermissions("email", "public_profile");
-        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+        facebookLoginBtn = findViewById(R.id.facebookLoginBtn);
+        facebookLoginBtn.setReadPermissions("email", "public_profile");
+        facebookLoginBtn.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 //Log.d(TAG, "facebook:onSuccess:" + loginResult);
@@ -101,14 +102,10 @@ public class SocialLoginActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
+                    finish();
                     Intent intent = new Intent(SocialLoginActivity.this,HomeActivity.class);
                     startActivity(intent);
-                    finish();
-                } else {
-                    // User is signed out
-
                 }
-                // ...
             }
         };
 
@@ -134,6 +131,19 @@ public class SocialLoginActivity extends AppCompatActivity {
         }
     }
 
+    protected void setGooglePlusButtonText(SignInButton signInButton, String buttonText) {
+        // Find the TextView that is inside of the SignInButton and set its text
+        for (int i = 0; i < signInButton.getChildCount(); i++) {
+            View v = signInButton.getChildAt(i);
+
+            if (v instanceof TextView) {
+                TextView tv = (TextView) v;
+                tv.setText(buttonText);
+                return;
+            }
+        }
+    }
+
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
@@ -142,9 +152,7 @@ public class SocialLoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()) {
-
-                        }else {
-                            Toast.makeText(SocialLoginActivity.this, "Google 아이디 연동 성공", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SocialLoginActivity.this, "Google 아이디 연동 실패", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -158,11 +166,24 @@ public class SocialLoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                        } else {
-                            Toast.makeText(SocialLoginActivity.this, "Facebook 아이디 연동 성공", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SocialLoginActivity.this, "Facebook 아이디 연동 실패", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        firebaseAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            firebaseAuth.removeAuthStateListener(mAuthListener);
+        }
     }
 }
