@@ -17,7 +17,8 @@
     <color name="transparent">#00000000</color>
     <color name="navy">#4c6278</color>
     <color name="mint_1">#5ee0d3</color>
-    <color name="mint_2">#00D8FF</color>
+    <color name="mint_2">#59c9be</color>
+    <color name="mint_3">#00D8FF</color>
     <color name="blue_1">#0000ff</color>
     <color name="blue_2">#333393</color>
 </resources>
