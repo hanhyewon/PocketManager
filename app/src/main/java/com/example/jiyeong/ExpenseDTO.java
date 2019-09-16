@@ -19,13 +19,16 @@ public class ExpenseDTO {
 
     }
 
-    /*public ExpenseDTO(String date,String context,String charge,String option,String group){
+    /*
+    //생성자
+    public ExpenseDTO(String date,String context,String charge,String option,String group){
         this.date=date;
         this.context=context;
         this.charge=charge;
         this.option=option;
         this.group=group;
-    }*/
+    }
+    */
 
     public int getResld() {
         return resld;
