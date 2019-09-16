@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.example.gpdnj.pocketmanager.MainActivity;
 import com.example.gpdnj.pocketmanager.R;
 import com.example.hyejin.SalesManagerMainActivity;
+import com.example.jiyeong.MainExpense;
 import com.example.jiyeong.pastSalesMode;
 import com.google.firebase.auth.FirebaseAuth;
 import com.navdrawer.SimpleSideDrawer;

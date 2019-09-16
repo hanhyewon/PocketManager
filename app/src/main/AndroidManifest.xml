@@ -2,9 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.gpdnj.pocketmanager">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_pocket_manager"
@@ -12,9 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_pocket_manager_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UserSettingActivity"></activity>
-        <activity android:name=".ManagerSettingActivity" />
-        <activity android:name=".ManagerHomeActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,14 +17,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".SocialLoginActivity" /> <!-- Facebook -->
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
-
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
+
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
@@ -46,24 +37,30 @@
         <activity android:name=".JoinActivity1" />
         <activity android:name=".JoinActivity2" />
         <activity android:name=".HomeActivity" />
-        <activity android:name=".MenuNavigation" /> <!-- 김소연 -->
-        <activity android:name="com.example.soyeon.AddProduct" />
+        <activity android:name=".MenuNavigation" />
+        <activity android:name="com.example.soyeon.AddProduct" /> <!-- 김소연 -->
         <activity android:name="com.example.soyeon.EditProduct" />
-        <activity android:name="com.example.soyeon.MainExpense" />
-        <activity android:name="com.example.soyeon.AddExpense" />
-        <activity android:name="com.example.soyeon.EditExpense" />
-        <activity android:name="com.example.soyeon.MainProduct" /> <!-- 김혜진 -->
-        <activity android:name="com.example.hyejin.ParentActivity" />
+        <activity android:name="com.example.soyeon.MainProduct" />
+        <activity android:name="com.example.hyejin.ParentActivity" /> <!-- 김혜진 -->
         <activity android:name="com.example.hyejin.SalesManagerActivity" />
         <activity android:name="com.example.hyejin.SalesManagerSettingActivity" />
         <activity android:name="com.example.hyejin.SalesManagerMainActivity" />
         <activity android:name="com.example.hyejin.SalesManagerModifyActivity" />
         <activity android:name="com.example.hyejin.OrderManagerActivity" />
-        <activity android:name="com.example.hyejin.OrderRegisterActivity" /> <!-- 윤지영 -->
-        <activity android:name="com.example.jiyeong.pastSalesMode" />
+        <activity android:name="com.example.hyejin.OrderRegisterActivity" />
+        <activity android:name="com.example.jiyeong.pastSalesMode" /> <!-- 윤지영 -->
         <activity android:name="com.example.jiyeong.writeReview" />
         <activity android:name="com.example.jiyeong.currentSalesMode" />
         <activity android:name="com.example.jiyeong.currentSalesDetail" />
+        <activity android:name="com.example.jiyeong.MainExpense" />
+        <activity android:name="com.example.jiyeong.AddExpense" />
+        <activity android:name="com.example.jiyeong.EditExpense" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
     </application>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

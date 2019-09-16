@@ -1,23 +1,35 @@
-package com.example.soyeon;
+package com.example.jiyeong;
+
+//
 
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.gpdnj.pocketmanager.MainActivity;
 import com.example.gpdnj.pocketmanager.R;
+import com.example.gpdnj.pocketmanager.UserDTO;
 import com.example.hyejin.SalesManagerMainActivity;
-import com.example.jiyeong.pastSalesMode;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.navdrawer.SimpleSideDrawer;
 
-public class AddExpense extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class MainExpense extends AppCompatActivity {
 
     Toolbar toolbar;
     SimpleSideDrawer slide_menu;
@@ -25,13 +37,41 @@ public class AddExpense extends AppCompatActivity {
     private TextView nav_userName;
     private TextView nav_userEmail;
 
-    private Button btn_ExpenseReturnByAdd = null;
+    private Button btn_ExpensePush = null;
+
+
+    private ListView listView;
+
+    FirebaseDatabase database;
+    DatabaseReference databaseRef;
+
+    private ExpenseList_Adapter adapter;
+    static ArrayList<ExpenseDTO> arrayExpense = new ArrayList<ExpenseDTO>();
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.expense_add);
+        setContentView(R.layout.expense_main);
+
+        //파이어베이스 연동
         firebaseAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        databaseRef = database.getReference("지출");
+
+
+        //리스트뷰 어댑터 엽결
+        adapter = new ExpenseList_Adapter();
+        listView = (ListView)findViewById(R.id.eListView);
+
+        listView.setAdapter(adapter);
+
+        displayExpenseList();
+
+
+
 
         //툴바 사용 설정
         toolbar = (Toolbar)findViewById(R.id.toolbar);
@@ -42,7 +82,8 @@ public class AddExpense extends AppCompatActivity {
 
         //툴바 타이틀명 설정
         TextView toolbar_title = (TextView)findViewById(R.id.toolbar_title);
-        toolbar_title.setText("지출등록");
+        toolbar_title.setText("지출관리");
+
 
         //툴바 메뉴 클릭 시, 나타날 navigation 화면 설정
         slide_menu = new SimpleSideDrawer(this);
@@ -50,18 +91,45 @@ public class AddExpense extends AppCompatActivity {
 
 
         final Intent intent_EEdit = new Intent(this, EditExpense.class);
-        final Intent intent_EMain = new Intent(this, MainExpense.class);
+        final Intent intent_EAdd = new Intent(this, AddExpense.class);
 
-        btn_ExpenseReturnByAdd = findViewById(R.id.btn_ExpenseReturnByAdd);
+        btn_ExpensePush = findViewById(R.id.btn_ExpensePush);
 
-        btn_ExpenseReturnByAdd.setOnClickListener(new View.OnClickListener() {
+        //
+        btn_ExpensePush.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(intent_EMain);
+                startActivity(intent_EAdd);
+            }
+        });
+    }
+
+    public void displayExpenseList() {
+        databaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                arrayExpense.clear();
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    String econtext = data.child("econtext").getValue().toString();
+                    String egroup = data.child("egroup").getValue().toString();
+                    String echarge = data.child("echarge").getValue().toString();
+
+                    ExpenseDTO expenseDTO = new ExpenseDTO(econtext, egroup, echarge);
+                    arrayExpense.add(expenseDTO);
+                }
+                adapter.addItems(arrayExpense);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
 
     }
+
+
 
     /**
      * 툴바에 있는 항목과 메뉴 네비게이션의 select 이벤트를 처리하는 메소드
@@ -94,7 +162,7 @@ public class AddExpense extends AppCompatActivity {
                     public void onClick(View v) {
                         FirebaseAuth.getInstance().signOut();
                         finish();
-                        Intent intent = new Intent(AddExpense.this, MainActivity.class);
+                        Intent intent = new Intent(MainExpense.this, MainActivity.class);
                         startActivity(intent);
                     }
                 });
@@ -105,7 +173,7 @@ public class AddExpense extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         finish();
-                        Intent intent = new Intent(AddExpense.this, SalesManagerMainActivity.class);
+                        Intent intent = new Intent(MainExpense.this, SalesManagerMainActivity.class);
                         startActivity(intent);
                     }
                 });
@@ -116,7 +184,7 @@ public class AddExpense extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         finish();
-                        Intent intent = new Intent(AddExpense.this, pastSalesMode.class);
+                        Intent intent = new Intent(MainExpense.this, pastSalesMode.class);
                         startActivity(intent);
                     }
                 });
@@ -124,3 +192,4 @@ public class AddExpense extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 }
+

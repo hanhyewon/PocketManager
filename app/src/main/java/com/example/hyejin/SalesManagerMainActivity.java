@@ -14,7 +14,7 @@ import com.example.gpdnj.pocketmanager.MainActivity;
 import com.example.gpdnj.pocketmanager.R;
 import com.example.jiyeong.currentSalesMode;
 import com.example.jiyeong.pastSalesMode;
-import com.example.soyeon.MainExpense;
+import com.example.jiyeong.MainExpense;
 import com.example.soyeon.MainProduct;
 import com.google.firebase.auth.FirebaseAuth;
 import com.navdrawer.SimpleSideDrawer;

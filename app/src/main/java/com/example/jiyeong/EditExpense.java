@@ -1,23 +1,22 @@
-package com.example.soyeon;
+package com.example.jiyeong;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.gpdnj.pocketmanager.MainActivity;
 import com.example.gpdnj.pocketmanager.R;
 import com.example.hyejin.SalesManagerMainActivity;
-import com.example.jiyeong.pastSalesMode;
 import com.google.firebase.auth.FirebaseAuth;
 import com.navdrawer.SimpleSideDrawer;
 
-public class MainExpense extends AppCompatActivity {
+public class EditExpense extends AppCompatActivity {
 
     Toolbar toolbar;
     SimpleSideDrawer slide_menu;
@@ -25,12 +24,10 @@ public class MainExpense extends AppCompatActivity {
     private TextView nav_userName;
     private TextView nav_userEmail;
 
-    private Button btn_ExpensePush = null;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.expense_main);
+        setContentView(R.layout.expense_listview); //임의
         firebaseAuth = FirebaseAuth.getInstance();
 
         //툴바 사용 설정
@@ -42,27 +39,17 @@ public class MainExpense extends AppCompatActivity {
 
         //툴바 타이틀명 설정
         TextView toolbar_title = (TextView)findViewById(R.id.toolbar_title);
-        toolbar_title.setText("지출관리");
-
+        toolbar_title.setText("지출수정");
 
         //툴바 메뉴 클릭 시, 나타날 navigation 화면 설정
         slide_menu = new SimpleSideDrawer(this);
         slide_menu.setLeftBehindContentView(R.layout.navigation_menu);
 
-
         final Intent intent_EEdit = new Intent(this, EditExpense.class);
         final Intent intent_EAdd = new Intent(this, AddExpense.class);
 
-        btn_ExpensePush = findViewById(R.id.btn_ExpensePush);
-
-        //
-        btn_ExpensePush.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(intent_EAdd);
-            }
-        });
     }
+
     /**
      * 툴바에 있는 항목과 메뉴 네비게이션의 select 이벤트를 처리하는 메소드
      * */
@@ -94,7 +81,7 @@ public class MainExpense extends AppCompatActivity {
                     public void onClick(View v) {
                         FirebaseAuth.getInstance().signOut();
                         finish();
-                        Intent intent = new Intent(MainExpense.this, MainActivity.class);
+                        Intent intent = new Intent(EditExpense.this, MainActivity.class);
                         startActivity(intent);
                     }
                 });
@@ -105,7 +92,7 @@ public class MainExpense extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         finish();
-                        Intent intent = new Intent(MainExpense.this, SalesManagerMainActivity.class);
+                        Intent intent = new Intent(EditExpense.this, SalesManagerMainActivity.class);
                         startActivity(intent);
                     }
                 });
@@ -116,7 +103,7 @@ public class MainExpense extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         finish();
-                        Intent intent = new Intent(MainExpense.this, pastSalesMode.class);
+                        Intent intent = new Intent(EditExpense.this, pastSalesMode.class);
                         startActivity(intent);
                     }
                 });
