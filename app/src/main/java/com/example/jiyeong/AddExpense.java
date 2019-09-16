@@ -118,7 +118,7 @@ public class AddExpense extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String  text = dataSnapshot.getValue(String.class);
 
-               /* arrayExpense.clear();
+                /* arrayExpense.clear();
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     String edate = data.child("edate").getValue().toString();
                     String echarge = data.child("echarge").getValue().toString();
@@ -248,87 +248,3 @@ public class AddExpense extends AppCompatActivity {
 }
 
 
-/*
-class ExpenseAdapter extends BaseAdapter { // 리스트 뷰의 아답타
-    Context context;
-    int layout;
-    ArrayList<expenseList> el;
-    LayoutInflater inf;
-    public ExpenseAdapter(Context context, int layout, ArrayList<com.example.soyeon.expenseList> el) {
-        this.context = context;
-        this.layout = layout;
-        this.el = el;
-        inf = (LayoutInflater)context.getSystemService
-                (Context.LAYOUT_INFLATER_SERVICE);
-    }
-    @Override
-    public int getCount() {
-        return el.size();
-    }
-    @Override
-    public Object getItem(int position) {
-        return el.get(position);
-    }
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView==null) {
-            convertView = inf.inflate(layout, null);
-        }
-        TextView ed_dat = (TextView)convertView.findViewById(R.id.title);
-        TextView slDate = (TextView)convertView.findViewById(R.id.date);
-        EditText et_Date=(EditText)convertView.findViewById(R.id.et_ExpenseAddDate);
-        EditText et_Context=(EditText)convertView.findViewById(R.id.et_ExpenseAddText);
-        EditText et_charge=(EditText)convertView.findViewById(R.id.et_ExpenseAddPrice);
-        EditText et_option=(EditText)convertView.findViewById(R.id.et_ExpenseAddDetail);
-        RadioGroup rg_group=(RadioGroup)convertView.findViewById(R.id.rg_ExpenseAddClassification);
-
-        com.example.soyeon.expenseList m = el.get(position);
-        et_Date.setText(m.date);
-        et_Context.setText(m.context);
-        et_charge.setText(m.charge);
-        et_option.setText(m.option);
-        //rg_group.setText(m.group);
-        return convertView;
-    }
-}
-
-
-class expenseList { // 자바빈
-    String date = ""; //  title 판매명
-    String context = ""; // date 기간
-    String charge ="";
-    String option ="";
-    String group="";
-
-    public expenseList(String date, String context, String charge,String option, String group) {
-        super();
-        this.context = context;
-        this.date = date;
-        this.charge=charge;
-        this.option=option;
-        this.group=group;
-
-    }
-    public expenseList() {}
-}
-*/
-/*
-    private void  createExpense(){
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-
-        String uid = firebaseAuth.getUid();
-        String date= et_Date.getText().toString();
-        String context=et_Context.getText().toString();
-        String charge=et_charge.getText().toString();
-
-        expenseDTO expenseDTO = new expenseDTO(uid,date,context,charge);
-        mDatabase.child("users").child(uid).setValue(expenseDTO);
-
-
-    }
-*/
