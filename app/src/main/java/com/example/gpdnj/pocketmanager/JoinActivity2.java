@@ -149,9 +149,18 @@ public class JoinActivity2 extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Toast.makeText(JoinActivity2.this, name + "님 환영합니다!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(JoinActivity2.this, HomeActivity.class);
-                startActivity(intent);
-                finish();
+                if (name.equals("관리자")) {
+                    //관리자가 로그인 한 상태
+                    Intent intent2 = new Intent(JoinActivity2.this, ManagerHomeActivity.class);
+                    startActivity(intent2);
+                    finish();
+                }
+                else {
+                    //일반 회원이 로그인 한 상태
+                    Intent intent = new Intent(JoinActivity2.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
     }
