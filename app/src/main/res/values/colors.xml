@@ -12,8 +12,11 @@
     <color name="gray_5">#ffaaaaaa</color><!--sub-->
     <color name="gray_6">#ff979797</color>
     <color name="gray_6_5">#ff8c8c8c</color>
-    <color name="gray_7">#ff797979</color>
-    <color name="gray_8">#ff575753</color>
+    <color name="gray_7">#797979</color>
+    <color name="gray_8">#636363</color>
+    <color name="gray_9">#4a4a4a</color>
+    <color name="gray_10">#3b3b3b</color>
+    <color name="gray_11">#383838</color>
     <color name="transparent">#00000000</color>
     <color name="navy">#4c6278</color>
     <color name="mint_1">#5ee0d3</color>

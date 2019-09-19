@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".EventAddActivity"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <include
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/eventImgAddBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/camera_white"
+                android:padding="45dp"
+                android:background="@drawable/rounded_lightgray"/>
+
+            <EditText
+                android:id="@+id/eventTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="행사명 입력"
+                android:textSize="18sp"
+                android:textColor="@color/gray_8"
+                android:textColorHint="@color/gray_8"
+                android:paddingLeft="20dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/rounded_stroke_basic"
+                android:textCursorDrawable="@null"/>
+
+            <EditText
+                android:id="@+id/eventsubTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="행사 소개 입력"
+                android:textSize="18sp"
+                android:textColor="@color/gray_8"
+                android:textColorHint="@color/gray_8"
+                android:paddingLeft="20dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/rounded_stroke_basic"
+                android:textCursorDrawable="@null"/>
+
+            <TextView
+                android:id="@+id/eventLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 행사 위치를 선택하세요"
+                android:drawableLeft="@drawable/location_darkgray_s"
+                android:textSize="18sp"
+                android:textColor="@color/gray_8"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:paddingTop="11dp"
+                android:paddingBottom="11dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/rounded_stroke_basic" />
+
+            <TextView
+                android:id="@+id/eventDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="기간 선택"
+                android:textSize="18sp"
+                android:textColor="@color/gray_8"
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp"
+                android:paddingRight="10dp"
+                android:paddingTop="14dp"
+                android:paddingBottom="14dp"
+                android:layout_marginTop="20dp"
+                android:drawableRight="@drawable/arrow_right_lightgray"
+                android:background="@drawable/rounded_stroke_basic" />
+
+            <!--
+            https://android-arsenal.com/details/1/7354
+            https://farizdotid.com/cara-membuat-date-range-picker-android/
+            -->
+            <ru.slybeaver.slycalendarview.SlyCalendarView
+                android:id="@+id/slyCalendarView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:backgroundColor="#000000"
+                app:headerColor="#ff0000"
+                app:firstMonday="true"
+                app:textColor="#00ff00"
+                app:selectedColor="#0000ff"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="상세정보"
+                android:textSize="18sp"
+                android:textColor="@color/gray_10"
+                android:paddingLeft="5dp"
+                android:layout_marginTop="20dp" />
+
+            <EditText
+                android:id="@+id/eventDetailText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_stroke_basic"
+                android:gravity="top"
+                android:hint="행사의 상세정보를 입력해주세요"
+                android:inputType="textMultiLine"
+                android:lines="5"
+                android:minLines="5"
+                android:paddingLeft="20dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:textColor="@color/gray_8"
+                android:textColorHint="@color/gray_8"
+                android:textCursorDrawable="@null"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="등록하기"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:letterSpacing="0.1"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/btn_mint"
+        style="?android:attr/borderlessButtonStyle"/>
+
+</LinearLayout>

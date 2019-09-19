@@ -139,7 +139,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_home_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/hardware/ic_keyboard_arrow_right_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -149,8 +149,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="5dd8dd" />
-                            <entry key="outputName" value="home" />
+                            <entry key="color" value="8b8b8b" />
+                            <entry key="outputName" value="arrow_right_lightgray" />
                             <entry key="sourceFile" value="C:\Users\gpdnj" />
                           </map>
                         </option>

@@ -51,6 +51,10 @@ dependencies {
 
     implementation 'com.shobhitpuri.custombuttons:google-signin:1.0.0'
 
+    //CenterIconButton 라이브러리
     implementation 'com.github.Omega-R:OmegaCenterIconButton:0.0.3@aar'
+
+    //SlyCalendarView
+    implementation 'com.github.psinetron:slycalendarview:0.0.9'
 }
 apply plugin: 'com.google.gms.google-services'
