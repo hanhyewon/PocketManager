@@ -1,7 +1,11 @@
 package com.example.soyeon;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -10,17 +14,33 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.gpdnj.pocketmanager.MainActivity;
 import com.example.gpdnj.pocketmanager.R;
 import com.example.hyejin.SalesManagerMainActivity;
 import com.example.jiyeong.pastSalesMode;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.navdrawer.SimpleSideDrawer;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class EditProduct extends AppCompatActivity {
+
+    Uri preImage;
+    String editImage;
+    String pId_e;
 
     Toolbar toolbar;
     SimpleSideDrawer slide_menu;
@@ -36,6 +56,8 @@ public class EditProduct extends AppCompatActivity {
     private Button btn_PushProductEdit = null;
     private Button btn_PushProductDelete = null;
 
+    ImageView ivPreview;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,11 +70,19 @@ public class EditProduct extends AppCompatActivity {
         final String pPrice = getIntent().getStringExtra("pPrice");
         final String pImage = getIntent().getStringExtra("pImage");
 
+        pId_e = pId;
+
         ed_productName_ed = (EditText) findViewById(R.id.et_ProductEditName);
         ed_productPrice_ed = (EditText) findViewById(R.id.et_ProductEditPrice);
 
         ed_productName_ed.setText(pName);
         ed_productPrice_ed.setText(pPrice);
+
+        ivPreview = (ImageView) findViewById(R.id.iv_preview_edit);
+
+        if(pImage != null){
+            Glide.with(this).load(pImage).into(ivPreview);
+        }
 
         //툴바 사용 설정
         toolbar = (Toolbar)findViewById(R.id.toolbar);
@@ -75,11 +105,7 @@ public class EditProduct extends AppCompatActivity {
         btn_PushProductEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String uid = "abc123";
-                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-                mDatabase.child("상품").child(uid).child(pId).child("pname").setValue(ed_productName_ed.getText().toString());
-                mDatabase.child("상품").child(uid).child(pId).child("price").setValue(ed_productPrice_ed.getText().toString());
-                //이미지 수정 추가 예정
+                uploadFile();
             }
         });
 
@@ -92,6 +118,87 @@ public class EditProduct extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * 이미지 선택 된 파일을 화면에 바로 보여주는 메소드
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //request코드가 0이고 OK를 선택했고 data에 뭔가가 들어 있다면
+        if(requestCode == 0 && resultCode == RESULT_OK){
+            preImage = data.getData();
+            try {
+                //Uri 파일을 Bitmap으로 만들어서 ImageView에 집어 넣는다.
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), preImage);
+                ivPreview.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    //이미지 업로드
+    private void uploadFile() {
+        //업로드할 파일이 있으면 수행
+        if (preImage != null) {
+
+            //storage
+            FirebaseStorage storage = FirebaseStorage.getInstance("gs://pocket-manager-9207f.appspot.com/");
+
+            //Unique한 파일명
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMHH_mmss");
+            Date now = new Date();
+            String filename = formatter.format(now) + ".png";
+            //storage 주소와 폴더 파일명을 지정해 준다.
+            StorageReference storageRef = storage.getReferenceFromUrl("gs://pocket-manager-9207f.appspot.com").child("Product/" + filename);
+            editImage = "gs://pocket-manager-9207f.appspot.com/Product/" + filename;
+            //올라가거라...
+            storageRef.putFile(preImage)
+                    //성공시
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            //성공하면 DB에 등록하는 함수 불러온다
+                            onEditUpload();
+                            Toast.makeText(getApplicationContext(), "저장 완료!", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    //실패시
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getApplicationContext(), "업로드 실패!", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    //진행중
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            @SuppressWarnings("VisibleForTests") //이걸 넣어 줘야 아랫줄에 에러가 사라진다.
+                                    double progress = (100 * taskSnapshot.getBytesTransferred()) /  taskSnapshot.getTotalByteCount();
+                            //dialog에 진행률을 퍼센트로 출력해 준다
+
+                        }
+                    });
+        } else {
+            //이미지 파일이 없는 경우
+            editImage = "gs://pocket-manager-9207f.appspot.com/Product/20190921_1801.png";
+            onEditUpload();
+        }
+    }
+
+    /**
+     *
+     */
+    public void onEditUpload(){
+        String uid = "abc123";
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("상품").child(uid).child(pId_e).child("pname").setValue(ed_productName_ed.getText().toString());
+        mDatabase.child("상품").child(uid).child(pId_e).child("price").setValue(ed_productPrice_ed.getText().toString());
+        mDatabase.child("상품").child(uid).child(pId_e).child("pimage").setValue(editImage);
+    }
+
     /**
      * 툴바에 있는 항목과 메뉴 네비게이션의 select 이벤트를 처리하는 메소드
      * */
