@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.example.gpdnj.pocketmanager.MainActivity;
 import com.example.gpdnj.pocketmanager.R;
 import com.example.hyejin.SalesManagerMainActivity;
@@ -55,6 +54,7 @@ public class EditProduct extends AppCompatActivity {
 
     private Button btn_PushProductEdit = null;
     private Button btn_PushProductDelete = null;
+    private Button btn_PushProductImageChange = null;
 
     ImageView ivPreview;
 
@@ -80,9 +80,9 @@ public class EditProduct extends AppCompatActivity {
 
         ivPreview = (ImageView) findViewById(R.id.iv_preview_edit);
 
-        if(pImage != null){
-            Glide.with(this).load(pImage).into(ivPreview);
-        }
+        //if(pImage != null){
+        //    Glide.with(this).load(pImage).into(ivPreview);
+        //}
 
         //툴바 사용 설정
         toolbar = (Toolbar)findViewById(R.id.toolbar);
@@ -101,6 +101,18 @@ public class EditProduct extends AppCompatActivity {
 
         btn_PushProductEdit=(Button)findViewById(R.id.btn_pushProductEdit);
         btn_PushProductDelete=(Button)findViewById(R.id.btn_pushProductDelete);
+        btn_PushProductImageChange = (Button)findViewById(R.id.btn_et_ProductImage);
+
+        btn_PushProductImageChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //이미지를 선택
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "이미지를 선택하세요."), 0);
+            }
+        });
 
         btn_PushProductEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,8 +124,9 @@ public class EditProduct extends AppCompatActivity {
         btn_PushProductDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String uid = "abc123";
-                String ref = "상품/" + uid +"/"+ pId;
+                String ref = "상품/" + uid +"/"+ pId_e;
                 database.getReference(ref).removeValue();
             }
         });
@@ -152,7 +165,7 @@ public class EditProduct extends AppCompatActivity {
             String filename = formatter.format(now) + ".png";
             //storage 주소와 폴더 파일명을 지정해 준다.
             StorageReference storageRef = storage.getReferenceFromUrl("gs://pocket-manager-9207f.appspot.com").child("Product/" + filename);
-            editImage = "gs://pocket-manager-9207f.appspot.com/Product/" + filename;
+            editImage = "Product/" + filename;
             //올라가거라...
             storageRef.putFile(preImage)
                     //성공시
@@ -161,14 +174,15 @@ public class EditProduct extends AppCompatActivity {
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             //성공하면 DB에 등록하는 함수 불러온다
                             onEditUpload();
-                            Toast.makeText(getApplicationContext(), "저장 완료!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "수정 완료!", Toast.LENGTH_SHORT).show();
+                            finish();
                         }
                     })
                     //실패시
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getApplicationContext(), "업로드 실패!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "수정 실패!", Toast.LENGTH_SHORT).show();
                         }
                     })
                     //진행중
@@ -183,8 +197,9 @@ public class EditProduct extends AppCompatActivity {
                     });
         } else {
             //이미지 파일이 없는 경우
-            editImage = "gs://pocket-manager-9207f.appspot.com/Product/20190921_1801.png";
+            editImage = "Product/question-mark-1750942_1280.png";
             onEditUpload();
+            finish();
         }
     }
 

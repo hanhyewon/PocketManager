@@ -138,7 +138,7 @@ public class AddProduct extends AppCompatActivity {
             String filename = formatter.format(now) + ".png";
             //storage 주소와 폴더 파일명을 지정해 준다.
             StorageReference storageRef = storage.getReferenceFromUrl("gs://pocket-manager-9207f.appspot.com").child("Product/" + filename);
-            pImage = "gs://pocket-manager-9207f.appspot.com/Product/" + filename;
+            pImage = "Product/" + filename;
             //올라가거라...
             storageRef.putFile(preImage)
                     //성공시
@@ -148,6 +148,7 @@ public class AddProduct extends AppCompatActivity {
                             //성공하면 DB에 등록하는 함수 불러온다
                             uploadData();
                             Toast.makeText(getApplicationContext(), "저장 완료!", Toast.LENGTH_SHORT).show();
+                            finish();
                         }
                     })
                     //실패시
@@ -169,8 +170,10 @@ public class AddProduct extends AppCompatActivity {
                     });
         } else {
             //이미지 파일이 없는 경우
-            pImage = "gs://pocket-manager-9207f.appspot.com/Product/20190921_1801.png";
+            pImage = "Product/question-mark-1750942_1280.png";
             uploadData();
+            Toast.makeText(getApplicationContext(), "저장 완료!", Toast.LENGTH_SHORT).show();
+            finish();
         }
     }
 
@@ -259,4 +262,5 @@ public class AddProduct extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

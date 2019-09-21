@@ -2,7 +2,9 @@ package com.example.soyeon;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -17,15 +19,20 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.gpdnj.pocketmanager.MainActivity;
 import com.example.gpdnj.pocketmanager.R;
 import com.example.hyejin.SalesManagerMainActivity;
 import com.example.jiyeong.pastSalesMode;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.navdrawer.SimpleSideDrawer;
 
 import java.util.ArrayList;
@@ -33,6 +40,7 @@ import java.util.ArrayList;
 public class MainProduct extends AppCompatActivity {
 
     private FirebaseDatabase database;
+    private FirebaseStorage fs = FirebaseStorage.getInstance();
 
     Toolbar toolbar;
     SimpleSideDrawer slide_menu;
@@ -106,6 +114,7 @@ public class MainProduct extends AppCompatActivity {
                                 break;
                             case R.id.pdelete:
                                 pAdapter.remove(position);
+                                displayProduct();
                         }
                     return false;
                     }
@@ -158,7 +167,7 @@ public class MainProduct extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder;
+            final ViewHolder holder;
             if (convertView == null) {
                 holder = new ViewHolder();
 
@@ -173,23 +182,47 @@ public class MainProduct extends AppCompatActivity {
             }else{
                 holder = (ViewHolder) convertView.getTag();
             }
+            final StorageReference imagesRef = fs.getReference(pImages.get(position));
+            //StorageReference에서 파일 다운로드 URL 가져옴
+            imagesRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        // Glide 이용하여 이미지뷰에 로딩
+                        Glide.with(MainProduct.this).load(task.getResult()).into(holder.pImage);
+                    } else {
+
+                    }
+                }
+            });
+
 
             holder.pName.setText(pNames.get(position));
             holder.pPrice.setText(pPrices.get(position));
             return convertView;
         }
 
-        //임의삭제
+        //삭제
         public void remove(int position){
             //나중에 uid랑 판매코드 추가해야함
             String uid = "abc123";
             String ref = "상품/" + uid +"/"+ pIds.get(position);
             database.getReference(ref).removeValue();
-            dataChange();
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
         }
-        //임의수정
+
+        //수정
         public void dataChange(){
-            pAdapter.notifyDataSetChanged();
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+        }
+
+        //데이터 클리어
+        public void clearItem(){
+            pListData.clear();
         }
 
     }
@@ -200,8 +233,7 @@ public class MainProduct extends AppCompatActivity {
     public void displayProduct(){
         //uid랑 pid 가지고 와서 추가 해야 함
         String uid = "abc123";
-        database.getReference("상품/"+uid)
-                .addChildEventListener(new ChildEventListener() {
+        database.getReference("상품/"+uid).addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
@@ -216,12 +248,35 @@ public class MainProduct extends AppCompatActivity {
 
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        pIds.clear();
+                        pImages.clear();
+                        pNames.clear();
+                        pPrices.clear();
+
+                        pIds.add(dataSnapshot.getKey());
+
+                        pImages.add(dataSnapshot.child("pimage").getValue().toString());
+                        pNames.add(dataSnapshot.child("pname").getValue().toString());
+                        pPrices.add(dataSnapshot.child("price").getValue().toString());
+
+                        pAdapter.notifyDataSetChanged();
 
                     }
 
                     @Override
                     public void onChildRemoved(DataSnapshot dataSnapshot) {
+                        pIds.clear();
+                        pImages.clear();
+                        pNames.clear();
+                        pPrices.clear();
 
+                        pIds.add(dataSnapshot.getKey());
+
+                        pImages.add(dataSnapshot.child("pimage").getValue().toString());
+                        pNames.add(dataSnapshot.child("pname").getValue().toString());
+                        pPrices.add(dataSnapshot.child("price").getValue().toString());
+
+                        pAdapter.notifyDataSetChanged();
                     }
 
                     @Override
