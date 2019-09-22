@@ -201,7 +201,7 @@ public class MainProduct extends AppCompatActivity {
 
 
             holder.pName.setText(pNames.get(position));
-            holder.pPrice.setText(pPrices.get(position));
+            holder.pPrice.setText(pPrices.get(position)+" 원");
             return convertView;
         }
 
