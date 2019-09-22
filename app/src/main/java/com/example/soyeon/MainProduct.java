@@ -189,6 +189,9 @@ public class MainProduct extends AppCompatActivity {
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
                         // Glide 이용하여 이미지뷰에 로딩
+                        if(MainProduct.this.isFinishing()){
+                            return;
+                        }
                         Glide.with(MainProduct.this).load(task.getResult()).into(holder.pImage);
                     } else {
 
@@ -211,6 +214,7 @@ public class MainProduct extends AppCompatActivity {
             Intent intent = getIntent();
             finish();
             startActivity(intent);
+            overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         }
 
         //수정
@@ -218,6 +222,7 @@ public class MainProduct extends AppCompatActivity {
             Intent intent = getIntent();
             finish();
             startActivity(intent);
+            overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         }
 
         //데이터 클리어
@@ -248,19 +253,10 @@ public class MainProduct extends AppCompatActivity {
 
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                        pIds.clear();
-                        pImages.clear();
-                        pNames.clear();
-                        pPrices.clear();
-
-                        pIds.add(dataSnapshot.getKey());
-
-                        pImages.add(dataSnapshot.child("pimage").getValue().toString());
-                        pNames.add(dataSnapshot.child("pname").getValue().toString());
-                        pPrices.add(dataSnapshot.child("price").getValue().toString());
-
-                        pAdapter.notifyDataSetChanged();
-
+                        Intent intent = getIntent();
+                        finish();
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
                     }
 
                     @Override
