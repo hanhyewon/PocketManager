@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.gpdnj.pocketmanager"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -55,14 +55,14 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:12.0.0'
     implementation 'com.firebaseui:firebase-ui-storage:3.2.2'
 
-    implementation 'com.github.bumptech.glide:glide:3.8.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
-
-    //CenterIconButton 라이브러리
+    //CenterIconButton
     implementation 'com.github.Omega-R:OmegaCenterIconButton:0.0.3@aar'
 
     //SlyCalendarView
     implementation 'com.github.psinetron:slycalendarview:0.0.9'
 
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 }
 apply plugin: 'com.google.gms.google-services'

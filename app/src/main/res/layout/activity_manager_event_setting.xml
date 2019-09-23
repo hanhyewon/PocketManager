@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,10 +41,27 @@
                 android:paddingBottom="5dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
+                android:layout_marginRight="10dp"
                 android:text="지역"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:background="@drawable/rounded_more_gray"/>
+
+            <!-- 테스트를 위한 상세 페이지 이동
+            <TextView
+                android:id="@+id/eventDetailShow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="상세화면"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:background="@drawable/rounded_more_mint"/>
+                -->
 
             <View
                 android:layout_width="0dp"

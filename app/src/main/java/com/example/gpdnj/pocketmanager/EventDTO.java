@@ -1,26 +1,39 @@
 package com.example.gpdnj.pocketmanager;
 
 public class EventDTO {
-    //private String uid;
-    //private String eventId;
+    private String eventId;
     private String title;
     private String subTitle;
     private String date;
-    private String location;
+    //private String location;
     private String detailText;
-    //private String imgUrl;
+    private String imgUrl;
 
-    //테스트용 생성자
-    public EventDTO (String title, String subTitle) {
+    //조회할 때
+    public EventDTO (String eventId, String title, String subTitle, String date, String detailText, String imgUrl) {
+        this.eventId = eventId;
         this.title = title;
         this.subTitle = subTitle;
+        this.date = date;
+        this.detailText = detailText;
+        this.imgUrl = imgUrl;
     }
 
-    public EventDTO(String title, String date, String location, String detailText) {
+    //등록할 때
+    public EventDTO (String title, String subTitle, String date, String detailText, String imgUrl) {
         this.title = title;
+        this.subTitle = subTitle;
         this.date = date;
-        this.location = location;
         this.detailText = detailText;
+        this.imgUrl = imgUrl;
+    }
+
+    public String getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
     }
 
     public String getSubTitle() {
@@ -47,14 +60,6 @@ public class EventDTO {
         this.date = date;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
     public String getDetailText() {
         return detailText;
     }
@@ -62,4 +67,13 @@ public class EventDTO {
     public void setDetailText(String detailText) {
         this.detailText = detailText;
     }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
 }

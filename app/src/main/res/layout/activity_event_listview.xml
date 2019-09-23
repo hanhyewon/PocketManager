@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="10dp"
-        app:cardCornerRadius="10dp"
+        app:cardCornerRadius="5dp"
         android:layout_margin="10dp">
 
         <LinearLayout
@@ -22,11 +22,10 @@
                 android:id="@+id/eventItemImg"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/event_test"/>
+                android:scaleType="centerCrop" />
 
             <TextView
-                android:id="@+id/eventItemMainText"
+                android:id="@+id/eventItemTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="서울 금손 페스티벌"
@@ -37,7 +36,7 @@
                 android:paddingTop="13dp" />
 
             <TextView
-                android:id="@+id/eventItemSubText"
+                android:id="@+id/eventItemSubTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="금손이라면 누구나 참여 가능!"
@@ -48,7 +47,7 @@
                 android:lines="2"/>
 
             <TextView
-                android:id="@+id/eventItemDateText"
+                android:id="@+id/eventItemDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="2019.09.18 - 2019.09.24"
@@ -68,7 +67,7 @@
             android:layout_marginRight="5dp">
 
             <ImageView
-                android:id="@+id/eventEditBtn"
+                android:id="@+id/eventModifyBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_mode_edit_black_24dp"/>

@@ -101,7 +101,7 @@ public class UserSettingActivity extends AppCompatActivity {
     }
 
     //회원 DB 정보 출력
-    public void displayUserList() {
+    private void displayUserList() {
         databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_pocket_manager_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EventAddActivity"></activity>
+        <activity android:name=".EventModifyActivity" />
+        <activity android:name=".EventDetailActivity" />
+        <activity android:name=".EventAddActivity" />
         <activity android:name=".ManagerEventSettingActivity" />
         <activity android:name=".UserSettingActivity" />
         <activity android:name=".ManagerSettingActivity" />
