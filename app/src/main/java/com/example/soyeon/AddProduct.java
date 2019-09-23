@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,7 +48,7 @@ public class AddProduct extends AppCompatActivity {
     EditText et_ProductPriceAdd;
 
     Button btn_ProductAdd;
-    Button btn_ProductImgAdd;
+    ImageButton btn_ProductImgAdd;
     ImageView ivPreview;
 
     Uri preImage;
@@ -60,11 +61,11 @@ public class AddProduct extends AppCompatActivity {
         setContentView(R.layout.product_add);
         firebaseAuth = FirebaseAuth.getInstance();
 
-        et_ProductNameAdd = (EditText) findViewById(R.id.et_ProductAddName);
-        et_ProductPriceAdd = (EditText) findViewById(R.id.et_ProductAddPrice);
-        btn_ProductAdd = (Button) findViewById(R.id.btn_pushProductAdd);
-        btn_ProductImgAdd = (Button) findViewById(R.id.btn_ProductAddImage);
-        ivPreview = (ImageView) findViewById(R.id.iv_preview);
+        et_ProductNameAdd = findViewById(R.id.et_ProductAddName);
+        et_ProductPriceAdd = findViewById(R.id.et_ProductAddPrice);
+        btn_ProductAdd =  findViewById(R.id.btn_pushProductAdd);
+        btn_ProductImgAdd = findViewById(R.id.btn_ProductAddImage);
+        ivPreview = findViewById(R.id.iv_preview);
 
         //툴바 사용 설정
         toolbar = (Toolbar)findViewById(R.id.toolbar);

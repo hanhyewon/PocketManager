@@ -12,16 +12,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.gpdnj.pocketmanager.MainActivity;
 import com.example.gpdnj.pocketmanager.R;
 import com.example.hyejin.SalesManagerMainActivity;
 import com.example.jiyeong.pastSalesMode;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -43,8 +47,10 @@ public class EditProduct extends AppCompatActivity {
 
     Toolbar toolbar;
     SimpleSideDrawer slide_menu;
+
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase database;
+    private StorageReference imgRef;
 
     private TextView nav_userName;
     private TextView nav_userEmail;
@@ -54,7 +60,7 @@ public class EditProduct extends AppCompatActivity {
 
     private Button btn_PushProductEdit = null;
     private Button btn_PushProductDelete = null;
-    private Button btn_PushProductImageChange = null;
+    private ImageButton btn_PushProductImageChange = null;
 
     ImageView ivPreview;
 
@@ -64,7 +70,7 @@ public class EditProduct extends AppCompatActivity {
         setContentView(R.layout.product_edit);
         firebaseAuth = FirebaseAuth.getInstance();
 
-        final int position = getIntent().getIntExtra("position",1);
+        //final int position = getIntent().getIntExtra("position",1);
         final String pId = getIntent().getStringExtra("pId");
         final String pName = getIntent().getStringExtra("pName");
         final String pPrice = getIntent().getStringExtra("pPrice");
@@ -83,6 +89,13 @@ public class EditProduct extends AppCompatActivity {
         //if(pImage != null){
         //    Glide.with(this).load(pImage).into(ivPreview);
         //}
+        imgRef = FirebaseStorage.getInstance().getReference(pImage); //해당 경로명으로 참조하는 파일명 지정
+        imgRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() { //다운로드 Url 가져옴
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                Glide.with(EditProduct.this).load(task.getResult()).into(ivPreview); //해당 이미지로 세팅
+            }
+        });
 
         //툴바 사용 설정
         toolbar = (Toolbar)findViewById(R.id.toolbar);
@@ -92,16 +105,16 @@ public class EditProduct extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //툴바 타이틀명 설정
-        TextView toolbar_title = (TextView)findViewById(R.id.toolbar_title);
+        TextView toolbar_title = findViewById(R.id.toolbar_title);
         toolbar_title.setText("상품수정");
 
         //툴바 메뉴 클릭 시, 나타날 navigation 화면 설정
         slide_menu = new SimpleSideDrawer(this);
         slide_menu.setLeftBehindContentView(R.layout.navigation_menu);
 
-        btn_PushProductEdit=(Button)findViewById(R.id.btn_pushProductEdit);
-        btn_PushProductDelete=(Button)findViewById(R.id.btn_pushProductDelete);
-        btn_PushProductImageChange = (Button)findViewById(R.id.btn_et_ProductImage);
+        btn_PushProductEdit=findViewById(R.id.btn_pushProductEdit);
+        //btn_PushProductDelete=findViewById(R.id.btn_pushProductDelete);
+        btn_PushProductImageChange = findViewById(R.id.btn_et_ProductImage);
 
         btn_PushProductImageChange.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +134,7 @@ public class EditProduct extends AppCompatActivity {
             }
         });
 
+        /*
         btn_PushProductDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,6 +144,7 @@ public class EditProduct extends AppCompatActivity {
                 database.getReference(ref).removeValue();
             }
         });
+        */
     }
 
     /**
