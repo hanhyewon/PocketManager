@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -24,9 +25,16 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+
 import java.util.regex.Pattern;
 
 public class JoinActivity2 extends AppCompatActivity {
+
+    private static final String TAG = "tag";
 
     Toolbar toolbar;
     private Button signup_btn;
@@ -55,23 +63,23 @@ public class JoinActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity_join2);
 
         //툴바 사용 설정
-        toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //툴바 타이틀명 설정
-        TextView toolbar_title = (TextView)findViewById(R.id.toolbar_title);
+        TextView toolbar_title = findViewById(R.id.toolbar_title);
         toolbar_title.setText("회원가입");
 
         // 파이어베이스 인증 객체 선언
         firebaseAuth = FirebaseAuth.getInstance();
 
-        editTextName = (EditText) findViewById(R.id.edittext_name);
-        editTextEmail = (EditText) findViewById(R.id.edittext_email);
-        editTextPassword = (EditText) findViewById(R.id.edittext_password);
-        editTextPwCheck = (EditText) findViewById(R.id.edittext_pwCheck);
-        signup_btn = (Button) findViewById(R.id.signup_btn);
+        editTextName = findViewById(R.id.edittext_name);
+        editTextEmail = findViewById(R.id.edittext_email);
+        editTextPassword = findViewById(R.id.edittext_password);
+        editTextPwCheck = findViewById(R.id.edittext_pwCheck);
+        signup_btn = findViewById(R.id.signup_btn);
 
         // 이메일을 통한 회원가입
         signup_btn.setOnClickListener(new View.OnClickListener() {
@@ -106,6 +114,7 @@ public class JoinActivity2 extends AppCompatActivity {
                                                 Intent intent = new Intent(JoinActivity2.this, MainActivity.class);
                                                 startActivity(intent);
                                                 finish();
+                                                createUser();
                                             } else {
                                                 Toast.makeText(JoinActivity2.this, "이미 등록된 이메일 입니다", Toast.LENGTH_SHORT).show();
                                             }
@@ -130,7 +139,41 @@ public class JoinActivity2 extends AppCompatActivity {
 
             }
         });
+    }
 
+    private void createUser() {
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+
+        String uid = firebaseAuth.getUid();
+        final String name = editTextName.getText().toString();
+        String email = user.getEmail();
+        //String photoUrl = user.getPhotoUrl().toString();
+
+        //DB에 유저정보 등록
+        UserDTO userDTO = new UserDTO(name, email);
+        mDatabase.child("회원").child(uid).setValue(userDTO);
+
+        //이메일 회원가입 유저의 프로필 이름 세팅
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
+        user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(JoinActivity2.this, name + "님 환영합니다!", Toast.LENGTH_SHORT).show();
+                if (name.equals("관리자")) {
+                    //관리자가 로그인 한 상태
+                    Intent intent2 = new Intent(JoinActivity2.this, ManagerHomeActivity.class);
+                    startActivity(intent2);
+                    finish();
+                }
+                else {
+                    //일반 회원이 로그인 한 상태
+                    Intent intent = new Intent(JoinActivity2.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
     }
 
     //툴바 select

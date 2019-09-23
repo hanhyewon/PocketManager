@@ -126,7 +126,6 @@ public class JoinActivity1 extends AppCompatActivity {
                     finish();
                     Intent intent = new Intent(JoinActivity1.this,HomeActivity.class);
                     startActivity(intent);
-
                 }
             }
         };
@@ -201,10 +200,10 @@ public class JoinActivity1 extends AppCompatActivity {
         String uid = firebaseAuth.getUid();
         String name = user.getDisplayName();
         String email = user.getEmail();
-        String photoUrl = user.getPhotoUrl().toString();
+        //String photoUrl = user.getPhotoUrl().toString();
 
-        UserDTO userDTO = new UserDTO(name, email, photoUrl);
-        mDatabase.child("users").child(uid).setValue(userDTO);
+        UserDTO userDTO = new UserDTO(name, email);
+        mDatabase.child("회원").child(uid).setValue(userDTO);
     }
 
     private void handleFacebookAccessToken(AccessToken token) {

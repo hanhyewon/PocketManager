@@ -1,19 +1,35 @@
 package com.example.gpdnj.pocketmanager;
 
 public class UserDTO {
+    private String uid;
     private String name;
     private String email;
-    private String profile;
+
+    public UserDTO(String uid, String name, String email) {
+        this.uid = uid;
+        this.name = name;
+        this.email = email;
+    }
 
     public UserDTO(String name, String email) {
         this.name = name;
         this.email = email;
     }
 
+    /*
     public UserDTO(String name, String email, String profile) {
         this.name = name;
         this.email = email;
         this.profile = profile;
+    }
+    */
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getName() {
@@ -30,13 +46,5 @@ public class UserDTO {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getProfile() {
-        return profile;
-    }
-
-    public void setProfile(String profile) {
-        this.profile = profile;
     }
 }
