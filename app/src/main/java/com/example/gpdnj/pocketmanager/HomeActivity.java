@@ -1,11 +1,11 @@
 package com.example.gpdnj.pocketmanager;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,11 +13,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.hyejin.SalesManagerMainActivity;
 import com.example.hyejin.SalesManagerModifyActivity;
 import com.example.jiyeong.pastSalesMode;
 import com.example.jiyeong.writeReview;
-import com.example.soyeon.AddProduct;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

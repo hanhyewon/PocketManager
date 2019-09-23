@@ -28,7 +28,7 @@
             android:textSize="25dp" />
 
         <EditText
-            android:id="@+id/et_ProductName"
+            android:id="@+id/et_ProductEditName"
             android:layout_width="350dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
@@ -44,7 +44,7 @@
             android:textSize="25dp" />
 
         <EditText
-            android:id="@+id/et_ProductPrice"
+            android:id="@+id/et_ProductEditPrice"
             android:layout_width="350dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
@@ -60,13 +60,20 @@
             android:textSize="25dp" />
 
         <Button
-            android:id="@+id/et_ProductImage"
+            android:id="@+id/btn_et_ProductImage"
             android:layout_width="350dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:layout_marginTop="12dp"
             android:background="@drawable/product_button"
             android:textSize="25dp" />
+
+        <ImageView
+            android:id="@+id/iv_preview_edit"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="30dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
 
     </LinearLayout>
 
