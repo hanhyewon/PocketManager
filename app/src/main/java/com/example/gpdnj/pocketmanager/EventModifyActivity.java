@@ -19,13 +19,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -38,7 +42,7 @@ import java.util.Date;
 
 import ru.slybeaver.slycalendarview.SlyCalendarDialog;
 
-public class EventAddActivity extends AppCompatActivity {
+public class EventModifyActivity extends AppCompatActivity {
 
     Toolbar toolbar;
 
@@ -46,22 +50,23 @@ public class EventAddActivity extends AppCompatActivity {
     EditText eventTitle, eventSubTitle, eventDetailText;
     ImageButton eventImgAddBtn;
     ImageView eventImgPreview;
-    Button eventDataAddBtn;
+    Button eventDataModifyBtn;
 
-    String title, subTitle, detailText, date, img;
+    String title, subTitle, detailText, date, img, eventId;
 
     Uri imgUri;
 
+    FirebaseDatabase database;
     DatabaseReference databaseRef;
-    FirebaseAuth firebaseAuth;
+    StorageReference imgRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event_add);
+        setContentView(R.layout.activity_event_modify);
 
-        databaseRef = FirebaseDatabase.getInstance().getReference();
-        firebaseAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        databaseRef = database.getReference("행사");
 
         //툴바 사용 설정
         toolbar = findViewById(R.id.toolbar);
@@ -71,15 +76,43 @@ public class EventAddActivity extends AppCompatActivity {
 
         //툴바 타이틀명 설정
         TextView toolbar_title = findViewById(R.id.toolbar_title);
-        toolbar_title.setText("행사등록");
+        toolbar_title.setText("행사수정");
 
-        eventTitle = findViewById(R.id.eventTitle);
-        eventSubTitle = findViewById(R.id.eventSubTitle);
-        eventDetailText = findViewById(R.id.eventDetailText);
-        eventDate = findViewById(R.id.eventDate);
-        eventDataAddBtn = findViewById(R.id.eventDataAddBtn);
-        eventImgAddBtn = findViewById(R.id.eventImgAddBtn);
-        eventImgPreview = findViewById(R.id.eventImgPreview);
+        eventTitle = findViewById(R.id.mEventTitle);
+        eventSubTitle = findViewById(R.id.mEventSubTitle);
+        eventDetailText = findViewById(R.id.mEventDetailText);
+        eventImgAddBtn = findViewById(R.id.mEventImgAddBtn);
+        eventImgPreview = findViewById(R.id.mEventImgPreview);
+        eventDate = findViewById(R.id.mEventDate);
+        eventDataModifyBtn = findViewById(R.id.eventDataModifyBtn);
+
+        eventId = getIntent().getStringExtra("eventId");
+
+        databaseRef.child(eventId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot data) {
+                img = data.child("imgUrl").getValue().toString();
+                date = data.child("date").getValue().toString();
+
+                eventTitle.setText(data.child("title").getValue().toString());
+                eventSubTitle.setText(data.child("subTitle").getValue().toString());
+                eventDate.setText(date);
+                eventDetailText.setText(data.child("detailText").getValue().toString());
+
+                imgRef = FirebaseStorage.getInstance().getReference(img); //해당 경로명으로 참조하는 파일명 지정
+                imgRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() { //다운로드 Url 가져옴
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        Glide.with(EventModifyActivity.this).load(task.getResult()).into(eventImgPreview); //해당 이미지로 세팅
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         //이미지 선택
         eventImgAddBtn.setOnClickListener(new View.OnClickListener() {
@@ -106,8 +139,8 @@ public class EventAddActivity extends AppCompatActivity {
             }
         });
 
-        //등록하기
-        eventDataAddBtn.setOnClickListener(new View.OnClickListener() {
+        //수정하기
+        eventDataModifyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //업로드할 이미지 파일이 있으면 수행
@@ -123,12 +156,12 @@ public class EventAddActivity extends AppCompatActivity {
                     storageRef.putFile(imgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            eventDataAdd();
+                            eventDataModify();
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(EventAddActivity.this, "등록에 실패하였습니다", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EventModifyActivity.this, "등록에 실패하였습니다", Toast.LENGTH_SHORT).show();
                         }
                     }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -138,24 +171,23 @@ public class EventAddActivity extends AppCompatActivity {
                     });
                 }
                 else {
-                    eventDataAdd();
+                    eventDataModify();
                 }
             }
         });
     }
 
-    //행사정보 DB 등록
-    private void eventDataAdd() {
+    private void eventDataModify() {
         title = eventTitle.getText().toString();
         subTitle = eventSubTitle.getText().toString();
         detailText = eventDetailText.getText().toString();
 
         EventDTO eventDTO = new EventDTO(title, subTitle, date, detailText, img);
 
-        databaseRef.child("행사").push().setValue(eventDTO).addOnCompleteListener(new OnCompleteListener<Void>() {
+        databaseRef.child(eventId).setValue(eventDTO).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(EventAddActivity.this, "등록완료", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EventModifyActivity.this, "수정완료!", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
@@ -170,7 +202,7 @@ public class EventAddActivity extends AppCompatActivity {
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imgUri);
                 eventImgPreview.setImageBitmap(bitmap);
-                eventImgPreview.setBackground(getDrawable(R.drawable.rounded_transparent));
+                eventImgPreview.setBackground(getDrawable(R.drawable.rounded_transparent)); //수정 시 처음에는
                 eventImgPreview.setClipToOutline(true);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -196,6 +228,7 @@ public class EventAddActivity extends AppCompatActivity {
                     date = new SimpleDateFormat("MM.dd(E)").format(firstDate.getTime())
                             + " - " + new SimpleDateFormat("MM.dd(E)").format(secondDate.getTime());
                     //String str = date.substring(3, 14) + date.substring(17, 25);
+                    //eventDate.setText(str);
                     eventDate.setText(date);
                 }
             }
@@ -205,7 +238,7 @@ public class EventAddActivity extends AppCompatActivity {
     //ProgressDialog
     public void addProgressDialog() {
         ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("등록 중...");
+        progressDialog.setMessage("수정 중...");
         progressDialog.setCancelable(true);
         progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Horizontal);
         progressDialog.show();

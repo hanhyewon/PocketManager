@@ -1,35 +1,65 @@
 package com.example.gpdnj.pocketmanager;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
-public class ManagerEventSettingActivity extends AppCompatActivity {
+public class ManagerEventSettingActivity extends AppCompatActivity implements EventListviewAdapter.BtnClickListener {
 
     Toolbar toolbar;
 
     private ListView eventListview;
     private EventListviewAdapter eventAdapter;
 
+    FirebaseDatabase database;
+    DatabaseReference databaseRef;
+
     static ArrayList<EventDTO> arrayEvent = new ArrayList<EventDTO>();
+
+    Intent detailIntent, modifyIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager_event_setting);
 
+        database = FirebaseDatabase.getInstance();
+        databaseRef = database.getReference("행사");
+
+        detailIntent = new Intent(ManagerEventSettingActivity.this, EventDetailActivity.class);
+        modifyIntent = new Intent(ManagerEventSettingActivity.this, EventModifyActivity.class);
+
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(this, android.R.style.Theme_Material_Light_Dialog_NoActionBar_MinWidth);
+
         //툴바 사용 설정
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); //왼쪽 버튼 사용 여부 true
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_white); //왼쪽 버튼 이미지 설정
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //툴바 타이틀명 설정
@@ -37,13 +67,19 @@ public class ManagerEventSettingActivity extends AppCompatActivity {
         toolbar_title.setText("행사정보");
 
         eventListview = findViewById(R.id.eventListview);
-        eventAdapter = new EventListviewAdapter(this.getBaseContext());
 
-        eventAdapter.addItem(new EventDTO("테스트","이렇게해도 보여지는건가"));
-        eventAdapter.addItem(new EventDTO("서울 금손 페스티벌","나중에 이미지랑 날짜 처리도 해야함"));
-        eventAdapter.addItem(new EventDTO("부산 곰손 작품전!","DB까지 해야해"));
+        setAdapter();
+        displayEventList();
 
-        eventListview.setAdapter(eventAdapter);
+        //행사 상세정보 보기
+        eventListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                EventDTO eventDTO = (EventDTO) parent.getAdapter().getItem(position);
+                detailIntent.putExtra("eventId", eventDTO.getEventId()); //선택한 행사의 ID 넘기기
+                startActivity(detailIntent);
+            }
+        });
 
         //행사등록 버튼
         ImageView eventInputBtn = findViewById(R.id.eventInputBtn);
@@ -54,5 +90,91 @@ public class ManagerEventSettingActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    /*
+    @Override
+    public void onStart() {
+        super.onStart();
+        setAdapter();
+    }
+     */
+
+    private void setAdapter() {
+        eventAdapter = new EventListviewAdapter(this.getBaseContext(), this);
+        eventListview.setAdapter(eventAdapter);
+    }
+
+    @Override
+    public void deleteBtnClickListener(final String eventId) {
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(this, android.R.style.Theme_Material_Light_Dialog_NoActionBar_MinWidth);
+        dialog.setMessage("선택한 행사정보를 삭제하시겠습니까?")
+                .setPositiveButton("예", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.v("선택한 행사의 ID", "출력 " + eventId);
+
+                        databaseRef.child(eventId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Toast.makeText(ManagerEventSettingActivity.this, "삭제 완료", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                })
+                .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .setCancelable(false)
+                .create();
+        dialog.show();
+    }
+
+    @Override
+    public void modifyBtnClickListener(String eventId) {
+        modifyIntent.putExtra("eventId", eventId); //선택한 행사의 ID 넘기기
+        startActivity(modifyIntent);
+        //Toast.makeText(this, eventId + "수정", Toast.LENGTH_SHORT).show();
+    }
+
+
+    //행사 DB 정보 출력
+    private void displayEventList() {
+        databaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                arrayEvent.clear();
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    String eventId = data.getKey();
+
+                    String title = data.child("title").getValue().toString();
+                    String subTitle = data.child("subTitle").getValue().toString();
+                    String date = data.child("date").getValue().toString();
+                    String imgUrl = data.child("imgUrl").getValue().toString();
+
+                    EventDTO eventDTO = new EventDTO(eventId, title, subTitle, date, null, imgUrl);
+                    arrayEvent.add(eventDTO);
+                }
+                eventAdapter.addItems(arrayEvent);
+                eventAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

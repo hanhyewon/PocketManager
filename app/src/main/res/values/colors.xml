@@ -17,11 +17,13 @@
     <color name="gray_9">#4a4a4a</color>
     <color name="gray_10">#3b3b3b</color>
     <color name="gray_11">#383838</color>
+    <color name="gray_12">#333333</color>
     <color name="transparent">#00000000</color>
     <color name="navy">#4c6278</color>
     <color name="mint_1">#5ee0d3</color>
     <color name="mint_2">#59c9be</color>
     <color name="mint_3">#00D8FF</color>
+    <color name="mint_4">#1ECFB8</color>
     <color name="blue_1">#0000ff</color>
     <color name="blue_2">#333393</color>
 </resources>
