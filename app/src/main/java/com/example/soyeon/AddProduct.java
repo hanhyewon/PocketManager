@@ -1,4 +1,5 @@
 package com.example.soyeon;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -10,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +24,8 @@ import com.example.jiyeong.pastSalesMode;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -39,13 +44,16 @@ public class AddProduct extends AppCompatActivity {
     private TextView nav_userName;
     private TextView nav_userEmail;
 
+    EditText et_ProductNameAdd;
+    EditText et_ProductPriceAdd;
+
     Button btn_ProductAdd;
-    Button btn_ProductImgAdd;
+    ImageButton btn_ProductImgAdd;
     ImageView ivPreview;
 
-    Uri pImage;
-    String pName;
-    String pPrice;
+    Uri preImage;
+    String pImage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -53,9 +61,11 @@ public class AddProduct extends AppCompatActivity {
         setContentView(R.layout.product_add);
         firebaseAuth = FirebaseAuth.getInstance();
 
-        btn_ProductAdd = (Button) findViewById(R.id.btn_pushProductAdd);
-        btn_ProductImgAdd = (Button) findViewById(R.id.btn_ProductAddImage);
-        ivPreview = (ImageView) findViewById(R.id.iv_preview);
+        et_ProductNameAdd = findViewById(R.id.et_ProductAddName);
+        et_ProductPriceAdd = findViewById(R.id.et_ProductAddPrice);
+        btn_ProductAdd =  findViewById(R.id.btn_pushProductAdd);
+        btn_ProductImgAdd = findViewById(R.id.btn_ProductAddImage);
+        ivPreview = findViewById(R.id.iv_preview);
 
         //툴바 사용 설정
         toolbar = (Toolbar)findViewById(R.id.toolbar);
@@ -88,8 +98,9 @@ public class AddProduct extends AppCompatActivity {
         btn_ProductAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //상품이미지업로드 -> 파일 링크 가지고 와서 같이 DB에 넣어야함
+                //인텐트로 회원 아이디(로받을건지 이메일로 받을건지 정해야함) + 해당 판매코드 받아와서 child()하고 그 하단에 데이터 넣어야함
                 uploadFile();
+
             }
         });
 
@@ -103,10 +114,10 @@ public class AddProduct extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         //request코드가 0이고 OK를 선택했고 data에 뭔가가 들어 있다면
         if(requestCode == 0 && resultCode == RESULT_OK){
-            pImage = data.getData();
+            preImage = data.getData();
             try {
                 //Uri 파일을 Bitmap으로 만들어서 ImageView에 집어 넣는다.
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), pImage);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), preImage);
                 ivPreview.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -117,7 +128,7 @@ public class AddProduct extends AppCompatActivity {
     //이미지 업로드
     private void uploadFile() {
         //업로드할 파일이 있으면 수행
-        if (pImage != null) {
+        if (preImage != null) {
 
             //storage
             FirebaseStorage storage = FirebaseStorage.getInstance("gs://pocket-manager-9207f.appspot.com/");
@@ -128,21 +139,23 @@ public class AddProduct extends AppCompatActivity {
             String filename = formatter.format(now) + ".png";
             //storage 주소와 폴더 파일명을 지정해 준다.
             StorageReference storageRef = storage.getReferenceFromUrl("gs://pocket-manager-9207f.appspot.com").child("Product/" + filename);
+            pImage = "Product/" + filename;
             //올라가거라...
-            storageRef.putFile(pImage)
+            storageRef.putFile(preImage)
                     //성공시
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
+                            //성공하면 DB에 등록하는 함수 불러온다
+                            uploadData();
                             Toast.makeText(getApplicationContext(), "저장 완료!", Toast.LENGTH_SHORT).show();
+                            finish();
                         }
                     })
                     //실패시
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-
                             Toast.makeText(getApplicationContext(), "업로드 실패!", Toast.LENGTH_SHORT).show();
                         }
                     })
@@ -157,8 +170,37 @@ public class AddProduct extends AppCompatActivity {
                         }
                     });
         } else {
-            Toast.makeText(getApplicationContext(), "파일을 먼저 선택하세요.", Toast.LENGTH_SHORT).show();
+            //이미지 파일이 없는 경우
+            pImage = "Product/question-mark-1750942_1280.png";
+            uploadData();
+            Toast.makeText(getApplicationContext(), "저장 완료!", Toast.LENGTH_SHORT).show();
+            finish();
         }
+    }
+
+    /**
+     * DB에 상품정보 등록하는 메소드
+     */
+    public void uploadData(){
+        //상품 이름, 상품 가격 중 빈칸이 있으면 업로드가 되지 않는다.
+        if(et_ProductNameAdd.getText().toString().equals("")){
+            Toast.makeText(getApplicationContext(), "상품 이름을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(et_ProductPriceAdd.getText().toString().equals("")){
+            Toast.makeText(getApplicationContext(), "상품 가격을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        String uid = "abc123";
+        //행사화면이 완료되어야 임의의 코드가 아닌 정보로 실험해볼 수 있음
+        //String uid = firebaseAuth.getUid();
+        //String sid = 판매 아이디
+        ProductListData product = new ProductListData(pImage, et_ProductNameAdd.getText().toString(), et_ProductPriceAdd.getText().toString());
+            mDatabase.child("상품").child(uid).push().setValue(product);
+            //mDatabase.child("상품").child(uid).child(sid).push().setValue(product);
     }
 
     /**
@@ -221,4 +263,5 @@ public class AddProduct extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
