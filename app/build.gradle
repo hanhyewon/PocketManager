@@ -37,6 +37,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
     implementation 'com.facebook.android:facebook-login:[4,5)'
     implementation 'com.google.firebase:firebase-database:16.0.1'
+    implementation 'com.android.support:multidex:1.0.3'
     //CircleImageView 라이브러리
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     //ViewPager 라이브러리
