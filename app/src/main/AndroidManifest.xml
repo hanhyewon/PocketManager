@@ -50,7 +50,7 @@
         <activity android:name="com.example.soyeon.AddExpense" />
         <activity android:name="com.example.soyeon.EditExpense" />
         <activity android:name="com.example.soyeon.MainProduct" />
-        <activity android:name="com.example.soyeon.MapSeachActivity"/>
+        <activity android:name="com.example.soyeon.MapSearchActivity"/>
         <activity android:name="com.example.hyejin.ParentActivity" /> <!-- 김혜진 -->
         <activity android:name="com.example.hyejin.SalesManagerActivity" />
         <activity android:name="com.example.hyejin.SalesManagerSettingActivity" />
