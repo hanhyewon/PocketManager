@@ -45,7 +45,6 @@ import ru.slybeaver.slycalendarview.SlyCalendarDialog;
 public class EventModifyActivity extends AppCompatActivity {
 
     Toolbar toolbar;
-
     TextView eventDate;
     EditText eventTitle, eventSubTitle, eventDetailText;
     ImageButton eventImgAddBtn;

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@drawable/stroke_top_bottom">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/categoryItemView"
+                    android:text="카테고리"
+                    android:textSize="16sp"
+                    android:textColor="@color/mint_4"
+                    android:layout_row="0"
+                    android:layout_column="0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"/>
+                <TextView
+                    android:id="@+id/titleItemView"
+                    android:text="리뷰 제목 길어지는 것도 생각"
+                    android:textSize="23sp"
+                    android:textColor="#333333"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:layout_marginTop="6dp"
+                    android:layout_row="1"
+                    android:layout_column="0"
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"/>
+
+
+                <ImageView
+                    android:id="@+id/reviewMore"
+                    android:visibility="gone"
+                    android:src="@drawable/more_dot_vertical_gray"
+                    android:layout_marginTop="6dp"
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_row="1"
+                    android:layout_column="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+
+            </GridLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/reviewDateItemView"
+            android:text="작성일"
+            android:textSize="16sp"
+            android:textColor="@color/gray_7"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/reviewDetailItemView"
+        android:layout_marginTop="6dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="상세리뷰의 일부를 보여주기"
+        android:textSize="17sp"
+        android:textColor="@color/gray_8"
+        android:maxLines="2"
+        android:ellipsize="end"/>
+
+</LinearLayout>

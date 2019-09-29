@@ -23,7 +23,6 @@ public class EventListviewAdapter  extends BaseAdapter implements View.OnClickLi
     Context context;
     StorageReference imgRef;
 
-
     //수정, 삭제 이벤트를 위한 Listener 인터페이스 정의
     public interface BtnClickListener {
         void deleteBtnClickListener(String eventId);

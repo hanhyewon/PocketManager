@@ -9,6 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_pocket_manager_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ReviewModifyActivity"></activity>
+        <activity android:name=".MyReviewActivity" />
+        <activity android:name=".ReviewDetailActivity" />
+        <activity android:name=".ReviewMainActivity" />
+        <activity android:name=".ReviewAddActivity" />
         <activity android:name=".EventModifyActivity" />
         <activity android:name=".EventDetailActivity" />
         <activity android:name=".EventAddActivity" />
@@ -66,8 +71,8 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
     </application>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 </manifest>

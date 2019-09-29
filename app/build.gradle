@@ -64,5 +64,8 @@ dependencies {
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+
+    //ActionSheet
+    implementation 'com.baoyz.actionsheet:library:1.1.7'
 }
 apply plugin: 'com.google.gms.google-services'
