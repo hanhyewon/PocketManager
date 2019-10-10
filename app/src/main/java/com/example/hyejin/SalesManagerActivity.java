@@ -11,11 +11,14 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.gpdnj.pocketmanager.MainActivity;
 import com.example.gpdnj.pocketmanager.R;
 import com.example.jiyeong.pastSalesMode;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.navdrawer.SimpleSideDrawer;
 
 import java.util.Calendar;
@@ -32,12 +35,28 @@ public class SalesManagerActivity extends ParentActivity {
     private FirebaseAuth firebaseAuth;
     private TextView nav_userName;
     private TextView nav_userEmail;
+    private String sId_e;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales_manager);
         firebaseAuth = FirebaseAuth.getInstance();
+
+        editStart = findViewById(R.id.editStart);
+        editEnd = findViewById(R.id.editEnd);
+        editArea = findViewById(R.id.editArea);
+        lblOk = findViewById(R.id.lblOk);
+
+        if(getIntent().getStringExtra("edit").equals("1") ){
+            lblOk.setText("수정하기");
+            sId_e = getIntent().getStringExtra("sId");
+
+            editArea.setText(getIntent().getStringExtra("sName"));
+            editStart.setText(getIntent().getStringExtra("sDate_Start"));
+            editEnd.setText(getIntent().getStringExtra("sDate_End"));
+
+        }
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -52,29 +71,31 @@ public class SalesManagerActivity extends ParentActivity {
         slide_menu = new SimpleSideDrawer(this);
         slide_menu.setLeftBehindContentView(R.layout.navigation_menu);
 
-        editStart = findViewById(R.id.editStart);
+
+
         editStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePicker((TextView) v);
             }
         });
-        editEnd = findViewById(R.id.editEnd);
+
         editEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePicker((TextView) v);
             }
         });
-        editArea = findViewById(R.id.editArea);
-        lblOk = findViewById(R.id.lblOk);
+
         lblOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                App.mPrefEdit.putString("sales_content",editArea.getText().toString()).commit();
-                App.mPrefEdit.putString("sales_start",editStart.getText().toString()).commit();
-                App.mPrefEdit.putString("sales_end",editEnd.getText().toString()).commit();
-                startActivity(new Intent(SalesManagerActivity.this, SalesManagerMainActivity.class));
+                if(getIntent().getStringExtra("edit").equals("1")){
+                    onEditUpload();
+
+                }else {
+                    uploadData();
+                }
             }
         });
 
@@ -103,6 +124,35 @@ public class SalesManagerActivity extends ParentActivity {
                 Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
         dialog.show();
+    }
+
+    public void onEditUpload(){
+        String uid = "abc123";
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("판매").child(uid).child(sId_e).child("sname").setValue(editArea.getText().toString());
+        mDatabase.child("판매").child(uid).child(sId_e).child("sdate_Start").setValue(editStart.getText().toString());
+        mDatabase.child("판매").child(uid).child(sId_e).child("sdate_End").setValue(editEnd.getText().toString());
+        Toast.makeText(getApplicationContext(), "수정 완료!", Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    public void uploadData(){
+        //빈칸이 있으면 업로드가 되지 않는다.
+        if(editArea.getText().toString().equals("")){
+            Toast.makeText(getApplicationContext(), "행사 이름을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        String uid = "abc123";
+        //행사화면이 완료되어야 임의의 코드가 아닌 정보로 실험해볼 수 있음
+        //String uid = firebaseAuth.getUid();
+        //String sid = 판매 아이디
+        SalesListData sale = new SalesListData(editArea.getText().toString(), editStart.getText().toString(), editEnd.getText().toString());
+        mDatabase.child("판매").child(uid).push().setValue(sale);
+        Toast.makeText(getApplicationContext(), "저장 완료!", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     /**
