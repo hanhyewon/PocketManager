@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_pocket_manager_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ReviewModifyActivity"></activity>
+        <activity android:name=".OrderAmountPriceAdapter"></activity>
+        <activity android:name=".ReviewModifyActivity" />
         <activity android:name=".MyReviewActivity" />
         <activity android:name=".ReviewDetailActivity" />
         <activity android:name=".ReviewMainActivity" />
@@ -60,8 +61,8 @@
         <activity android:name="com.example.hyejin.SalesManagerSettingActivity" />
         <activity android:name="com.example.hyejin.SalesManagerMainActivity" />
         <activity android:name="com.example.hyejin.SalesManagerModifyActivity" />
-        <activity android:name="com.example.hyejin.OrderManagerActivity" />
-        <activity android:name="com.example.hyejin.OrderRegisterActivity" />
+        <activity android:name=".OrderManagerActivity" />
+        <activity android:name=".OrderAddActivity" />
         <activity android:name="com.example.jiyeong.pastSalesMode" /> <!-- 윤지영 -->
         <activity android:name="com.example.jiyeong.writeReview" />
         <activity android:name="com.example.jiyeong.currentSalesMode" />
@@ -71,8 +72,8 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

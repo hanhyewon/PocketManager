@@ -181,6 +181,7 @@ public class MainProduct extends AppCompatActivity {
                 convertView.setTag(holder);
             }else{
                 holder = (ViewHolder) convertView.getTag();
+                //holder.pImage.setImageBitmap(null);
             }
             final StorageReference imagesRef = fs.getReference(pImages.get(position));
             //StorageReference에서 파일 다운로드 URL 가져옴
@@ -244,9 +245,9 @@ public class MainProduct extends AppCompatActivity {
 
                         pIds.add(dataSnapshot.getKey());
 
-                        pImages.add(dataSnapshot.child("pimage").getValue().toString());
-                        pNames.add(dataSnapshot.child("pname").getValue().toString());
-                        pPrices.add(dataSnapshot.child("price").getValue().toString());
+                        pImages.add(dataSnapshot.child("pImage").getValue().toString());
+                        pNames.add(dataSnapshot.child("pName").getValue().toString());
+                        pPrices.add(dataSnapshot.child("pPrice").getValue().toString());
 
                         pAdapter.notifyDataSetChanged();
                     }
@@ -268,9 +269,9 @@ public class MainProduct extends AppCompatActivity {
 
                         pIds.add(dataSnapshot.getKey());
 
-                        pImages.add(dataSnapshot.child("pimage").getValue().toString());
-                        pNames.add(dataSnapshot.child("pname").getValue().toString());
-                        pPrices.add(dataSnapshot.child("price").getValue().toString());
+                        pImages.add(dataSnapshot.child("pImage").getValue().toString());
+                        pNames.add(dataSnapshot.child("pName").getValue().toString());
+                        pPrices.add(dataSnapshot.child("pPrice").getValue().toString());
 
                         pAdapter.notifyDataSetChanged();
                     }
