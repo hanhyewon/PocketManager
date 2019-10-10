@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_pocket_manager_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+<!--
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAtvx8z0K2Fk2oKoPl25c6uHd_eAAIWK94" />
@@ -21,7 +21,13 @@
         <activity
             android:name="com.example.soyeon.MapsActivity"
             android:label="MapsActivity"></activity>
-
+ -->
+        <activity android:name=".OrderAmountPriceAdapter"></activity>
+        <activity android:name=".ReviewModifyActivity" />
+        <activity android:name=".MyReviewActivity" />
+        <activity android:name=".ReviewDetailActivity" />
+        <activity android:name=".ReviewMainActivity" />
+        <activity android:name=".ReviewAddActivity" />     
         <activity android:name=".EventModifyActivity" />
         <activity android:name=".EventDetailActivity" />
         <activity android:name=".EventAddActivity" />
@@ -69,8 +75,8 @@
         <activity android:name="com.example.hyejin.SalesManagerSettingActivity" />
         <activity android:name="com.example.hyejin.SalesManagerMainActivity" />
         <activity android:name="com.example.hyejin.SalesManagerModifyActivity" />
-        <activity android:name="com.example.hyejin.OrderManagerActivity" />
-        <activity android:name="com.example.hyejin.OrderRegisterActivity" />
+        <activity android:name=".OrderManagerActivity" />
+        <activity android:name=".OrderAddActivity" />
         <activity android:name="com.example.jiyeong.pastSalesMode" /> <!-- 윤지영 -->
         <activity android:name="com.example.jiyeong.writeReview" />
         <activity android:name="com.example.jiyeong.currentSalesMode" />

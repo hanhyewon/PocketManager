@@ -1,3 +1,8 @@
+/*
+    수정 시, 이미지 선택 안 했을 경우, 디폴트 이미지로 변경됨 -> 코드 수정 필요
+ */
+
+
 package com.example.soyeon;
 
 import android.content.Intent;
@@ -224,9 +229,9 @@ public class EditProduct extends AppCompatActivity {
     public void onEditUpload(){
         String uid = "abc123";
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("상품").child(uid).child(pId_e).child("pname").setValue(ed_productName_ed.getText().toString());
-        mDatabase.child("상품").child(uid).child(pId_e).child("price").setValue(ed_productPrice_ed.getText().toString());
-        mDatabase.child("상품").child(uid).child(pId_e).child("pimage").setValue(editImage);
+        mDatabase.child("상품").child(uid).child(pId_e).child("pName").setValue(ed_productName_ed.getText().toString());
+        mDatabase.child("상품").child(uid).child(pId_e).child("pPrice").setValue(ed_productPrice_ed.getText().toString());
+        mDatabase.child("상품").child(uid).child(pId_e).child("pImage").setValue(editImage);
     }
 
     /**
