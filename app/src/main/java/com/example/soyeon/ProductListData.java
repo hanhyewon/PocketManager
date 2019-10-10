@@ -1,16 +1,24 @@
 package com.example.soyeon;
 
+import android.net.Uri;
+
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.Exclude;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ProductListData {
+    private String pId;
     private String pImage;
     private String pName;
     private String pPrice;
 
-    public ProductListData() {
+    public ProductListData(String pId, String pImage, String pName, String pPrice) {
+        this.pId = pId;
+        this.pImage = pImage;
+        this.pName = pName;
+        this.pPrice = pPrice;
     }
 
     public ProductListData(String pImage, String pName, String pPrice) {
@@ -19,16 +27,36 @@ public class ProductListData {
         this.pPrice = pPrice;
     }
 
-    public String getPImage(){
+    public String getpId() {
+        return pId;
+    }
+
+    public void setpId(String pId) {
+        this.pId = pId;
+    }
+
+    public String getpImage() {
         return pImage;
     }
 
-    public String getPName(){
+    public void setpImage(String pImage) {
+        this.pImage = pImage;
+    }
+
+    public String getpName() {
         return pName;
     }
 
-    public String getPrice(){
+    public void setpName(String pName) {
+        this.pName = pName;
+    }
+
+    public String getpPrice() {
         return pPrice;
+    }
+
+    public void setpPrice(String pPrice) {
+        this.pPrice = pPrice;
     }
 
     @Exclude

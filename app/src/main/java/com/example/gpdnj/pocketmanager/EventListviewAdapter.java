@@ -22,7 +22,7 @@ public class EventListviewAdapter  extends BaseAdapter implements View.OnClickLi
     ArrayList<EventDTO> item = new ArrayList<>();
     Context context;
     StorageReference imgRef;
-
+    boolean mHasStableIds;
 
     //수정, 삭제 이벤트를 위한 Listener 인터페이스 정의
     public interface BtnClickListener {
@@ -79,6 +79,7 @@ public class EventListviewAdapter  extends BaseAdapter implements View.OnClickLi
         }
         else {
             viewHolder = (ViewHolder) convertView.getTag();
+            viewHolder.img.setImageBitmap(null);
         }
 
         final EventDTO dto = item.get(position);
@@ -118,6 +119,10 @@ public class EventListviewAdapter  extends BaseAdapter implements View.OnClickLi
                 this.btnListener.modifyBtnClickListener((String)v.getTag());
             }
         }
+    }
+
+    public void setHasStableIds(boolean hasStableIds) {
+        mHasStableIds = hasStableIds;
     }
 
     public void addItem(EventDTO items) {

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ReviewAddActivity"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <include
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:orientation="vertical">
+
+            <Spinner
+                android:id="@+id/category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+                android:background="@drawable/rounded_stroke_basic"/>
+
+            <EditText
+                android:id="@+id/reviewTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="제목을 입력하세요"
+                android:textSize="18sp"
+                android:textColor="@color/gray_8"
+                android:textColorHint="@color/gray_8"
+                android:paddingLeft="20dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/rounded_stroke_basic"
+                android:textCursorDrawable="@null"/>
+
+            <!-- 행사 판매자와 푸드트럭 판매자 구분해서, 카테고리-행사일 때만 보여주기 -->
+            <EditText
+                android:id="@+id/reviewEventName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="참여한 행사명을 입력하세요"
+                android:textSize="18sp"
+                android:textColor="@color/gray_8"
+                android:textColorHint="@color/gray_8"
+                android:paddingLeft="20dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/rounded_stroke_basic"
+                android:textCursorDrawable="@null"/>
+
+            <TextView
+                android:id="@+id/reviewLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 판매 또는 참여행사 위치를 선택하세요"
+                android:drawableLeft="@drawable/location_darkgray_s"
+                android:textSize="18sp"
+                android:textColor="@color/gray_8"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:paddingTop="11dp"
+                android:paddingBottom="11dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/rounded_stroke_basic" />
+
+            <TextView
+                android:id="@+id/reviewSalesDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="판매 기간 선택"
+                android:textSize="18sp"
+                android:textColor="@color/gray_8"
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp"
+                android:paddingRight="10dp"
+                android:paddingTop="14dp"
+                android:paddingBottom="14dp"
+                android:layout_marginTop="20dp"
+                android:drawableRight="@drawable/arrow_right_lightgray"
+                android:background="@drawable/rounded_stroke_basic" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp" >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="만족도"
+                    android:textSize="18sp"
+                    android:textColor="@color/gray_10"
+                    android:paddingLeft="5dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(별점을 눌러 평가해주세요)"
+                    android:layout_gravity="center"
+                    android:textSize="13sp"
+                    android:textColor="@color/gray_8"
+                    android:paddingLeft="5dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/rounded_lightgray_ratingbar"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:layout_marginTop="10dp">
+
+                <RatingBar
+                    android:id="@+id/reviewRatingBar"
+                    android:isIndicator="false"
+                    android:numStars="5"
+                    android:rating="0"
+                    android:stepSize="0.5"
+                    android:max="5"
+                    android:theme="@style/RatingBar"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="상세 리뷰"
+                android:textSize="18sp"
+                android:textColor="@color/gray_10"
+                android:paddingLeft="5dp"
+                android:layout_marginTop="20dp" />
+
+            <EditText
+                android:id="@+id/reviewDetailText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_stroke_basic"
+                android:gravity="top"
+                android:hint="다른 사용자들이 알 수 있도록 상세 리뷰를 남겨주세요"
+                android:inputType="textMultiLine"
+                android:lines="10"
+                android:minLines="10"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:textColor="@color/gray_8"
+                android:textColorHint="@color/gray_8"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/reviewDataAddBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="등록하기"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:letterSpacing="0.1"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/btn_mint"
+        style="?android:attr/borderlessButtonStyle"/>
+
+</LinearLayout>
