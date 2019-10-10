@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.gpdnj.pocketmanager">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_pocket_manager"
@@ -9,12 +13,21 @@
         android:roundIcon="@mipmap/ic_launcher_pocket_manager_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+<!--
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAtvx8z0K2Fk2oKoPl25c6uHd_eAAIWK94" />
+
+        <activity
+            android:name="com.example.soyeon.MapsActivity"
+            android:label="MapsActivity"></activity>
+ -->
         <activity android:name=".OrderAmountPriceAdapter"></activity>
         <activity android:name=".ReviewModifyActivity" />
         <activity android:name=".MyReviewActivity" />
         <activity android:name=".ReviewDetailActivity" />
         <activity android:name=".ReviewMainActivity" />
-        <activity android:name=".ReviewAddActivity" />
+        <activity android:name=".ReviewAddActivity" />     
         <activity android:name=".EventModifyActivity" />
         <activity android:name=".EventDetailActivity" />
         <activity android:name=".EventAddActivity" />
@@ -56,6 +69,7 @@
         <activity android:name="com.example.soyeon.AddExpense" />
         <activity android:name="com.example.soyeon.EditExpense" />
         <activity android:name="com.example.soyeon.MainProduct" />
+        <activity android:name="com.example.soyeon.MapSearchActivity" />
         <activity android:name="com.example.hyejin.ParentActivity" /> <!-- 김혜진 -->
         <activity android:name="com.example.hyejin.SalesManagerActivity" />
         <activity android:name="com.example.hyejin.SalesManagerSettingActivity" />
@@ -68,12 +82,13 @@
         <activity android:name="com.example.jiyeong.currentSalesMode" />
         <activity android:name="com.example.jiyeong.currentSalesDetail" />
 
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
     </application>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

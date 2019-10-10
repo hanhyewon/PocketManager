@@ -11,6 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.soyeon.MainProduct;
+import com.example.soyeon.MapSearchActivity;
+import com.example.soyeon.MapsActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -34,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //실험용 추가 인텐트
-        //final Intent intent_PMain = new Intent(this, MainProduct.class);
+        //맵 연결이 안된건지 확인용으로 추가한 프래그먼트 xml인 MapsActivity로 확인시 지도가 정상적으로 출력되는 것으로 보아 xml에 대입 방식이 문제인 것 같음
+        //final Intent intent_PMain = new Intent(this, MapsActivity.class); //정상작동 풀화면 지도
+        //final Intent intent_PMain = new Intent(this, MapSearchActivity.class); //작동이 안됨!!!
         //startActivity(intent_PMain);
 
         firebaseAuth = FirebaseAuth.getInstance();
