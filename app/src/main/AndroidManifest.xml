@@ -13,15 +13,15 @@
         android:roundIcon="@mipmap/ic_launcher_pocket_manager_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        
+      
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAtvx8z0K2Fk2oKoPl25c6uHd_eAAIWK94" />
-
         <activity
             android:name="com.example.soyeon.MapsActivity"
-            android:label="MapsActivity"></activity>
-        
+            android:label="MapsActivity"/>
+      
+        <activity android:name=".OrderAmountPriceAdapter"/>
         <activity android:name=".OrderAmountPriceAdapter"></activity>
         <activity android:name=".ReviewModifyActivity" />
         <activity android:name=".MyReviewActivity" />
