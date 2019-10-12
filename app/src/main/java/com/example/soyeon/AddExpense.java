@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.example.gpdnj.pocketmanager.MainActivity;
 import com.example.gpdnj.pocketmanager.R;
-import com.example.hyejin.SalesManagerMainActivity;
+import com.example.gpdnj.pocketmanager.SalesManagerActivity;
 import com.example.jiyeong.pastSalesMode;
 import com.google.firebase.auth.FirebaseAuth;
 import com.navdrawer.SimpleSideDrawer;
@@ -105,7 +105,7 @@ public class AddExpense extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         finish();
-                        Intent intent = new Intent(AddExpense.this, SalesManagerMainActivity.class);
+                        Intent intent = new Intent(AddExpense.this, SalesManagerActivity.class);
                         startActivity(intent);
                     }
                 });

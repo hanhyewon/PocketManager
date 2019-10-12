@@ -4,6 +4,8 @@ import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -29,6 +31,7 @@ import ru.slybeaver.slycalendarview.SlyCalendarDialog;
 
 public class ReviewAddActivity extends AppCompatActivity {
 
+    Toolbar toolbar;
     Spinner category;
     EditText reviewTitle, reviewEventName, reviewLocation, reviewDetailText;
     TextView reviewSalesDate;
@@ -48,6 +51,16 @@ public class ReviewAddActivity extends AppCompatActivity {
 
         databaseRef = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
+
+        //툴바 사용 설정
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        //툴바 타이틀명 설정
+        TextView toolbar_title = findViewById(R.id.toolbar_title);
+        toolbar_title.setText("리뷰 등록");
 
         category = findViewById(R.id.category);
         reviewTitle = findViewById(R.id.reviewTitle);
@@ -162,4 +175,18 @@ public class ReviewAddActivity extends AppCompatActivity {
             }
         }
     };
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

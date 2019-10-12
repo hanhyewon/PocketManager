@@ -66,8 +66,8 @@
             android:id="@+id/reviewListview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="#f5f5f5"
-            android:dividerHeight="13dp"
+            android:divider="#F2F2F2"
+            android:dividerHeight="15dp"
             android:listSelector="@android:color/transparent"
             android:scrollbars="none"
             android:cacheColorHint="@color/transparent" />

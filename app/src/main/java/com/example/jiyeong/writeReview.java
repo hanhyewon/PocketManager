@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.example.gpdnj.pocketmanager.MainActivity;
 import com.example.gpdnj.pocketmanager.R;
-import com.example.hyejin.SalesManagerMainActivity;
+import com.example.gpdnj.pocketmanager.SalesManagerActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.navdrawer.SimpleSideDrawer;
 
@@ -103,7 +103,7 @@ public class writeReview extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         finish();
-                        Intent intent = new Intent(writeReview.this, SalesManagerMainActivity.class);
+                        Intent intent = new Intent(writeReview.this, SalesManagerActivity.class);
                         startActivity(intent);
                     }
                 });
