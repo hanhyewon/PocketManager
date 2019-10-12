@@ -76,6 +76,7 @@ public class ReviewMainActivity extends AppCompatActivity {
                 ReviewDTO reviewDTO = (ReviewDTO) parent.getAdapter().getItem(position);
                 detailIntent.putExtra("reviewId", reviewDTO.getReviewId()); //선택한 리뷰의 ID 넘기기
                 startActivity(detailIntent);
+                overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
             }
         });
     }

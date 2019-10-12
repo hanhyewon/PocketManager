@@ -2,51 +2,36 @@ package com.example.gpdnj.pocketmanager;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.hyejin.ParentActivity;
-import com.example.hyejin.SalesManagerMainActivity;
-import com.example.jiyeong.pastSalesMode;
-import com.example.soyeon.ProductListData;
+import com.example.soyeon.ProductDTO;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.StorageReference;
-import com.navdrawer.SimpleSideDrawer;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import static com.example.gpdnj.pocketmanager.ManagerEventSettingActivity.arrayEvent;
-
-public class OrderAddActivity extends ParentActivity implements OrderAmountPriceAdapter.BtnClickListener{
+public class OrderAddActivity extends AppCompatActivity implements OrderAmountPriceAdapter.BtnClickListener{
 
     public Toolbar toolbar;
 
@@ -59,46 +44,44 @@ public class OrderAddActivity extends ParentActivity implements OrderAmountPrice
 
     OrderDialogListviewAdapter orderDialogListviewAdapter;
 
-
     TextView orderPriceSumItem;
 
-    int sum = 0;
     String paySelect;
-    static ArrayList<ProductListData> arrayProduct = new ArrayList<ProductListData>();
+    static ArrayList<ProductDTO> arrayProduct = new ArrayList<ProductDTO>();
     static ArrayList<OrderDTO> arrayOrder = new ArrayList<OrderDTO>();
 
     FirebaseDatabase database;
     DatabaseReference databasePRef, databaseORef;
 
-    private TextView lblOk;
-
-    SimpleSideDrawer slide_menu;
-    private FirebaseAuth firebaseAuth;
-    private TextView nav_userName;
-    private TextView nav_userEmail;
+    String salesId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_add);
+        salesId = getIntent().getStringExtra("salesId");
 
         database = FirebaseDatabase.getInstance();
-        databasePRef = database.getReference("상품");
-        databaseORef = database.getReference("주문");
-        firebaseAuth = FirebaseAuth.getInstance();
+        databasePRef = database.getReference("상품/" + salesId);
+        databaseORef = database.getReference("주문/" + salesId);
 
+        //툴바 사용 설정
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_white);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         TextView toolbar_title = findViewById(R.id.toolbar_title);
         toolbar_title.setText("주문관리");
 
-        //툴바 메뉴 클릭 시, 나타날 navigation 화면 설정
-        slide_menu = new SimpleSideDrawer(this);
-        slide_menu.setLeftBehindContentView(R.layout.navigation_menu);
+        TextView orderListBtn = findViewById(R.id.orderListBtn);
+        orderListBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
+            }
+        });
 
         //상품명과 상품이미지 RecyclerView 설정
         orderRecyclerView = findViewById(R.id.orderRecyclerView);
@@ -120,10 +103,10 @@ public class OrderAddActivity extends ParentActivity implements OrderAmountPrice
         orderRecyclerViewAdapter.setOnItemClickListener(new OrderRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(OrderRecyclerViewholder holder, View view, int position) {
-                ProductListData item = orderRecyclerViewAdapter.getItem(position);
-                Toast.makeText(OrderAddActivity.this, "상품명 : " + item.getpName(), Toast.LENGTH_SHORT).show();
+                ProductDTO item = orderRecyclerViewAdapter.getItem(position);
+                //Toast.makeText(OrderAddActivity.this, "상품명 : " + item.getName(), Toast.LENGTH_SHORT).show();
 
-                OrderDTO orderDTO = new OrderDTO(item.getpName(),  Integer.parseInt(item.getpPrice()), 1);
+                OrderDTO orderDTO = new OrderDTO(item.getName(),  Integer.parseInt(item.getPrice()), 1);
                 arrayOrder.add(orderDTO);
                 orderAmountPriceAdapter.addItems(arrayOrder);
                 orderAmountPriceAdapter.notifyDataSetChanged();
@@ -139,9 +122,7 @@ public class OrderAddActivity extends ParentActivity implements OrderAmountPrice
 
         orderPriceSumItem = findViewById(R.id.orderPriceSumItem);
 
-
-
-        //테스트용 결제하기(주문 DB 등록)
+        //결제하기(주문 DB 등록)
         TextView orderDataAddBtn = findViewById(R.id.orderDataAddBtn);
         orderDataAddBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,15 +135,6 @@ public class OrderAddActivity extends ParentActivity implements OrderAmountPrice
 
             }
         });
-        /*
-        lblOk = findViewById(R.id.lblOk);
-        lblOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showOrderList();
-            }
-        });
-         */
     }
 
     public int setPriceSum() {
@@ -257,18 +229,17 @@ public class OrderAddActivity extends ParentActivity implements OrderAmountPrice
     }
 
     private void displayProduct() {
-        databasePRef.child("abc123").addListenerForSingleValueEvent(new ValueEventListener() {
+        databasePRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 arrayProduct.clear();
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     String productId = data.getKey();
-                    String pname = data.child("pName").getValue().toString();
-                    String pimage = (String) data.child("pImage").getValue();
-                    String price = (String) data.child("pPrice").getValue();
+                    String name = (String) data.child("name").getValue();
+                    String price = (String) data.child("price").getValue();
+                    String img = (String) data.child("imgUrl").getValue();
 
-                    ProductListData productDTO = new ProductListData(productId, pimage, pname, price);
-
+                    ProductDTO productDTO = new ProductDTO(productId, name, price, img);
                     arrayProduct.add(productDTO);
                 }
                 orderRecyclerViewAdapter.addItems(arrayProduct);
@@ -317,6 +288,7 @@ public class OrderAddActivity extends ParentActivity implements OrderAmountPrice
                 orderDataAdd();
                 dialog.dismiss();
                 finish();
+                overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
             }
         });
 
@@ -328,66 +300,30 @@ public class OrderAddActivity extends ParentActivity implements OrderAmountPrice
         });
     }
 
-    /**
-     * 툴바에 있는 항목과 메뉴 네비게이션의 select 이벤트를 처리하는 메소드
-     * */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home : //왼쪽 메뉴 버튼을 눌렀을 때
-                slide_menu.toggleLeftDrawer(); //슬라이드 동작
-
-                //navigation_menu.xml 이벤트 처리
-                //현재 회원의 정보 설정
-                nav_userName = (TextView) findViewById(R.id.nav_userName);
-                nav_userEmail = (TextView) findViewById(R.id.nav_userEmail);
-                nav_userName.setText(firebaseAuth.getCurrentUser().getDisplayName() + "님");
-                nav_userEmail.setText(firebaseAuth.getCurrentUser().getEmail());
-
-                ImageView menu_close = (ImageView)findViewById(R.id.menu_close);
-                menu_close.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        slide_menu.closeLeftSide();
-                    }
-                });
-
-                //로그아웃
-                Button logoutBtn = (Button) findViewById(R.id.logoutBtn);
-                logoutBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        FirebaseAuth.getInstance().signOut();
-                        finish();
-                        Intent intent = new Intent(OrderAddActivity.this, MainActivity.class);
-                        startActivity(intent);
-                    }
-                });
-
-                //판매관리
-                Button salesManagerBtn = (Button) findViewById(R.id.salesManagerBtn);
-                salesManagerBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        finish();
-                        Intent intent = new Intent(OrderAddActivity.this, SalesManagerMainActivity.class);
-                        startActivity(intent);
-                    }
-                });
-
-                //매출관리
-                Button moneyTotalManagerBtn = (Button)findViewById(R.id.moneyTotalBtn);
-                moneyTotalManagerBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        finish();
-                        Intent intent = new Intent(OrderAddActivity.this, pastSalesMode.class);
-                        startActivity(intent);
-                    }
-                });
+        if(item.getItemId() == android.R.id.home) {
+            if(OrderManagerActivity.activity != null) {
+                OrderManagerActivity activity = OrderManagerActivity.activity;
+                activity.finish();
+                overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
+            }
+            finish();
+            overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(OrderManagerActivity.activity != null) {
+            OrderManagerActivity activity = OrderManagerActivity.activity;
+            activity.finish();
+            overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
+        }
+        finish();
+        overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
+    }
 }

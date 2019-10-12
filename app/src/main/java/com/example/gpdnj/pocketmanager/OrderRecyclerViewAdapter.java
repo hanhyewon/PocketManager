@@ -6,14 +6,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.example.soyeon.ProductListData;
+
+import com.example.soyeon.ProductDTO;
 
 import java.util.ArrayList;
 
 public class OrderRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     Context context;
-    ArrayList<ProductListData> items = new ArrayList<ProductListData>();
+    ArrayList<ProductDTO> items = new ArrayList<ProductDTO>();
 
     OnItemClickListener listener;
     public static interface  OnItemClickListener{
@@ -39,7 +40,7 @@ public class OrderRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         final OrderRecyclerViewholder orderRecyclerViewholder = (OrderRecyclerViewholder) viewHolder;
 
-        ProductListData item = items.get(position);
+        ProductDTO item = items.get(position);
         orderRecyclerViewholder.setItem(item, context);
         orderRecyclerViewholder.setOnItemClickListener(listener);
     }
@@ -50,16 +51,16 @@ public class OrderRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     }
 
     //아이템을 한개 추가해주고싶을때
-    public  void addItem(ProductListData item){
+    public  void addItem(ProductDTO item){
         items.add(item);
     }
 
     //한꺼번에 추가해주고싶을때
-    public void addItems(ArrayList<ProductListData> items){
+    public void addItems(ArrayList<ProductDTO> items){
         this.items = items;
     }
 
-    public ProductListData getItem(int position){
+    public ProductDTO getItem(int position){
         return items.get(position);
     }
 

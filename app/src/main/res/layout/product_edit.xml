@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:text="상품 사진 수정(선택)"
+            android:text="상품 이미지(선택)"
             android:textSize="22sp" />
 
         <LinearLayout
