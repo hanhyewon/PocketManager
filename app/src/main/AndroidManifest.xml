@@ -13,14 +13,13 @@
         <activity android:name=".SalesSettingActivity" />
         <activity android:name=".SalesManagerActivity" />
         <activity android:name=".SalesAddActivity" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAtvx8z0K2Fk2oKoPl25c6uHd_eAAIWK94" />
         <activity
             android:name="com.example.soyeon.MapsActivity"
             android:label="MapsActivity" />
-        <activity android:name=".OrderAmountPriceAdapter" />
+        <activity android:name=".OrderAmountPriceAdapter"/>
         <activity android:name=".ReviewModifyActivity" />
         <activity android:name=".MyReviewActivity" />
         <activity android:name=".ReviewDetailActivity" />
