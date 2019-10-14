@@ -43,6 +43,7 @@ import com.google.firebase.storage.StorageReference;
 import com.navdrawer.SimpleSideDrawer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MainProduct extends AppCompatActivity implements ProductListviewAdapter.BtnClickListener, ActionSheet.ActionSheetListener{
 
@@ -166,6 +167,7 @@ public class MainProduct extends AppCompatActivity implements ProductListviewAda
                     arrayProduct.add(productDTO);
                 }
                 productListviewAdapter.addItems(arrayProduct);
+                Collections.reverse(arrayProduct); //최신정렬
                 productListviewAdapter.notifyDataSetChanged();
             }
 

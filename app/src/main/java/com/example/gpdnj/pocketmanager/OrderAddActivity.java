@@ -32,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 
@@ -91,7 +92,10 @@ public class OrderAddActivity extends AppCompatActivity implements OrderAmountPr
 
         //상품명과 상품이미지 RecyclerView 설정
         orderRecyclerView = findViewById(R.id.orderRecyclerView);
-        //****orderRecyclerViewAdapter = new OrderRecyclerViewAdapter(this.getBaseContext());
+
+        //OrderRecyclerViewAdapter 생성 시, 기본 생성자인지 다른 생성자인지 몰라서 일단 냅둠
+        //orderRecyclerViewAdapter = new OrderRecyclerViewAdapter(this.getBaseContext());
+
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this,3);
         orderRecyclerView.setLayoutManager(gridLayoutManager);
         orderRecyclerView.setAdapter(orderRecyclerViewAdapter);
@@ -115,6 +119,7 @@ public class OrderAddActivity extends AppCompatActivity implements OrderAmountPr
                 OrderDTO orderDTO = new OrderDTO(item.getName(),  Integer.parseInt(item.getPrice()), 1);
                 arrayOrder.add(orderDTO);
                 orderAmountPriceAdapter.addItems(arrayOrder);
+                Collections.reverse(arrayOrder); //최신정렬
                 orderAmountPriceAdapter.notifyDataSetChanged();
                 setListViewHeightBasedOnChildren(orderPdetailListview);
                 setPriceSum();

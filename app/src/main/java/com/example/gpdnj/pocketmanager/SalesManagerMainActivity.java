@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.jiyeong.MainExpense;
+import com.example.soyeon.MainExpense;
 import com.example.soyeon.MainProduct;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

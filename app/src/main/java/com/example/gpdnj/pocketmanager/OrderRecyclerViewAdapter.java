@@ -17,21 +17,25 @@ public class OrderRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
 
     Context context;
     ArrayList<ProductDTO> items;
-    List<ProductDTO> potionList= null;
+    List<ProductDTO> potionList;
 
     OnItemClickListener listener;
+
     public static interface  OnItemClickListener{
         public void onItemClick(OrderRecyclerViewholder holder, View view, int position);
+    }
+
+    public  OrderRecyclerViewAdapter(Context context) {
+        super();
+        this.context = context;
     }
 
     public  OrderRecyclerViewAdapter(Context context, List<ProductDTO>potionList) {
         super();
         this.context = context;
         this.potionList=potionList;
-        this.items = new ArrayList<ProductDTO>();
+        this.items = new ArrayList<>();
         this.items.addAll(potionList);
-
-
     }
 
     @NonNull

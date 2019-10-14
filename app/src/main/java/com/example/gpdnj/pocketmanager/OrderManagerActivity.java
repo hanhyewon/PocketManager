@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.navdrawer.SimpleSideDrawer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class OrderManagerActivity extends AppCompatActivity implements OrderListviewAdapter.BtnClickListener, ActionSheet.ActionSheetListener{
 
@@ -99,6 +100,7 @@ public class OrderManagerActivity extends AppCompatActivity implements OrderList
                     arrayOrder.add(orderFirstDTO);
                 }
                 orderListviewAdapter.addItems(arrayOrder);
+                Collections.reverse(arrayOrder); //최신정렬
                 orderListviewAdapter.notifyDataSetChanged();
             }
 

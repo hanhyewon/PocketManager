@@ -6,8 +6,9 @@
     android:orientation="vertical"
     android:paddingTop="25dp"
     android:paddingBottom="25dp"
-    android:paddingLeft="25dp"
-    android:paddingRight="20dp">
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:background="@color/white">
 
     <RelativeLayout
         android:layout_width="match_parent"
