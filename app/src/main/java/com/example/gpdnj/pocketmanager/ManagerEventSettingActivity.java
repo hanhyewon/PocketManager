@@ -29,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ManagerEventSettingActivity extends AppCompatActivity implements EventListviewAdapter.BtnClickListener {
 
@@ -164,6 +165,7 @@ public class ManagerEventSettingActivity extends AppCompatActivity implements Ev
                     arrayEvent.add(eventDTO);
                 }
                 eventAdapter.addItems(arrayEvent);
+                Collections.reverse(arrayEvent); //최신정렬
                 eventAdapter.notifyDataSetChanged();
             }
 

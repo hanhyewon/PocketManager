@@ -19,7 +19,6 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -75,9 +74,6 @@ public class ReviewAddActivity extends AppCompatActivity {
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getBaseContext(), R.layout.review_spinner_item, str);
         spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         category.setAdapter(spinnerAdapter);
-
-        //검색
-
 
         //카테고리
         category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -166,12 +162,12 @@ public class ReviewAddActivity extends AppCompatActivity {
         public void onDataSelected(Calendar firstDate, Calendar secondDate, int hours, int minutes) {
             if (firstDate != null) {
                 if (secondDate == null) {
-                    salesDate = new SimpleDateFormat("MM.dd(E)").format(firstDate.getTime());
+                    salesDate = new SimpleDateFormat("yy.MM.dd(E)").format(firstDate.getTime());
                     //eventDate.setText(date.substring(3, 11));
                     reviewSalesDate.setText(salesDate);
                 } else {
-                    salesDate = new SimpleDateFormat("MM.dd(E)").format(firstDate.getTime())
-                            + " - " + new SimpleDateFormat("MM.dd(E)").format(secondDate.getTime());
+                    salesDate = new SimpleDateFormat("yy.MM.dd(E)").format(firstDate.getTime())
+                            + " - " + new SimpleDateFormat("yy.MM.dd(E)").format(secondDate.getTime());
                     //String str = date.substring(3, 14) + date.substring(17, 25);
                     reviewSalesDate.setText(salesDate);
                 }

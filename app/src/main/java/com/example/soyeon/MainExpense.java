@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static com.example.gpdnj.pocketmanager.MoneyFormatClass.moneyFormatToWon;
 
@@ -159,6 +160,7 @@ public class MainExpense extends AppCompatActivity implements ExpenseListviewAda
                     arrayExpense.add(expenseDTO);
                 }
                 expenseListviewAdapter.addItems(arrayExpense);
+                Collections.reverse(arrayExpense); //최신정렬
                 expenseListviewAdapter.notifyDataSetChanged();
 
                 String str = moneyFormatToWon(sum) + "원";

@@ -193,12 +193,12 @@ public class ReviewModifyActivity extends AppCompatActivity {
         public void onDataSelected(Calendar firstDate, Calendar secondDate, int hours, int minutes) {
             if (firstDate != null) {
                 if (secondDate == null) {
-                    salesDate = new SimpleDateFormat("MM.dd(E)").format(firstDate.getTime());
+                    salesDate = new SimpleDateFormat("yy.MM.dd(E)").format(firstDate.getTime());
                     //eventDate.setText(date.substring(3, 11));
                     reviewSalesDate.setText(salesDate);
                 } else {
-                    salesDate = new SimpleDateFormat("MM.dd(E)").format(firstDate.getTime())
-                            + " - " + new SimpleDateFormat("MM.dd(E)").format(secondDate.getTime());
+                    salesDate = new SimpleDateFormat("yy.MM.dd(E)").format(firstDate.getTime())
+                            + " - " + new SimpleDateFormat("yy.MM.dd(E)").format(secondDate.getTime());
                     //String str = date.substring(3, 14) + date.substring(17, 25);
                     reviewSalesDate.setText(salesDate);
                 }

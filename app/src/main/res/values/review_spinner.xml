@@ -2,9 +2,10 @@
 <resources>
     <string-array name="reviewArray">
         <item> 카테고리 </item>
-        <item> 팝업 스토어 </item>
-        <item> 푸드 트럭 </item>
-        <item> 플리 마켓 </item>
-        <item> 행사 기타 </item>
+        <item> 행사 </item>
+        <item> 팝업스토어 </item>
+        <item> 푸드트럭 </item>
+        <item> 플리마켓 </item>
+        <item> 기타 </item>
     </string-array>
 </resources>

@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MyReviewActivity extends AppCompatActivity implements MyReviewListviewAdapter.BtnClickListener, ActionSheet.ActionSheetListener {
 
@@ -158,6 +159,7 @@ public class MyReviewActivity extends AppCompatActivity implements MyReviewListv
                     }
                 }
                 myReviewAdapter.addItems(arrayReview);
+                Collections.reverse(arrayReview); //최신정렬
                 myReviewAdapter.notifyDataSetChanged();
             }
 
