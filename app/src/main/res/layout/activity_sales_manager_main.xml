@@ -29,7 +29,7 @@
             <TextView
                 android:id="@+id/salesTitleMain"
                 android:text="KT$G 상상마당 프리마켓"
-                android:textSize="25sp"
+                android:textSize="27sp"
                 android:textStyle="bold"
                 android:textColor="#000000"
                 android:maxLines="1"
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/salesDateMain"
-                android:textSize="18sp"
+                android:textSize="19sp"
                 android:layout_marginTop="10dp"
                 android:text="4/27 ~ 4/28"
                 android:textColor="#000000"
@@ -51,14 +51,14 @@
             android:id="@+id/salesSettingBtn"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="46dp"
             android:src="@drawable/ic_settings_black_24dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <LinearLayout
             android:id="@+id/layoutMenu"
-            android:layout_marginTop="230dp"
+            android:layout_marginTop="215dp"
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
             android:padding="20dp"

@@ -165,6 +165,7 @@ public class EditProduct extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 finish();
+                overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
             }
         });
     }

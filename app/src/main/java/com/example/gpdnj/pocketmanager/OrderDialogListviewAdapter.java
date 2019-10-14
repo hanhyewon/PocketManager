@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import static com.example.gpdnj.pocketmanager.MoneyFormatClass.moneyFormatToWon;
+
 public class OrderDialogListviewAdapter extends BaseAdapter {
 
     private OrderDTO dto;
@@ -58,7 +60,7 @@ public class OrderDialogListviewAdapter extends BaseAdapter {
 
         viewHolder.orderName.setText(dto.getName());
 
-        String sumStr = (dto.getPrice() * dto.getAmount()) + "원";
+        String sumStr = moneyFormatToWon(dto.getPrice() * dto.getAmount()) + "원";
         viewHolder.orderSum.setText(sumStr);
 
         viewHolder.orderAmount.setText(String.valueOf(dto.getAmount()));

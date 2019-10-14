@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
     <include
         layout="@layout/toolbar"
         android:layout_width="match_parent"
@@ -13,116 +11,97 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:orientation="vertical"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="#f5f5f5">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:text="총 지출"
+            android:textColor="@color/gray_8"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/expenseTotalSum"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="86,530원"
+            android:textStyle="bold"
+            android:textColor="@color/gray_10"
+            android:textSize="40sp"/>
 
         <LinearLayout
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
+            android:padding="20dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/btn_date"
-                android:layout_width="180dp"
-                android:layout_height="50dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"
-                android:text="일간"
-                android:textSize="20dp"
-                android:background="@color/blue_1"
-                android:textColor="@color/white" />
+            <!--
+            <TextView
+                android:text="2019.5.20"
+                android:textSize="17sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+                -->
 
-            <Button
-                android:id="@+id/btn_term"
-                android:layout_width="180dp"
-                android:layout_height="50dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"
-                android:text="기간별"
-                android:textSize="20dp"
-                android:background="@color/white"
-                android:textColor="@color/blue_1"
-                />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:text="변동비"
+                android:textSize="15sp"
+                android:textColor="@color/gray_8"
+                android:drawableLeft="@drawable/circle_green"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:text="고정비"
+                android:textSize="15sp"
+                android:textColor="@color/gray_8"
+                android:drawableLeft="@drawable/circle_red"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
 
-        <FrameLayout
+        <ListView
+            android:id="@+id/expenseListview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="20dp"
+            android:divider="@color/transparent"
+            android:dividerHeight="15dp"
+            android:listSelector="@android:color/transparent"
+            android:scrollbars="none"
+            android:cacheColorHint="@color/transparent" />
 
-            <!-- 리니어 레이아웃 두개 두고 그 두개의 visible 하고 클릭되는거 속성 값 변경해 가면서 사용 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="10dp">
-
-                <!-- 일간 -->
-                <TextView
-                    android:id="@+id/tv_ddate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    android:text="2019.04.23 (화)"
-                    android:textSize="25dp"/>
-                <TextView
-                    android:id="@+id/tv_dsum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    android:text="15,000원"
-                    android:textSize="20dp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingTop="10dp">
-
-                <!-- //기간별//날짜 스피너 기능 제거하고 추가하기 -->
-                <TextView
-                    android:id="@+id/tv_tdate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    android:text="2019.04.23 (화)"
-                    android:textSize="25dp"/>
-                <TextView
-                    android:id="@+id/tv_tsum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    android:text="15,000원"
-                    android:textSize="20dp"/>
-
-                <!-- ListView는 ScrollView 기능이 포함되어있어서 별도의 ScrollView 태그 필요하지 않아요!-->
-                <ListView
-                    android:id="@+id/eListView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/gray_2">
-
-                </ListView>
-
-            </LinearLayout>
-        </FrameLayout>
     </LinearLayout>
 
-    <!--
-    //리스트에서 단순히 동작을 위한 버튼의 아이디는 명사+동사로,
-    //이동한 폼 내에서 활용하는 버튼의 아이디는 동사+명사로 주었습니다.
-    -->
     <Button
-        android:id="@+id/btn_ExpensePush"
+        android:id="@+id/expenseAddShowBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@color/navy"
-        android:textColor="#FFFFFF"
-        android:text="지출 등록"
-        android:textSize="22dp"
-        android:padding="20dp" />
+        android:text="지출 등록하기"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:letterSpacing="0.1"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/btn_mint"
+        style="?android:attr/borderlessButtonStyle"/>
 
 </LinearLayout>

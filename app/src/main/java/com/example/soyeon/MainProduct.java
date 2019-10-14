@@ -94,6 +94,7 @@ public class MainProduct extends AppCompatActivity implements ProductListviewAda
             public void onClick(View v) {
                 addIntent.putExtra("salesId", salesId); //해당 판매ID 넘기기
                 startActivity(addIntent);
+                overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
             }
         });
     }

@@ -109,7 +109,9 @@ public class SalesManagerMainActivity extends AppCompatActivity {
         expenseManagerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SalesManagerMainActivity.this, MainExpense.class));
+                Intent intent = new Intent(SalesManagerMainActivity.this, MainExpense.class);
+                intent.putExtra("salesId", salesId); //해당 판매ID 넘기기
+                startActivity(intent);
                 overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
             }
         });
