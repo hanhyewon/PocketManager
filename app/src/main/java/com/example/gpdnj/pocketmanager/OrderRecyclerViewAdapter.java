@@ -10,20 +10,28 @@ import android.view.ViewGroup;
 import com.example.soyeon.ProductDTO;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class OrderRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     Context context;
-    ArrayList<ProductDTO> items = new ArrayList<ProductDTO>();
+    ArrayList<ProductDTO> items;
+    List<ProductDTO> potionList= null;
 
     OnItemClickListener listener;
     public static interface  OnItemClickListener{
         public void onItemClick(OrderRecyclerViewholder holder, View view, int position);
     }
 
-    public  OrderRecyclerViewAdapter(Context context) {
+    public  OrderRecyclerViewAdapter(Context context, List<ProductDTO>potionList) {
         super();
         this.context = context;
+        this.potionList=potionList;
+        this.items = new ArrayList<ProductDTO>();
+        this.items.addAll(potionList);
+
+
     }
 
     @NonNull
@@ -68,4 +76,21 @@ public class OrderRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     public void setOnItemClickListener(OnItemClickListener listener){
         this.listener = listener;
     }
+
+    public void filter(String charText){
+        charText= charText.toLowerCase(Locale.getDefault());
+        potionList.clear();
+        /*if(charText.length() ==0){
+            potionList.addAll(items);
+        }else{
+            for(ProductDTO product: items){
+                String name = context.getResources().getString(product.name);
+                if(name.toLowerCase().contains(charText)){
+                    potionList.add(product);
+                }
+            }
+        }*/
+        notifyDataSetChanged();
+    }
+
 }

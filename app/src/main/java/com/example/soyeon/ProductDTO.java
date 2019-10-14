@@ -1,8 +1,8 @@
 package com.example.soyeon;
 
 public class ProductDTO {
-    private String productId;
-    private String name;
+    public String productId;
+    public String name;
     private String price;
     private String imgUrl;
 
