@@ -36,9 +36,8 @@ public class MapSearchActivity extends FragmentActivity implements OnMapReadyCal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_search);
-
-        editText = findViewById(R.id.map_editText);
-        button= findViewById(R.id.map_Button);
+        editText = (EditText) findViewById(R.id.map_editText);
+        button=(Button)findViewById(R.id.map_Button);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
