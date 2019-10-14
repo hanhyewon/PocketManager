@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="28dp"
+    android:paddingBottom="28dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="10dp"
+    android:background="@drawable/rounded_white">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/expenseContextItemView"
+            android:text="OPP 봉투 구매"
+            android:textSize="21sp"
+            android:textStyle="bold"
+            android:textColor="@color/gray_11"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/expenseDateItemView"
+            android:text="2019.10.03 21:37"
+            android:textSize="15sp"
+            android:textColor="@color/gray_7"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/expenseChargeItemView"
+        android:text="12000원"
+        android:textSize="21sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:gravity="right"
+        android:layout_width="90dp"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:id="@+id/expenseMore"
+        android:src="@drawable/vert_dot_gray"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

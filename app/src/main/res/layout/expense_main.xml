@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <include
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:background="#f5f5f5">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:text="총 지출"
+            android:textColor="@color/gray_8"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/expenseTotalSum"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="86,530원"
+            android:textStyle="bold"
+            android:textColor="@color/gray_10"
+            android:textSize="40sp"/>
+
+        <LinearLayout
+            android:padding="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!--
+            <TextView
+                android:text="2019.5.20"
+                android:textSize="17sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+                -->
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:text="변동비"
+                android:textSize="15sp"
+                android:textColor="@color/gray_8"
+                android:drawableLeft="@drawable/circle_green"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:text="고정비"
+                android:textSize="15sp"
+                android:textColor="@color/gray_8"
+                android:drawableLeft="@drawable/circle_red"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/expenseListview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="20dp"
+            android:divider="@color/transparent"
+            android:dividerHeight="15dp"
+            android:listSelector="@android:color/transparent"
+            android:scrollbars="none"
+            android:cacheColorHint="@color/transparent" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/expenseAddShowBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="지출 등록하기"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:letterSpacing="0.1"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/btn_mint"
+        style="?android:attr/borderlessButtonStyle"/>
+
+</LinearLayout>
