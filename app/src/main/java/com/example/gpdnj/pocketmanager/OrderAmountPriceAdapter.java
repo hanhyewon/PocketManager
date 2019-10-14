@@ -14,6 +14,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.jar.Attributes;
 
+import static com.example.gpdnj.pocketmanager.MoneyFormatClass.moneyFormatToWon;
+
 public class OrderAmountPriceAdapter extends BaseAdapter implements View.OnClickListener {
 
     OrderDTO dto;
@@ -81,7 +83,7 @@ public class OrderAmountPriceAdapter extends BaseAdapter implements View.OnClick
         dto = items.get(position);
 
         viewHolder.orderPnameItem.setText(dto.getName());
-        String priceText = (dto.getPrice() * dto.getAmount()) + "원";
+        String priceText = moneyFormatToWon(dto.getPrice() * dto.getAmount()) + "원";
         viewHolder.orderPpriceItem.setText(priceText);
 
         viewHolder.orderPamountItem.setText(String.valueOf(dto.getAmount()));

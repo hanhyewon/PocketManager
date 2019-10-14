@@ -50,7 +50,7 @@ public class AddProduct extends AppCompatActivity {
     ImageView ivPreview;
 
     Uri imgUri;
-    String img, name, price;
+    String img;
 
     String salesId;
 
@@ -137,8 +137,8 @@ public class AddProduct extends AppCompatActivity {
 
     //상품정보 DB 등록
     private void productDataAdd() {
-        name = et_ProductNameAdd.getText().toString();
-        price = et_ProductPriceAdd.getText().toString();
+        String name = et_ProductNameAdd.getText().toString();
+        String price = et_ProductPriceAdd.getText().toString();
 
         if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(price)) {
             ProductDTO productDTO = new ProductDTO(name, price, img);
@@ -146,6 +146,7 @@ public class AddProduct extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     finish();
+                    overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
                 }
             });
         } else {
@@ -183,8 +184,15 @@ public class AddProduct extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == android.R.id.home) {
             finish();
+            overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
     }
 }

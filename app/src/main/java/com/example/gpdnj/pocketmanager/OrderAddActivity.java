@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import static com.example.gpdnj.pocketmanager.MoneyFormatClass.moneyFormatToWon;
+
 public class OrderAddActivity extends AppCompatActivity implements OrderAmountPriceAdapter.BtnClickListener{
 
     public Toolbar toolbar;
@@ -166,7 +168,7 @@ public class OrderAddActivity extends AppCompatActivity implements OrderAmountPr
         for(OrderDTO dto : arrayOrder) {
             priceSum = priceSum + (dto.getPrice() * dto.getAmount());
         }
-        String str = priceSum + "원";
+        String str = moneyFormatToWon(priceSum) + "원";
         orderPriceSumItem.setText(str);
         return priceSum;
     }
@@ -301,7 +303,7 @@ public class OrderAddActivity extends AppCompatActivity implements OrderAmountPr
             orderPay.setText("계좌이체");
         }
 
-        String str = setPriceSum() + "원";
+        String str = moneyFormatToWon(setPriceSum()) + "원";
         orderSum.setText(str);
 
         dialog.show();

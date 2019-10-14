@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import static com.example.gpdnj.pocketmanager.MoneyFormatClass.moneyFormatToWon;
+
 public class OrderListviewAdapter extends BaseAdapter implements View.OnClickListener{
 
     private OrderFirstDTO dto;
@@ -73,7 +75,8 @@ public class OrderListviewAdapter extends BaseAdapter implements View.OnClickLis
 
         viewHolder.orderDate.setText(dto.getDate());
 
-        String sumStr = dto.getSum() + "원";
+
+        String sumStr = moneyFormatToWon(dto.getSum()) + "원";
         viewHolder.orderSum.setText(sumStr);
 
         if(dto.getPay().equals("cash")) {
