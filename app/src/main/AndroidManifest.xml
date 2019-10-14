@@ -68,12 +68,7 @@
         <activity android:name="com.example.soyeon.MainProduct" />
         <activity android:name="com.example.soyeon.MapSearchActivity" />
         <activity android:name=".OrderManagerActivity" />
-        <activity android:name=".OrderAddActivity" />
-        
-        <activity android:name="com.example.jiyeong.AddExpensea" />
-        <activity android:name="com.example.jiyeong.EditExpensea" />
-        <activity android:name="com.example.jiyeong.MainExpensea" />
-        
+        <activity android:name=".OrderAddActivity" />        
         <activity android:name="com.example.jiyeong.pastSalesMode" />
         <activity android:name="com.example.jiyeong.writeReview" />
         <activity android:name="com.example.jiyeong.currentSalesMode" />
