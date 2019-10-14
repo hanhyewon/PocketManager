@@ -1,129 +1,211 @@
 package com.example.soyeon;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.gpdnj.pocketmanager.MainActivity;
+import com.bumptech.glide.Glide;
 import com.example.gpdnj.pocketmanager.R;
-import com.example.hyejin.SalesManagerMainActivity;
-import com.example.jiyeong.pastSalesMode;
-import com.google.firebase.auth.FirebaseAuth;
-import com.navdrawer.SimpleSideDrawer;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class EditProduct extends AppCompatActivity {
 
     Toolbar toolbar;
-    SimpleSideDrawer slide_menu;
-    private FirebaseAuth firebaseAuth;
-    private TextView nav_userName;
-    private TextView nav_userEmail;
 
-    private Button btn_PushProductEdit = null;
-    private Button btn_PushProductDelete = null;
+    private EditText ed_productName_ed;
+    private EditText ed_productPrice_ed;
+
+    ImageView ivPreview;
+
+    FirebaseDatabase database;
+    DatabaseReference databaseRef;
+    StorageReference imgRef;
+
+    Uri imgUri;
+    String img;
+    String salesId, productId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_edit);
-        firebaseAuth = FirebaseAuth.getInstance();
+        salesId = getIntent().getStringExtra("salesId");
+        productId = getIntent().getStringExtra("productId");
+
+        database = FirebaseDatabase.getInstance();
+        databaseRef = database.getReference("상품/" + salesId + "/" + productId);
 
         //툴바 사용 설정
-        toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); //왼쪽 버튼 사용 여부 true
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_white); //왼쪽 버튼 이미지 설정
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //툴바 타이틀명 설정
-        TextView toolbar_title = (TextView)findViewById(R.id.toolbar_title);
+        TextView toolbar_title = findViewById(R.id.toolbar_title);
         toolbar_title.setText("상품수정");
 
-        //툴바 메뉴 클릭 시, 나타날 navigation 화면 설정
-        slide_menu = new SimpleSideDrawer(this);
-        slide_menu.setLeftBehindContentView(R.layout.navigation_menu);
+        ed_productName_ed = findViewById(R.id.et_ProductEditName);
+        ed_productPrice_ed = findViewById(R.id.et_ProductEditPrice);
+        ivPreview = findViewById(R.id.iv_preview_edit);
 
-        btn_PushProductEdit=(Button)findViewById(R.id.btn_pushProductEdit);
-        btn_PushProductDelete=(Button)findViewById(R.id.btn_pushProductDelete);
+        Button btn_PushProductEdit = findViewById(R.id.btn_pushProductEdit);
+        ImageButton btn_PushProductImageChange = findViewById(R.id.btn_et_ProductImage);
 
+        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot data) {
+                img = data.child("imgUrl").getValue().toString();
+
+                ed_productName_ed.setText((String) data.child("name").getValue());
+                ed_productPrice_ed.setText((String) data.child("price").getValue());
+
+                imgRef = FirebaseStorage.getInstance().getReference(img); //해당 경로명으로 참조하는 파일명 지정
+                imgRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() { //다운로드 Url 가져옴
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        Glide.with(EditProduct.this).load(task.getResult()).into(ivPreview); //해당 이미지로 세팅
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        //이미지 선택
+        btn_PushProductImageChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "이미지를 선택하세요"), 0);
+            }
+        });
+
+        //수정하기
         btn_PushProductEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //수정 버튼 눌렸다는 신호를 main에 폼에 적힌 정보들과 함께 보내면 메인에서 DB연동후 처리
-            }
-        });
+                //이미지를 수정했다면
+                if (imgUri != null) {
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_kkmmss");
+                    String filename = formatter.format(new Date());
 
-        btn_PushProductDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //삭제 버튼 눌렸다는 신호를 main에 주면 메인에서 해당 데이터 삭제처리(DB연동해도 같은 방식으로)
+                    FirebaseStorage storage = FirebaseStorage.getInstance("gs://pocket-manager-9207f.appspot.com/");
+                    StorageReference storageRef = storage.getReferenceFromUrl("gs://pocket-manager-9207f.appspot.com").child("Product/" + filename);
+
+                    img = "Product/" + filename; //DB에 이미지 정보 담기 위한 String 객체
+
+                    storageRef.putFile(imgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            productDataEdit();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(EditProduct.this, "등록에 실패하였습니다", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            addProgressDialog();
+                        }
+                    });
+                }
+                else {
+                    //이미지를 수정하지 않은 경우
+                    productDataEdit();
+                }
             }
         });
     }
-    /**
-     * 툴바에 있는 항목과 메뉴 네비게이션의 select 이벤트를 처리하는 메소드
-     * */
+
+    private void productDataEdit() {
+        String name = ed_productName_ed.getText().toString();
+        String price = ed_productPrice_ed.getText().toString();
+
+        ProductDTO productDTO = new ProductDTO(name, price, img);
+
+        databaseRef.setValue(productDTO).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                finish();
+            }
+        });
+    }
+
+    //선택한 이미지 파일을 화면에 바로 보여주는 메소드
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 0 && resultCode == RESULT_OK){
+            imgUri = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imgUri);
+                ivPreview.setImageBitmap(bitmap);
+                ivPreview.setBackground(getDrawable(R.drawable.rounded_transparent)); //수정 시 처음에는
+                ivPreview.setClipToOutline(true);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    //ProgressDialog
+    public void addProgressDialog() {
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("수정 중...");
+        progressDialog.setCancelable(true);
+        progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Horizontal);
+        progressDialog.show();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home : //왼쪽 메뉴 버튼을 눌렀을 때
-                slide_menu.toggleLeftDrawer(); //슬라이드 동작
-
-                //navigation_menu.xml 이벤트 처리
-                //현재 회원의 정보 설정
-                nav_userName = (TextView) findViewById(R.id.nav_userName);
-                nav_userEmail = (TextView) findViewById(R.id.nav_userEmail);
-                nav_userName.setText(firebaseAuth.getCurrentUser().getDisplayName() + "님");
-                nav_userEmail.setText(firebaseAuth.getCurrentUser().getEmail());
-
-                ImageView menu_close = (ImageView)findViewById(R.id.menu_close);
-                menu_close.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        slide_menu.closeLeftSide();
-                    }
-                });
-
-                //로그아웃
-                Button logoutBtn = (Button) findViewById(R.id.logoutBtn);
-                logoutBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        FirebaseAuth.getInstance().signOut();
-                        finish();
-                        Intent intent = new Intent(EditProduct.this, MainActivity.class);
-                        startActivity(intent);
-                    }
-                });
-
-                //판매관리
-                Button salesManagerBtn = (Button) findViewById(R.id.salesManagerBtn);
-                salesManagerBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        finish();
-                        Intent intent = new Intent(EditProduct.this, SalesManagerMainActivity.class);
-                        startActivity(intent);
-                    }
-                });
-
-                //매출관리
-                Button moneyTotalManagerBtn = (Button)findViewById(R.id.moneyTotalBtn);
-                moneyTotalManagerBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        finish();
-                        Intent intent = new Intent(EditProduct.this, pastSalesMode.class);
-                        startActivity(intent);
-                    }
-                });
+        if(item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

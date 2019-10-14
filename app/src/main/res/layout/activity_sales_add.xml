@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".SalesAddActivity"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <TextView
+            android:textSize="20sp"
+            android:text="판매명"
+            android:textColor="@color/gray_8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/salesTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="참여하는 행사명 또는 지역명을 입력"
+            android:textSize="18sp"
+            android:textColor="@color/gray_8"
+            android:textColorHint="@color/gray_8"
+            android:paddingLeft="20dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_stroke_basic"
+            android:textCursorDrawable="@null"/>
+
+
+        <TextView
+            android:textSize="20sp"
+            android:text="판매기간"
+            android:textColor="@color/gray_8"
+            android:layout_marginTop="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/salesDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="기간 선택"
+            android:textSize="18sp"
+            android:textColor="@color/gray_8"
+            android:gravity="center_vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="10dp"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:layout_marginTop="20dp"
+            android:drawableRight="@drawable/arrow_right_lightgray"
+            android:background="@drawable/rounded_stroke_basic" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/salesAddBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="20dp"
+        android:text="등록하기"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:letterSpacing="0.1"
+        android:background="@drawable/btn_mint" />
+
+</LinearLayout>

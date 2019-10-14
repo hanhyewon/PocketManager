@@ -1,8 +1,12 @@
 package com.example.soyeon;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -16,240 +20,174 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.baoyz.actionsheet.ActionSheet;
+import com.bumptech.glide.Glide;
+import com.example.gpdnj.pocketmanager.EventDTO;
 import com.example.gpdnj.pocketmanager.MainActivity;
 import com.example.gpdnj.pocketmanager.R;
-import com.example.hyejin.SalesManagerMainActivity;
-import com.example.jiyeong.MainExpense;
+import com.example.gpdnj.pocketmanager.SalesManagerActivity;
 import com.example.jiyeong.pastSalesMode;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.navdrawer.SimpleSideDrawer;
 
 import java.util.ArrayList;
 
-public class MainProduct extends AppCompatActivity {
+public class MainProduct extends AppCompatActivity implements ProductListviewAdapter.BtnClickListener, ActionSheet.ActionSheetListener{
 
     Toolbar toolbar;
-    SimpleSideDrawer slide_menu;
-    private FirebaseAuth firebaseAuth;
-    private TextView nav_userName;
-    private TextView nav_userEmail;
 
-    //리스트뷰를 담을 어댑터뷰 생성
-    private ListView pListView = null;
-    private ListViewAdapter pAdapter = null;
-    private Button btn_ProductPush = null;
+    String salesId, selectedProductId;
+
+    private ProductListviewAdapter productListviewAdapter;
+    static ArrayList<ProductDTO> arrayProduct = new ArrayList<ProductDTO>();
+
+    FirebaseDatabase database;
+    DatabaseReference databaseRef;
+
+    Intent editItent, addIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_main);
-        firebaseAuth = FirebaseAuth.getInstance();
+        salesId = getIntent().getStringExtra("salesId");
+
+        database = FirebaseDatabase.getInstance();
+        databaseRef = database.getReference("상품/" + salesId);
 
         //툴바 사용 설정
-        toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); //왼쪽 버튼 사용 여부 true
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_white); //왼쪽 버튼 이미지 설정
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //툴바 타이틀명 설정
-        TextView toolbar_title = (TextView)findViewById(R.id.toolbar_title);
+        TextView toolbar_title = findViewById(R.id.toolbar_title);
         toolbar_title.setText("상품관리");
 
-        //툴바 메뉴 클릭 시, 나타날 navigation 화면 설정
-        slide_menu = new SimpleSideDrawer(this);
-        slide_menu.setLeftBehindContentView(R.layout.navigation_menu);
+        editItent = new Intent(this, EditProduct.class);
+        addIntent = new Intent(this, AddProduct.class);
 
-        final Intent intent_PEdit = new Intent(this, EditProduct.class);
-        final Intent intent_PAdd = new Intent(this, AddProduct.class);
-        final Intent intent_EMain = new Intent(this, MainExpense.class);
+        //상품 어댑터와 리스트뷰 연결
+        ListView productListview = findViewById(R.id.pListView);
+        productListviewAdapter = new ProductListviewAdapter(this.getBaseContext(), this);
+        productListview.setAdapter(productListviewAdapter);
 
-        //startActivity(intent_EMain);
+        //상품 DB 보여주기
+        displayProduct();
 
-        btn_ProductPush = findViewById(R.id.btn_ProductPush);
-        pListView = findViewById(R.id.pListView);
-        pAdapter = new ListViewAdapter(this.getBaseContext());
-
-        //pAdapter.addItem(getResources().getDrawable(R.drawable.ic_launcher_background),
-        //        "상품명A",
-        //        "7,000원");
-
-        pListView.setAdapter(pAdapter);
-        registerForContextMenu(pListView);
-
-        //리스너
-        pListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                PopupMenu popup = new PopupMenu(MainProduct.this, view);
-                getMenuInflater().inflate(R.menu.product_menu, popup.getMenu());
-
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch(item.getItemId()){
-                            case R.id.pModify:
-                                intent_PEdit.putExtra("position",position);
-                                startActivity(intent_PEdit);
-                                break;
-                            case R.id.pdelete:
-                                pAdapter.remove(position);
-                        }
-                    return false;
-                    }
-                });
-                popup.show();
-            return false;
-            }
-        });
-
+        Button btn_ProductPush = findViewById(R.id.btn_ProductPush);
         btn_ProductPush.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(intent_PAdd);
+                addIntent.putExtra("salesId", salesId); //해당 판매ID 넘기기
+                startActivity(addIntent);
             }
         });
+    }
+
+    @Override
+    public void moreBtnClickListener(String productId) {
+        //더보기 버튼 클릭 시, 수정/삭제 메뉴 보여주기
+        ActionSheet.createBuilder(this, getSupportFragmentManager())
+                .setCancelButtonTitle("Cancel")
+                .setOtherButtonTitles("수정", "삭제")
+                .setCancelableOnTouchOutside(true)
+                .setListener(this).show();
+        setTheme(R.style.modifyDeleteTheme);
+        this.selectedProductId = productId;
+    }
+
+    @Override
+    public void onOtherButtonClick(ActionSheet actionSheet, int index) {
+        if(index == 0) {
+            //수정을 선택했을 때
+            editItent.putExtra("productId", selectedProductId); //선택한 상품의 ID 넘기기
+            editItent.putExtra("salesId", salesId); //해당 상품의 판매ID 넘기기
+            startActivity(editItent);
+        } else {
+            //삭제를 선택했을 때
+            final AlertDialog.Builder dialog = new AlertDialog.Builder(this, android.R.style.Theme_Material_Light_Dialog_NoActionBar_MinWidth);
+            dialog.setMessage("해당 상품을 삭제하시겠습니까?")
+                    .setPositiveButton("예", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            databaseRef.child(selectedProductId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Toast.makeText(MainProduct.this, "삭제 완료", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    })
+                    .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    })
+                    .setCancelable(false)
+                    .create();
+            dialog.show();
+        }
+    }
+
+    @Override
+    public void onDismiss(ActionSheet actionSheet, boolean isCancel) {
 
     }
 
-    //뷰홀더
-    private class ViewHolder {
-        public ImageView pImage;
-        public TextView pName;
-        public TextView pPrice;
-    }
+    public void displayProduct(){
+        databaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                arrayProduct.clear();
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    String productId = data.getKey();
 
-    //리스트뷰 어댑터
-    private class ListViewAdapter extends BaseAdapter {
-        private Context pContext = null;
-        private ArrayList<ProductListData> pListData = new ArrayList<ProductListData>();
+                    String name = (String) data.child("name").getValue();
+                    String price = (String) data.child("price").getValue();
+                    String imgUrl = (String) data.child("imgUrl").getValue();
 
-        public ListViewAdapter(Context pContext){
-            super();
-            this.pContext = pContext;
-        }
-
-        @Override
-        public int getCount() {
-            return pListData.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return pListData.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder;
-            if (convertView == null) {
-                holder = new ViewHolder();
-
-                LayoutInflater inflater = (LayoutInflater) pContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.product_listview, null);
-
-                holder.pImage = (ImageView) convertView.findViewById(R.id.pImage);
-                holder.pName = (TextView) convertView.findViewById(R.id.pName);
-                holder.pPrice = (TextView) convertView.findViewById(R.id.pPrice);
-
-                convertView.setTag(holder);
-            }else{
-                holder = (ViewHolder) convertView.getTag();
+                    ProductDTO productDTO = new ProductDTO(productId, name, price, imgUrl);
+                    arrayProduct.add(productDTO);
+                }
+                productListviewAdapter.addItems(arrayProduct);
+                productListviewAdapter.notifyDataSetChanged();
             }
 
-            ProductListData pData = pListData.get(position);
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            //if (pData.pImage != null) {
-            //    holder.pImage.setVisibility(View.VISIBLE);
-            //    holder.pImage.setImageDrawable(pData.pImage);
-            //}else{
-            //    holder.pImage.setVisibility(View.GONE);
-            //}
-
-            //holder.pName.setText(pData.pName);
-            //holder.pPrice.setText(pData.pPrice);
-
-            return convertView;
-        }
-        //////////
-        //임의추가
-
-        //임의삭제
-        public void remove(int position){
-            pListData.remove(position);
-            dataChange();
-        }
-        //임의수정
-        public void dataChange(){
-            pAdapter.notifyDataSetChanged();
-        }
-
+            }
+        });
     }
 
-    /**
-     * 툴바에 있는 항목과 메뉴 네비게이션의 select 이벤트를 처리하는 메소드
-     * */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home : //왼쪽 메뉴 버튼을 눌렀을 때
-                slide_menu.toggleLeftDrawer(); //슬라이드 동작
-
-                //navigation_menu.xml 이벤트 처리
-                //현재 회원의 정보 설정
-                nav_userName = (TextView) findViewById(R.id.nav_userName);
-                nav_userEmail = (TextView) findViewById(R.id.nav_userEmail);
-                nav_userName.setText(firebaseAuth.getCurrentUser().getDisplayName() + "님");
-                nav_userEmail.setText(firebaseAuth.getCurrentUser().getEmail());
-
-                ImageView menu_close = (ImageView)findViewById(R.id.menu_close);
-                menu_close.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        slide_menu.closeLeftSide();
-                    }
-                });
-
-                //로그아웃
-                Button logoutBtn = (Button) findViewById(R.id.logoutBtn);
-                logoutBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        FirebaseAuth.getInstance().signOut();
-                        finish();
-                        Intent intent = new Intent(MainProduct.this, MainActivity.class);
-                        startActivity(intent);
-                    }
-                });
-
-                //판매관리
-                Button salesManagerBtn = (Button) findViewById(R.id.salesManagerBtn);
-                salesManagerBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        finish();
-                        Intent intent = new Intent(MainProduct.this, SalesManagerMainActivity.class);
-                        startActivity(intent);
-                    }
-                });
-
-                //매출관리
-                Button moneyTotalManagerBtn = (Button)findViewById(R.id.moneyTotalBtn);
-                moneyTotalManagerBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        finish();
-                        Intent intent = new Intent(MainProduct.this, pastSalesMode.class);
-                        startActivity(intent);
-                    }
-                });
+        if(item.getItemId() == android.R.id.home) {
+            finish();
+            overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
+            return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
     }
 }

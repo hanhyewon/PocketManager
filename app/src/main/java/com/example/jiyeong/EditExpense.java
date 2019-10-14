@@ -12,7 +12,8 @@ import android.widget.ImageView;
 
 import com.example.gpdnj.pocketmanager.MainActivity;
 import com.example.gpdnj.pocketmanager.R;
-import com.example.hyejin.SalesManagerMainActivity;
+import com.example.gpdnj.pocketmanager.SalesManagerActivity;
+import com.example.jiyeong.pastSalesMode;
 import com.google.firebase.auth.FirebaseAuth;
 import com.navdrawer.SimpleSideDrawer;
 
@@ -27,7 +28,7 @@ public class EditExpense extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.expense_listview); //임의
+        setContentView(R.layout.expense_add);
         firebaseAuth = FirebaseAuth.getInstance();
 
         //툴바 사용 설정
@@ -46,7 +47,7 @@ public class EditExpense extends AppCompatActivity {
         slide_menu.setLeftBehindContentView(R.layout.navigation_menu);
 
         final Intent intent_EEdit = new Intent(this, EditExpense.class);
-        final Intent intent_EAdd = new Intent(this, AddExpense.class);
+        final Intent intent_EAdd = new Intent(this, com.example.jiyeong.AddExpense.class);
 
     }
 
@@ -92,7 +93,7 @@ public class EditExpense extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         finish();
-                        Intent intent = new Intent(EditExpense.this, SalesManagerMainActivity.class);
+                        Intent intent = new Intent(EditExpense.this, SalesManagerActivity.class);
                         startActivity(intent);
                     }
                 });

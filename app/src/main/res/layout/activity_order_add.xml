@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/gray_2"
+    tools:context=".OrderAddActivity"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:padding="20dp"
+                android:background="@drawable/button_shape_03_box_gray"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/orderListBtn"
+                    android:textSize="20sp"
+                    android:text="전체 주문 목록"
+                    android:textColor="@color/gray_8"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:textSize="20sp"
+                    android:text="주문등록"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/mint_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:background="@color/gray_3"
+                android:padding="20dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/orderSearch"
+                    android:hint="검색하고자 하는 상품명을 입력하세요"
+                    android:padding="10dp"
+                    android:textColor="@color/gray_6"
+                    android:textSize="16sp"
+                    android:drawableLeft="@drawable/ic_search_black_24dp"
+                    android:background="@drawable/rounded_stroke_basic"
+                    android:textCursorDrawable="@null"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/orderRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:padding="10dp"
+                android:background="@color/gray_3"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ListView
+                    android:id="@+id/orderPdetailListview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <LinearLayout
+                    android:background="@color/white"
+                    android:padding="10dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:padding="10dp"
+                        android:textColor="@color/gray_8"
+                        android:text="결제수단"
+                        android:textSize="19sp"
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <RadioGroup
+                        android:id="@+id/payGroup"
+                        android:padding="10dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <android.support.v7.widget.AppCompatRadioButton
+                            android:id="@+id/cash"
+                            android:textColor="@color/gray_8"
+                            android:text="현금"
+                            android:textSize="19sp"
+                            android:buttonTint="@color/mint_5"
+                            android:layout_marginRight="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <android.support.v7.widget.AppCompatRadioButton
+                            android:id="@+id/account"
+                            android:textColor="@color/gray_8"
+                            android:text="계좌이체"
+                            android:textSize="19sp"
+                            android:buttonTint="@color/mint_5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:background="@color/white"
+                    android:layout_marginTop="10dp"
+                    android:padding="10dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:padding="10dp"
+                        android:textColor="@color/gray_8"
+                        android:text="총 결제금액"
+                        android:textSize="19sp"
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/orderPriceSumItem"
+                        android:padding="10dp"
+                        android:text="0원"
+                        android:textColor="@color/gray_8"
+                        android:textSize="19sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/orderDataAddBtn"
+                    android:padding="20dp"
+                    android:text="결제하기"
+                    android:textSize="19sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:letterSpacing="0.1"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/btn_mint"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+    </ScrollView>
+</LinearLayout>

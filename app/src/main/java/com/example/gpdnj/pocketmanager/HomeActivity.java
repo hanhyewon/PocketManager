@@ -1,11 +1,10 @@
 package com.example.gpdnj.pocketmanager;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,17 +12,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.hyejin.SalesManagerMainActivity;
-import com.example.hyejin.SalesManagerModifyActivity;
 import com.example.jiyeong.pastSalesMode;
-import com.example.jiyeong.writeReview;
-import com.example.soyeon.AddProduct;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.navdrawer.SimpleSideDrawer;
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -70,7 +60,7 @@ public class HomeActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //툴바 타이틀명 설정
-        TextView toolbar_title = (TextView)findViewById(R.id.toolbar_title);
+        TextView toolbar_title = findViewById(R.id.toolbar_title);
         toolbar_title.setText("Pocket Manager");
 
         //툴바 메뉴 클릭 시, 나타날 navigation 화면 설정
@@ -81,6 +71,12 @@ public class HomeActivity extends AppCompatActivity {
         imageModelArrayList = new ArrayList<>();
         imageModelArrayList = populateList();
         init();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        slide_menu.closeRightSide();
     }
 
     /**
@@ -99,7 +95,8 @@ public class HomeActivity extends AppCompatActivity {
                 nav_userName.setText(firebaseAuth.getCurrentUser().getDisplayName() + "님");
                 nav_userEmail.setText(firebaseAuth.getCurrentUser().getEmail());
 
-                ImageView menu_close = (ImageView)findViewById(R.id.menu_close);
+                //메뉴창 닫기
+                ImageView menu_close = findViewById(R.id.menu_close);
                 menu_close.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -108,7 +105,7 @@ public class HomeActivity extends AppCompatActivity {
                 });
 
                 //로그아웃
-                Button logoutBtn = (Button) findViewById(R.id.logoutBtn);
+                Button logoutBtn = findViewById(R.id.logoutBtn);
                 logoutBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -120,32 +117,51 @@ public class HomeActivity extends AppCompatActivity {
                 });
 
                 //판매관리
-                Button salesManagerBtn = (Button) findViewById(R.id.salesManagerBtn);
+                Button salesManagerBtn = findViewById(R.id.salesManagerBtn);
                 salesManagerBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //finish();
-                        Intent intent = new Intent(HomeActivity.this, SalesManagerModifyActivity.class);
+                        Intent intent = new Intent(HomeActivity.this, SalesManagerActivity.class);
                         startActivity(intent);
                     }
                 });
 
                 //매출관리
-                Button moneyTotalManagerBtn = (Button)findViewById(R.id.moneyTotalBtn);
+                Button moneyTotalManagerBtn = findViewById(R.id.moneyTotalBtn);
                 moneyTotalManagerBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //finish();
                         Intent intent = new Intent(HomeActivity.this, pastSalesMode.class);
                         startActivity(intent);
                     }
                 });
 
-                Button communityBtn = (Button)findViewById(R.id.communityBtn);
+                //행사정보
+                Button eventBtn = findViewById(R.id.eventBtn);
+                eventBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(HomeActivity.this, ManagerEventSettingActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+                //커뮤니티
+                Button communityBtn = findViewById(R.id.communityBtn);
                 communityBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(HomeActivity.this, writeReview.class);
+                        Intent intent = new Intent(HomeActivity.this, ReviewMainActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+                //내 게시글 관리
+                TextView myReviewSettingBtn = findViewById(R.id.myReviewSettingBtn);
+                myReviewSettingBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(HomeActivity.this, MyReviewActivity.class);
                         startActivity(intent);
                     }
                 });

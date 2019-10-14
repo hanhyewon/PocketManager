@@ -1,0 +1,154 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EventDetailActivity"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:background="@color/white"
+                android:elevation="1dp">
+
+                <TextView
+                    android:id="@+id/eventProgress"
+                    android:text="진행중"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:background="@drawable/rounded_more_mint"/>
+
+                <TextView
+                    android:id="@+id/eventTitleView"
+                    android:text="서울 금손 페스티벌"
+                    android:textColor="@color/gray_12"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp">
+
+                    <TableLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <TableRow>
+                            <TextView
+                                android:text="기간"
+                                android:paddingRight="20dp"
+                                android:textSize="16sp"
+                                android:textColor="@color/gray_6"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                            <TextView
+                                android:id="@+id/eventDateView"
+                                android:text="9월 20일(금) ~ 10월 1일(화)"
+                                android:textSize="16sp"
+                                android:textColor="@color/gray_11"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                        </TableRow>
+                        <TableRow
+                            android:layout_marginTop="2dp">
+                            <TextView
+                                android:text="장소"
+                                android:paddingRight="20dp"
+                                android:textSize="16sp"
+                                android:textColor="@color/gray_6"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                            <TextView
+                                android:id="@+id/eventLocationView"
+                                android:text="고척 스카이돔"
+                                android:textSize="16sp"
+                                android:textColor="@color/gray_11"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                        </TableRow>
+                    </TableLayout>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:id="@+id/eventShareBtn"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/share_gray"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:background="#f3f3f3"/>
+
+            <ImageView
+                android:id="@+id/eventImgView"
+                android:adjustViewBounds="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:background="@color/gray_2"/>
+
+            <TextView
+                android:text="상세 내용"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:textColor="@color/gray_12"
+                android:paddingTop="15dp"
+                android:paddingLeft="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/eventDetailTextView"
+                android:text="테스트 줄바꿈도 표현해야하는군! 여기는 상세 내용입니다 디비까지 언제 하나요 허허허허허"
+                android:textColor="@color/gray_11"
+                android:textSize="16sp"
+                android:paddingTop="10dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

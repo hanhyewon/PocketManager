@@ -1,43 +1,21 @@
 package com.example.jiyeong;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.gpdnj.pocketmanager.HomeActivity;
-import com.example.gpdnj.pocketmanager.JoinActivity2;
 import com.example.gpdnj.pocketmanager.MainActivity;
 import com.example.gpdnj.pocketmanager.R;
-import com.example.gpdnj.pocketmanager.UserDTO;
-import com.example.hyejin.SalesManagerMainActivity;
-import com.example.hyejin.Util;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.gpdnj.pocketmanager.SalesManagerMainActivity;
+import com.example.jiyeong.pastSalesMode;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.navdrawer.SimpleSideDrawer;
-
-import java.util.ArrayList;
-import java.util.Calendar;
 
 public class AddExpense extends AppCompatActivity {
 
@@ -46,49 +24,14 @@ public class AddExpense extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private TextView nav_userName;
     private TextView nav_userEmail;
-    private TextView tv_Date;
-    private EditText et_Date;
-    private EditText et_Context;
-    private EditText et_charge;
-    private EditText et_option;
-    private RadioGroup rg_group;
 
     private Button btn_ExpenseReturnByAdd = null;
-
-
-
-    FirebaseDatabase database;
-    DatabaseReference databaseRef;
-
-    static ArrayList<ExpenseDTO> arrayExpense = new ArrayList<ExpenseDTO>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.expense_add);
-
         firebaseAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
-        databaseRef = database.getReference("지출").push(); //지출코드 발생
-
-
-
-        //DB 객체
-        et_Context = (EditText) findViewById(R.id.et_ExpenseAddText); //내용
-        et_charge = (EditText) findViewById(R.id.et_ExpenseAddPrice);// 비용
-        et_option = (EditText) findViewById(R.id.et_ExpenseAddDetail); //비고
-        rg_group = (RadioGroup) findViewById(R.id.rg_ExpenseAddClassification); //지출 분류
-        tv_Date=(TextView)findViewById(R.id.tv_ExpenseAddDate); //날짜 설정
-
-
-        tv_Date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePicker((TextView) v);
-            }
-        });
-
 
         //툴바 사용 설정
         toolbar = (Toolbar)findViewById(R.id.toolbar);
@@ -106,79 +49,18 @@ public class AddExpense extends AppCompatActivity {
         slide_menu.setLeftBehindContentView(R.layout.navigation_menu);
 
 
+        final Intent intent_EEdit = new Intent(this, com.example.jiyeong.EditExpense.class);
+        final Intent intent_EMain = new Intent(this, com.example.jiyeong.MainExpense.class);
 
-    }
-
-    @Override
-    protected  void onStart(){
-        super.onStart();
-
-        databaseRef.addValueEventListener((new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String  text = dataSnapshot.getValue(String.class);
-
-                /* arrayExpense.clear();
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    String edate = data.child("edate").getValue().toString();
-                    String echarge = data.child("echarge").getValue().toString();
-                    String econtext= data.child("econtext").getValue().toString();
-                    String egroup= data.child("egroup").getValue().toString();
-                    ExpenseDTO expenseDTO = new ExpenseDTO(econtext,egroup,echarge);
-                    arrayExpense.add(expenseDTO);
-
-                }
-
-                */
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        }));
-
-        final Intent intent_EEdit = new Intent(this, EditExpense.class);
-        final Intent intent_EMain = new Intent(this, MainExpense.class);
         btn_ExpenseReturnByAdd = findViewById(R.id.btn_ExpenseReturnByAdd);
-
 
         btn_ExpenseReturnByAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                    RadioButton rd=(RadioButton)findViewById(rg_group.getCheckedRadioButtonId());
-
-                    databaseRef.child("edate").setValue(tv_Date.getText().toString());
-                    databaseRef.child("echarge").setValue(et_charge.getText().toString());
-                    databaseRef.child("econtext").setValue(et_Context.getText().toString());
-                    databaseRef.child("eoption").setValue(et_option.getText().toString());
-                    databaseRef.child("egroup").setValue(rd.getText().toString());
-
-                    finish();
-
-
+                startActivity(intent_EMain);
             }
+        });
 
-
-            });
-        }
-
-        public void showDatePicker(final TextView target) {
-        // DatePickerDialog
-        DatePickerDialog dialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(year, month, dayOfMonth);
-                target.setText(Util.format(calendar,"yyyy-MM-dd"));
-            }
-        }, Calendar.getInstance().get(Calendar.YEAR),
-                Calendar.getInstance().get(Calendar.MONTH),
-                Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
-        dialog.show();
     }
 
     /**
@@ -241,10 +123,4 @@ public class AddExpense extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
-
-
 }
-
-

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/orderDialogNameItem"
+        android:text="상품명"
+        android:textSize="17sp"
+        android:layout_weight="1"
+        android:textColor="@color/gray_8"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/orderDialogSumItem"
+        android:text="가격"
+        android:gravity="right"
+        android:textSize="17sp"
+        android:textColor="@color/gray_8"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/orderDialogAmountItem"
+        android:text="수량"
+        android:gravity="right"
+        android:textSize="17sp"
+        android:textColor="@color/gray_8"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content" />
+</LinearLayout>
+

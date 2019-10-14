@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="25dp"
+    android:paddingBottom="25dp"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/salesTitleItemView"
+            android:textSize="18sp"
+            android:textColor="@color/gray_10"
+            android:text="서울 금손 페스티벌"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/salesDateItemView"
+            android:textSize="16sp"
+            android:textColor="@color/gray_9"
+            android:text="10.10(목) - 10.11(금)"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="right"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

@@ -115,6 +115,7 @@
             android:textSize="18sp"
             style="?android:attr/borderlessButtonStyle"/>
         <Button
+            android:id="@+id/eventBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#ffffff"
@@ -144,13 +145,14 @@
         android:background="#eaeaea"/>
 
     <TextView
+        android:id="@+id/myReviewSettingBtn"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:paddingLeft="20dp"
         android:layout_gravity="left"
         android:gravity="center_vertical"
         android:background="@color/white"
-        android:text="공지사항"
+        android:text="내 게시글 관리"
         android:textColor="#333333"
         android:textSize="18sp" />
 
@@ -166,7 +168,7 @@
         android:layout_gravity="left"
         android:gravity="center_vertical"
         android:background="@color/white"
-        android:text="회원탈퇴하기"
+        android:text="회원 탈퇴하기"
         android:textColor="#333333"
         android:textSize="18sp" />
 

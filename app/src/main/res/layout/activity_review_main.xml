@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ReviewMainActivity"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:padding="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- TextView 임시용 -> 나중에 스피너로 검색기능 만들어야 함-->
+        <Spinner
+            android:id="@+id/rvSpinner1"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_margin="5dp"
+            android:padding="3dp"
+            android:gravity="center"
+            android:animateLayoutChanges="false"
+            android:dropDownWidth="wrap_content"
+            android:spinnerMode="dropdown" />
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/reviewAddBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/mint_5"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/add_white"
+            app:borderWidth="0dp" />
+        <ListView
+            android:id="@+id/reviewListview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="#F2F2F2"
+            android:dividerHeight="15dp"
+            android:listSelector="@android:color/transparent"
+            android:scrollbars="none"
+            android:cacheColorHint="@color/transparent" />
+    </RelativeLayout>
+</LinearLayout>

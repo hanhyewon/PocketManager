@@ -38,6 +38,15 @@ public class ManagerHomeActivity extends AppCompatActivity {
             }
         });
 
+        LinearLayout eventSettingBtn = findViewById(R.id.eventSettingBtn);
+        eventSettingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ManagerHomeActivity.this, ManagerEventSettingActivity.class);
+                startActivity(intent);
+            }
+        });
+
         //관리자관리
         LinearLayout managerSettingBtn = findViewById(R.id.managerSettingBtn);
         managerSettingBtn.setOnClickListener(new View.OnClickListener() {

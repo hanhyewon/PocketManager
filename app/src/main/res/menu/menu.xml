@@ -8,5 +8,4 @@
         app:showAsAction="always"
         android:icon="@drawable/ic_close"
         android:title="close"/>
-
 </menu>
