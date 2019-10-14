@@ -1,4 +1,4 @@
-package com.example.soyeon;
+package com.example.jiyeong;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.example.gpdnj.pocketmanager.MainActivity;
 import com.example.gpdnj.pocketmanager.R;
-import com.example.gpdnj.pocketmanager.SalesManagerActivity;
+import com.example.gpdnj.pocketmanager.SalesManagerMainActivity;
 import com.example.jiyeong.pastSalesMode;
 import com.google.firebase.auth.FirebaseAuth;
 import com.navdrawer.SimpleSideDrawer;
@@ -49,8 +49,8 @@ public class AddExpense extends AppCompatActivity {
         slide_menu.setLeftBehindContentView(R.layout.navigation_menu);
 
 
-        final Intent intent_EEdit = new Intent(this, EditExpense.class);
-        final Intent intent_EMain = new Intent(this, MainExpense.class);
+        final Intent intent_EEdit = new Intent(this, com.example.jiyeong.EditExpense.class);
+        final Intent intent_EMain = new Intent(this, com.example.jiyeong.MainExpense.class);
 
         btn_ExpenseReturnByAdd = findViewById(R.id.btn_ExpenseReturnByAdd);
 
@@ -105,7 +105,7 @@ public class AddExpense extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         finish();
-                        Intent intent = new Intent(AddExpense.this, SalesManagerActivity.class);
+                        Intent intent = new Intent(AddExpense.this, SalesManagerMainActivity.class);
                         startActivity(intent);
                     }
                 });

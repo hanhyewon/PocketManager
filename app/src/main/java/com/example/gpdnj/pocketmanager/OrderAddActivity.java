@@ -9,9 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RadioGroup;
@@ -30,6 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class OrderAddActivity extends AppCompatActivity implements OrderAmountPriceAdapter.BtnClickListener{
 
@@ -85,7 +89,7 @@ public class OrderAddActivity extends AppCompatActivity implements OrderAmountPr
 
         //상품명과 상품이미지 RecyclerView 설정
         orderRecyclerView = findViewById(R.id.orderRecyclerView);
-        orderRecyclerViewAdapter = new OrderRecyclerViewAdapter(this.getBaseContext());
+        //****orderRecyclerViewAdapter = new OrderRecyclerViewAdapter(this.getBaseContext());
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this,3);
         orderRecyclerView.setLayoutManager(gridLayoutManager);
         orderRecyclerView.setAdapter(orderRecyclerViewAdapter);
@@ -112,6 +116,26 @@ public class OrderAddActivity extends AppCompatActivity implements OrderAmountPr
                 orderAmountPriceAdapter.notifyDataSetChanged();
                 setListViewHeightBasedOnChildren(orderPdetailListview);
                 setPriceSum();
+            }
+        });
+
+        final EditText orderSearch = findViewById(R.id.orderSearch);
+        orderSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                String text= orderSearch.getText().toString().toLowerCase(Locale.getDefault());
+                orderRecyclerViewAdapter.filter(text);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 

@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,12 +21,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ReviewMainActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     FloatingActionButton reviewAddBtn;
     Intent addIntent, detailIntent;
+    Spinner rvSpinner;
+    final String[] showSpinner = {"카테고리","팝업 스토어","푸드 트럭","플리 마켓","행사 기타"};
 
     private ListView reviewListview;
     private ReviewListviewAdapter reviewAdapter;
@@ -45,6 +50,27 @@ public class ReviewMainActivity extends AppCompatActivity {
         addIntent = new Intent(ReviewMainActivity.this, ReviewAddActivity.class);
         detailIntent = new Intent(ReviewMainActivity.this, ReviewDetailActivity.class);
 
+        //스피너
+        rvSpinner=(Spinner)findViewById(R.id.rvSpinner1);
+        ArrayAdapter<String> spinnerAdapter;
+        spinnerAdapter= new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,showSpinner);
+        rvSpinner.setAdapter(spinnerAdapter);
+
+        rvSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String spItem = rvSpinner.getItemAtPosition(position).toString();
+                displaySpinnerList(spItem);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
         //툴바 사용 설정
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -58,7 +84,6 @@ public class ReviewMainActivity extends AppCompatActivity {
 
         reviewListview = findViewById(R.id.reviewListview);
         setAdapter();
-        displayReviewList();
 
         //리뷰 등록화면으로 이동
         reviewAddBtn = findViewById(R.id.reviewAddBtn);
@@ -88,7 +113,8 @@ public class ReviewMainActivity extends AppCompatActivity {
     }
 
     //리뷰 DB 정보 출력
-    private void displayReviewList() {
+
+    private void displaySpinnerList(final String spItem) {
         databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -97,15 +123,24 @@ public class ReviewMainActivity extends AppCompatActivity {
                     String reviewId = data.getKey();
                     String reviewUid = (String) data.child("uid").getValue();
 
-                    String category = (String) data.child("category").getValue();
+                    final String category = (String) data.child("category").getValue();
                     String title = (String) data.child("title").getValue();
                     String reviewDate = (String) data.child("reviewDate").getValue();
                     String detailText = (String) data.child("detailText").getValue();
 
-                    ReviewDTO reviewDTO = new ReviewDTO(reviewId, reviewUid, category, title, reviewDate, detailText);
-                    arrayReview.add(reviewDTO);
+                    if(spItem.equals(category)) {
+                        ReviewDTO reviewDTO = new ReviewDTO(reviewId, reviewUid, category, title, reviewDate, detailText);
+                        arrayReview.add(reviewDTO);
+
+                    }else if(spItem.equals("카테고리")){
+                        ReviewDTO reviewDTO = new ReviewDTO(reviewId, reviewUid, category, title, reviewDate, detailText);
+                        arrayReview.add(reviewDTO);
+                    }
+
+
                 }
                 reviewAdapter.addItems(arrayReview);
+                Collections.reverse(arrayReview); //최신정렬
                 reviewAdapter.notifyDataSetChanged();
             }
 
@@ -115,4 +150,5 @@ public class ReviewMainActivity extends AppCompatActivity {
             }
         });
     }
+
 }

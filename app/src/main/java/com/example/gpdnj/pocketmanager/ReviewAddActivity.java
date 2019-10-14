@@ -76,6 +76,9 @@ public class ReviewAddActivity extends AppCompatActivity {
         spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         category.setAdapter(spinnerAdapter);
 
+        //검색
+
+
         //카테고리
         category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
