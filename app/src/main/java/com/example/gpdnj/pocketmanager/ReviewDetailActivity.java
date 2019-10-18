@@ -76,7 +76,10 @@ public class ReviewDetailActivity extends AppCompatActivity implements OnMapRead
         reviewEventNameRow = findViewById(R.id.reviewEventNameRow);
         reviewRatingView = findViewById(R.id.reviewRatingView);
 
-
+    // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.r_map);
+        mapFragment.getMapAsync(this);
 
         reviewId = getIntent().getStringExtra("reviewId");
         databaseReviewRef.child(reviewId).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -89,7 +92,6 @@ public class ReviewDetailActivity extends AppCompatActivity implements OnMapRead
 
                 float rate = Float.valueOf(data.child("rating").getValue().toString());
                 address = (String)data.child("location").getValue();
-                Toast.makeText(getApplicationContext(), address, Toast.LENGTH_SHORT).show();
                 reviewRatingView.setRating(rate);
 
                 userName = (String)data.child("userName").getValue();
@@ -119,46 +121,44 @@ public class ReviewDetailActivity extends AppCompatActivity implements OnMapRead
         mMap = googleMap;
         geocoder = new Geocoder(this);
 
-        if(address != null){
-            String str= address;
-            List<Address> addressList = null;
-            try {
-                // editText에 입력한 텍스트(주소, 지역, 장소 등)을 지오 코딩을 이용해 변환
-                addressList = geocoder.getFromLocationName(str,10);
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            System.out.println(addressList.get(0).toString());
-            // 콤마를 기준으로 split
-            String []splitStr = addressList.get(0).toString().split(",");
-            address = splitStr[0].substring(splitStr[0].indexOf("\"") + 1,splitStr[0].length() - 2); // 주소
-            System.out.println(address);
-
-            String latitude = splitStr[10].substring(splitStr[10].indexOf("=") + 1); // 위도
-            String longitude = splitStr[12].substring(splitStr[12].indexOf("=") + 1); // 경도
-            System.out.println(latitude);
-            System.out.println(longitude);
-
-            // 좌표(위도, 경도) 생성
-            LatLng point = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
-            // 마커 생성
-            MarkerOptions mOptions2 = new MarkerOptions();
-            mOptions2.title("search result");
-            mOptions2.snippet(address);
-            mOptions2.position(point);
-            // 마커 추가
-            mMap.addMarker(mOptions2);
-            // 해당 좌표로 화면 줌
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point,15));
+        if(address == null) {
+            address = getIntent().getStringExtra("Location");
         }
-        {
-            LatLng sydney = new LatLng(-34, 151);
-            mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+        String str= address;
+        List<Address> addressList = null;
+        try {
+            // editText에 입력한 텍스트(주소, 지역, 장소 등)을 지오 코딩을 이용해 변환
+            addressList = geocoder.getFromLocationName(str,10);
         }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(addressList.get(0).toString());
+        // 콤마를 기준으로 split
+        String []splitStr = addressList.get(0).toString().split(",");
+        address = splitStr[0].substring(splitStr[0].indexOf("\"") + 1,splitStr[0].length() - 2); // 주소
+        System.out.println(address);
+
+        String latitude = splitStr[10].substring(splitStr[10].indexOf("=") + 1); // 위도
+        String longitude = splitStr[12].substring(splitStr[12].indexOf("=") + 1); // 경도
+        System.out.println(latitude);
+        System.out.println(longitude);
+
+        // 좌표(위도, 경도) 생성
+        LatLng point = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
+        // 마커 생성
+        MarkerOptions mOptions2 = new MarkerOptions();
+        mOptions2.title("search result");
+        mOptions2.snippet(address);
+        mOptions2.position(point);
+        // 마커 추가
+        mMap.addMarker(mOptions2);
+        // 해당 좌표로 화면 줌
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point,15));
     }
+
 
 
     @Override
@@ -170,3 +170,4 @@ public class ReviewDetailActivity extends AppCompatActivity implements OnMapRead
         return super.onOptionsItemSelected(item);
     }
 }
+//Toast.makeText(getApplicationContext(), getIntent().getStringExtra("reviewLocation"), Toast.LENGTH_SHORT).show();

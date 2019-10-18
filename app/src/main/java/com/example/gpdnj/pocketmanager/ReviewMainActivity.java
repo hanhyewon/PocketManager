@@ -75,6 +75,7 @@ public class ReviewMainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ReviewDTO reviewDTO = (ReviewDTO) parent.getAdapter().getItem(position);
                 detailIntent.putExtra("reviewId", reviewDTO.getReviewId()); //선택한 리뷰의 ID 넘기기
+                detailIntent.putExtra("Location", reviewDTO.getLocation());//위치값 넘기기
                 startActivity(detailIntent);
             }
         });
@@ -100,8 +101,9 @@ public class ReviewMainActivity extends AppCompatActivity {
                     String title = (String) data.child("title").getValue();
                     String reviewDate = (String) data.child("reviewDate").getValue();
                     String detailText = (String) data.child("detailText").getValue();
+                    String location = (String) data.child("location").getValue();
 
-                    ReviewDTO reviewDTO = new ReviewDTO(reviewId, reviewUid, category, title, reviewDate, detailText);
+                    ReviewDTO reviewDTO = new ReviewDTO(reviewId, reviewUid, category, title, reviewDate, detailText, location);
                     arrayReview.add(reviewDTO);
                 }
                 reviewAdapter.addItems(arrayReview);

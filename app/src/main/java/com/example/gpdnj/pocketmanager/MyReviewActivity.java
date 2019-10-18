@@ -151,8 +151,9 @@ public class MyReviewActivity extends AppCompatActivity implements MyReviewListv
                         String title = (String) data.child("title").getValue();
                         String reviewDate = (String) data.child("reviewDate").getValue();
                         String detailText = (String) data.child("detailText").getValue();
+                        String location = (String) data.child("location").getValue();
 
-                        ReviewDTO reviewDTO = new ReviewDTO(reviewId, reviewUid, category, title, reviewDate, detailText);
+                        ReviewDTO reviewDTO = new ReviewDTO(reviewId, reviewUid, category, title, reviewDate, detailText, location);
                         arrayReview.add(reviewDTO);
                     }
                 }
