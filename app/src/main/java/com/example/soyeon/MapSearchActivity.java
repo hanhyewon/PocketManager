@@ -1,6 +1,7 @@
 package com.example.soyeon;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.gpdnj.pocketmanager.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -29,8 +31,10 @@ public class MapSearchActivity extends FragmentActivity implements OnMapReadyCal
 
     private GoogleMap mMap;
     private Geocoder geocoder;
-    private Button button;
+    private Button button, Complete;
     private EditText editText;
+
+    private String address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,7 @@ public class MapSearchActivity extends FragmentActivity implements OnMapReadyCal
         setContentView(R.layout.activity_map_search);
         editText = (EditText) findViewById(R.id.map_editText);
         button=(Button)findViewById(R.id.map_Button);
+        Complete=(Button)findViewById(R.id.map_Complete);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -50,24 +55,21 @@ public class MapSearchActivity extends FragmentActivity implements OnMapReadyCal
         mMap = googleMap;
         geocoder = new Geocoder(this);
 
-        // 맵 터치 이벤트 구현 //
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener(){
+        //지정완료 버튼
+        Complete.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onMapClick(LatLng point) {
-                MarkerOptions mOptions = new MarkerOptions();
-                // 마커 타이틀
-                mOptions.title("마커 좌표");
-                Double latitude = point.latitude; // 위도
-                Double longitude = point.longitude; // 경도
-                // 마커의 스니펫(간단한 텍스트) 설정
-                mOptions.snippet(latitude.toString() + ", " + longitude.toString());
-                // LatLng: 위도 경도 쌍을 나타냄
-                mOptions.position(new LatLng(latitude, longitude));
-                // 마커(핀) 추가
-                googleMap.addMarker(mOptions);
+            public void onClick(View view) {
+                if(address != null){
+                    Intent intent = new Intent();
+                    intent.putExtra("result", address);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }else{
+                    Toast.makeText(getApplicationContext(), "위치 입력 후 검색 버튼을 눌러 주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
             }
         });
-        ////////////////////
 
         // 버튼 이벤트
         button.setOnClickListener(new Button.OnClickListener(){
@@ -88,7 +90,7 @@ public class MapSearchActivity extends FragmentActivity implements OnMapReadyCal
                 System.out.println(addressList.get(0).toString());
                 // 콤마를 기준으로 split
                 String []splitStr = addressList.get(0).toString().split(",");
-                String address = splitStr[0].substring(splitStr[0].indexOf("\"") + 1,splitStr[0].length() - 2); // 주소
+                address = splitStr[0].substring(splitStr[0].indexOf("\"") + 1,splitStr[0].length() - 2); // 주소
                 System.out.println(address);
 
                 String latitude = splitStr[10].substring(splitStr[10].indexOf("=") + 1); // 위도

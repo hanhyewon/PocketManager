@@ -17,6 +17,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAtvx8z0K2Fk2oKoPl25c6uHd_eAAIWK94" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
         <activity
             android:name="com.example.soyeon.MapSearchActivity"
@@ -69,6 +72,7 @@
         <activity android:name="com.example.soyeon.AddExpense" />
         <activity android:name="com.example.soyeon.EditExpense" />
         <activity android:name="com.example.soyeon.MainProduct" />
+        <activity android:name="com.example.soyeon.SearchActivity"/>
 
         <activity android:name="com.example.hyejin.ParentActivity" /> <!-- 김혜진 -->
         <activity android:name="com.example.hyejin.SalesManagerActivity" />
