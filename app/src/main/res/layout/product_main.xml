@@ -18,8 +18,8 @@
         <ListView
             android:id="@+id/pListView"
             android:listSelector="@android:color/transparent"
-            android:scrollbars="none"
             android:cacheColorHint="@color/transparent"
+            android:overScrollMode="never"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 

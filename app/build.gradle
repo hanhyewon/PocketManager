@@ -20,13 +20,12 @@ android {
 
 //라이브러리 추가
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:28.0.0'
     //버전 충돌 해결
     implementation 'com.android.support:mediarouter-v7:28.0.0'
     implementation 'com.android.support:cardview-v7:28.0.0'
-
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.google.firebase:firebase-storage:16.0.4'
@@ -43,31 +42,29 @@ dependencies {
     //ViewPager 라이브러리
     implementation 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
     //
-    implementation "com.android.support:recyclerview-v7:28.0.0"
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
     implementation 'com.google.android.gms:play-services-location:16.0.0'
     implementation 'com.baoyz.swipemenulistview:library:1.3.0'
     implementation files('libs/gradle-wrapper.jar')
-
     implementation 'com.google.firebase:firebase-database:16.0.1'
-
     implementation 'com.shobhitpuri.custombuttons:google-signin:1.0.0'
-
     //이미지 처리용
     implementation 'com.google.firebase:firebase-storage:12.0.0'
     implementation 'com.firebaseui:firebase-ui-storage:3.2.2'
-
     //CenterIconButton
     implementation 'com.github.Omega-R:OmegaCenterIconButton:0.0.3@aar'
-
     //SlyCalendarView
     implementation 'com.github.psinetron:slycalendarview:0.0.9'
-
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
-
     //ActionSheet
     implementation 'com.baoyz.actionsheet:library:1.1.7'
+    //MPAndroidChart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation files('libs/curvesapi-1.06.jar')
+    implementation files('libs/xmlbeans-3.1.0.jar')
+    implementation files('libs/poi-3.9.jar')
 }
 apply plugin: 'com.google.gms.google-services'

@@ -84,6 +84,7 @@
         android:dividerHeight="5dp"
         android:listSelector="@android:color/transparent"
         android:scrollbars="none"
+        android:overScrollMode="never"
         android:cacheColorHint="@color/transparent" />
 
 </LinearLayout>

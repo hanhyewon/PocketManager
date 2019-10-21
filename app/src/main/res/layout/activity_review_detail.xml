@@ -12,6 +12,7 @@
         android:layout_height="wrap_content" />
 
     <ScrollView
+        android:overScrollMode="never"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
@@ -51,7 +52,6 @@
 
                 <TextView
                     android:id="@+id/reviewWriterDateView"
-                    android:text="작성자 ㅣ 2019.09.28"
                     android:textColor="@color/gray_7"
                     android:textSize="15sp"
                     android:layout_marginTop="8dp"
@@ -80,7 +80,6 @@
                         android:layout_height="wrap_content"/>
                     <TextView
                         android:id="@+id/reviewEventNameView"
-                        android:text="서울 금손 페스티벌"
                         android:textSize="16sp"
                         android:textColor="@color/gray_11"
                         android:layout_row="0"
@@ -100,7 +99,6 @@
                     <TextView
                         android:id="@+id/reviewSalesDateView"
                         android:layout_marginTop="2dp"
-                        android:text="9월 20일(금) ~ 10월 1일(화)"
                         android:textSize="16sp"
                         android:textColor="@color/gray_11"
                         android:layout_row="1"
@@ -143,7 +141,6 @@
 
                 <TextView
                     android:id="@+id/reviewDetailTextView"
-                    android:text="상세 리뷰 보여주기이이"
                     android:textColor="@color/gray_12"
                     android:textSize="16sp"
                     android:layout_width="match_parent"

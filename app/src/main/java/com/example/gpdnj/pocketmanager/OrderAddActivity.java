@@ -58,7 +58,7 @@ public class OrderAddActivity extends AppCompatActivity implements OrderAmountPr
     static ArrayList<OrderDTO> arrayOrder = new ArrayList<OrderDTO>();
 
     FirebaseDatabase database;
-    DatabaseReference databasePRef, databaseORef;
+    DatabaseReference databasePRef, databaseORef, revenueRef;
 
     String salesId;
 
@@ -71,6 +71,7 @@ public class OrderAddActivity extends AppCompatActivity implements OrderAmountPr
         database = FirebaseDatabase.getInstance();
         databasePRef = database.getReference("상품/" + salesId);
         databaseORef = database.getReference("주문/" + salesId);
+        revenueRef = database.getReference("매출/" + salesId);
 
         //툴바 사용 설정
         toolbar = findViewById(R.id.toolbar);
@@ -94,7 +95,7 @@ public class OrderAddActivity extends AppCompatActivity implements OrderAmountPr
         orderRecyclerView = findViewById(R.id.orderRecyclerView);
 
         //OrderRecyclerViewAdapter 생성 시, 기본 생성자인지 다른 생성자인지 몰라서 일단 냅둠
-        //orderRecyclerViewAdapter = new OrderRecyclerViewAdapter(this.getBaseContext());
+        orderRecyclerViewAdapter = new OrderRecyclerViewAdapter(this.getBaseContext());
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this,3);
         orderRecyclerView.setLayoutManager(gridLayoutManager);
@@ -126,6 +127,7 @@ public class OrderAddActivity extends AppCompatActivity implements OrderAmountPr
             }
         });
 
+        /*
         final EditText orderSearch = findViewById(R.id.orderSearch);
         orderSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -145,6 +147,7 @@ public class OrderAddActivity extends AppCompatActivity implements OrderAmountPr
 
             }
         });
+         */
 
         displayProduct();
 
@@ -199,7 +202,8 @@ public class OrderAddActivity extends AppCompatActivity implements OrderAmountPr
             public void onComplete(@NonNull Task<Void> task) {
                 for(OrderDTO dto : arrayOrder) {
                     OrderDTO orderDTO = new OrderDTO(dto.getName(), dto.getPrice(), dto.getAmount());
-                    databaseORef.child(orderId).child("상품수량").push().setValue(orderDTO);
+                    revenueRef.child(orderId).push().setValue(orderDTO);
+                    //databaseORef.child(orderId).child("상품수량").push().setValue(orderDTO);
                 }
                 finish();
             }

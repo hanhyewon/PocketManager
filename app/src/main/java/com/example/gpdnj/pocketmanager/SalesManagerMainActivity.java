@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -120,18 +122,38 @@ public class SalesManagerMainActivity extends AppCompatActivity {
         salesStatisticsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(SalesManagerMainActivity.this, MainExpense.class));
-                //overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
+                Intent intent = new Intent(SalesManagerMainActivity.this, RevenueDetailActivity.class);
+                intent.putExtra("salesId", salesId); //해당 판매ID 넘기기
+                intent.putExtra("salesTitle", salesTitleMain.getText().toString()); //선택한 판매의 Title 넘기기
+                startActivity(intent);
             }
         });
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.home, menu);
+
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home) {
-            finish();
-            overridePendingTransition(R.anim.not_move_activity, R.anim.right_out_activity);
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home : {
+                finish();
+                overridePendingTransition(R.anim.not_move_activity, R.anim.right_out_activity);
+                return true;
+            }
+            case R.id.homeMove: {
+                if(SalesManagerActivity.activity != null) {
+                    SalesManagerActivity activity = SalesManagerActivity.activity;
+                    activity.finish();
+                    overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
+                }
+                finish();
+            }
         }
         return super.onOptionsItemSelected(item);
     }

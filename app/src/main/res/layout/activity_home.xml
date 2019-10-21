@@ -14,6 +14,7 @@
         android:layout_height="wrap_content" />
 
     <ScrollView
+        android:overScrollMode="never"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -91,7 +92,7 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="left"
                         android:gravity="center_vertical"
-                        android:text="판매 참여 행사"
+                        android:text="판매관리"
                         android:textColor="#ffffff"
                         android:textSize="22sp" />
 
@@ -109,9 +110,11 @@
                 </LinearLayout>
 
                 <ListView
+                    android:overScrollMode="never"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="#ffffff"/>
+
             </LinearLayout>
 
             <LinearLayout
@@ -121,13 +124,16 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp">
 
+
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:id="@+id/revenueShowBtn"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
                     android:layout_height="155dp"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
+                    android:layout_marginRight="20dp"
                     android:background="#ffffff"
-                    android:layout_gravity="left"
                     android:orientation="vertical"
                     android:gravity="center">
 
@@ -149,18 +155,14 @@
 
                 </LinearLayout>
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:id="@+id/communityShowBtn"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
                     android:layout_height="155dp"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:background="#ffffff"
-                    android:layout_gravity="right"
                     android:orientation="vertical"
                     android:gravity="center">
 

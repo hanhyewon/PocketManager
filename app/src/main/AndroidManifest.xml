@@ -9,17 +9,16 @@
         android:roundIcon="@mipmap/ic_launcher_pocket_manager_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".RevenueDetailActivity"></activity>
+        <activity android:name=".RevenueMainActivity" />
         <activity android:name=".SalesManagerMainActivity" />
         <activity android:name=".SalesSettingActivity" />
         <activity android:name=".SalesManagerActivity" />
         <activity android:name=".SalesAddActivity" />
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAtvx8z0K2Fk2oKoPl25c6uHd_eAAIWK94" />
         <activity
             android:name="com.example.soyeon.MapsActivity"
             android:label="MapsActivity" />
-        <activity android:name=".OrderAmountPriceAdapter"/>
+        <activity android:name=".OrderAmountPriceAdapter" />
         <activity android:name=".ReviewModifyActivity" />
         <activity android:name=".MyReviewActivity" />
         <activity android:name=".ReviewDetailActivity" />
@@ -43,7 +42,7 @@
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name" /> <!-- Facebook -->
+            android:label="@string/app_name" />
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
@@ -55,7 +54,7 @@
 
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
-        </activity>
+        </activity> <!-- Facebook -->
         <activity android:name=".JoinActivity1" />
         <activity android:name=".JoinActivity2" />
         <activity android:name=".HomeActivity" />
@@ -68,12 +67,15 @@
         <activity android:name="com.example.soyeon.MainProduct" />
         <activity android:name="com.example.soyeon.MapSearchActivity" />
         <activity android:name=".OrderManagerActivity" />
-        <activity android:name=".OrderAddActivity" />        
+        <activity android:name=".OrderAddActivity" />
         <activity android:name="com.example.jiyeong.pastSalesMode" />
         <activity android:name="com.example.jiyeong.writeReview" />
         <activity android:name="com.example.jiyeong.currentSalesMode" />
         <activity android:name="com.example.jiyeong.currentSalesDetail" />
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAtvx8z0K2Fk2oKoPl25c6uHd_eAAIWK94" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAtvx8z0K2Fk2oKoPl25c6uHd_eAAIWK94" />
@@ -85,8 +87,9 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
     </application>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 </manifest>

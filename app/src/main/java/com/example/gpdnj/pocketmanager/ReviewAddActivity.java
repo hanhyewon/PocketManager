@@ -145,8 +145,9 @@ public class ReviewAddActivity extends AppCompatActivity {
         databaseRef.child("리뷰").push().setValue(reviewDTO).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(ReviewAddActivity.this, "등록 완료!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ReviewAddActivity.this, "등록 완료!", Toast.LENGTH_SHORT).show();
                 finish();
+                overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
             }
         });
     }
@@ -179,6 +180,7 @@ public class ReviewAddActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == android.R.id.home) {
             finish();
+            overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -187,5 +189,6 @@ public class ReviewAddActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
     }
 }

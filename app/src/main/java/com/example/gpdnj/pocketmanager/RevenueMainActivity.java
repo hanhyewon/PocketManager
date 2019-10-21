@@ -1,6 +1,7 @@
 package com.example.gpdnj.pocketmanager;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,30 +26,23 @@ import com.navdrawer.SimpleSideDrawer;
 
 import java.util.ArrayList;
 
-public class SalesManagerActivity extends AppCompatActivity {
+public class RevenueMainActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     SimpleSideDrawer slide_menu;
-
-    TextView salesNullText;
-    ListView salesListview;
-    SalesListviewAdapter salesListviewAdapter;
+    TextView salesNullText_current, salesNullText_past, currentRevenue, pastRevenue;
 
     FirebaseAuth firebaseAuth;
     FirebaseDatabase database;
     DatabaseReference databaseRef;
 
+    SalesListviewAdapter salesListviewAdapter;
     static ArrayList<SalesDTO> arraySales = new ArrayList<SalesDTO>();
-
-    //다른 액티비티에서 종료시키기 위한 변수 선언
-    public static SalesManagerActivity activity = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sales_manager);
-
-        activity = this;
+        setContentView(R.layout.activity_revenue_main);
 
         firebaseAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -57,56 +51,71 @@ public class SalesManagerActivity extends AppCompatActivity {
         //툴바 사용 설정
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_white);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); //왼쪽 버튼 사용 여부 true
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_white); //왼쪽 버튼 이미지 설정
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        //툴바 타이틀명 설정
         TextView toolbar_title = findViewById(R.id.toolbar_title);
-        toolbar_title.setText("판매관리");
+        toolbar_title.setText("매출관리");
 
         //툴바 메뉴 클릭 시, 나타날 navigation 화면 설정
         slide_menu = new SimpleSideDrawer(this);
         slide_menu.setLeftBehindContentView(R.layout.navigation_menu);
 
+        currentRevenue = findViewById(R.id.currentRevenue);
+        pastRevenue = findViewById(R.id.pastRevenue);
+        salesNullText_current = findViewById(R.id.salesNullText_current);
+        salesNullText_past = findViewById(R.id.salesNullText_past);
+
         //판매 어댑터와 리스트뷰 연결
-        salesListview = findViewById(R.id.salesListview);
+        ListView revenueSalesListview = findViewById(R.id.revenueSalesListview);
         salesListviewAdapter = new SalesListviewAdapter(getBaseContext());
-        salesListview.setAdapter(salesListviewAdapter);
+        revenueSalesListview.setAdapter(salesListviewAdapter);
 
-        salesNullText = findViewById(R.id.salesNullText);
-
-        //판매 DB 리스트뷰 보여주기
-        displaySalesList();
-
-        salesListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //리스트뷰 클릭 시, 해당 판매의 매출 화면 보여주기
+        revenueSalesListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent mainIntent = new Intent(SalesManagerActivity.this, SalesManagerMainActivity.class);
+                Intent detailIntent = new Intent(RevenueMainActivity.this, RevenueDetailActivity.class);
                 SalesDTO salesDTO = (SalesDTO) parent.getAdapter().getItem(position);
 
-                mainIntent.putExtra("salesId", salesDTO.getSalesId()); //선택한 판매의 ID 넘기기
-                startActivity(mainIntent);
-
-                overridePendingTransition(R.anim.right_in_activity, R.anim.not_move_activity);
+                detailIntent.putExtra("salesId", salesDTO.getSalesId()); //선택한 판매의 ID 넘기기
+                detailIntent.putExtra("salesTitle", salesDTO.getTitle()); //선택한 판매의 Title 넘기기
+                detailIntent.putExtra("salesDate", salesDTO.getDate());
+                startActivity(detailIntent);
             }
         });
 
-        //판매등록 화면으로 이동
-        TextView salesAddShowBtn = findViewById(R.id.salesAddShowBtn);
-        salesAddShowBtn.setOnClickListener(new View.OnClickListener() {
+        //현재판매
+        currentRevenue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent addIntent = new Intent(SalesManagerActivity.this, SalesAddActivity.class);
-                startActivity(addIntent);
+                currentRevenue.setTextColor(Color.parseColor("#08D1D1"));
+                pastRevenue.setTextColor(Color.parseColor("#636363"));
+                displayCurrentSalesView();
+            }
+        });
+
+        //지난판매
+        pastRevenue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentRevenue.setTextColor(Color.parseColor("#636363"));
+                pastRevenue.setTextColor(Color.parseColor("#08D1D1"));
+                displayPastSalesView();
             }
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        displayCurrentSalesView(); //현재판매 뷰가 디폴트
+    }
 
-    //판매 DB 정보 출력
-    private void displaySalesList() {
-        databaseRef.addValueEventListener(new ValueEventListener() {
+    //현재 판매관리 중인 판매 보여주기
+    private void displayCurrentSalesView() {
+        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 arraySales.clear();
@@ -124,7 +133,7 @@ public class SalesManagerActivity extends AppCompatActivity {
                 }
                 salesListviewAdapter.addItems(arraySales);
                 salesListviewAdapter.notifyDataSetChanged();
-                nullCheckShow();
+                nullCheckShow(true);
             }
 
             @Override
@@ -134,12 +143,53 @@ public class SalesManagerActivity extends AppCompatActivity {
         });
     }
 
-    //현재 판매관리 중인 판매가 없을 경우, 보여줄 메시지 Show
-    private void nullCheckShow() {
-        if(salesListviewAdapter.items.isEmpty()) {
-            salesNullText.setVisibility(View.VISIBLE);
+    private void displayPastSalesView() {
+        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                arraySales.clear();
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    //판매가 종료된(state == false) 판매만 보이기
+                    if(!(boolean)data.child("state").getValue()) {
+                        String salesId = data.getKey();
+
+                        String title = (String) data.child("title").getValue();
+                        String date = (String) data.child("date").getValue();
+
+                        SalesDTO salesDTO = new SalesDTO(salesId, title, date);
+                        arraySales.add(salesDTO);
+                    }
+                }
+                salesListviewAdapter.addItems(arraySales);
+                salesListviewAdapter.notifyDataSetChanged();
+                nullCheckShow(false);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    //판매관리 중인 판매가 없을 경우, 보여줄 메시지 Show
+    private void nullCheckShow(boolean bol) {
+        if(bol) {
+            //현재판매
+            salesNullText_past.setVisibility(View.INVISIBLE);
+            if(salesListviewAdapter.items.isEmpty()) {
+                salesNullText_current.setVisibility(View.VISIBLE);
+            } else {
+                salesNullText_current.setVisibility(View.INVISIBLE);
+            }
         } else {
-            salesNullText.setVisibility(View.INVISIBLE);
+            //지난판매
+            salesNullText_current.setVisibility(View.INVISIBLE);
+            if(salesListviewAdapter.items.isEmpty()) {
+                salesNullText_past.setVisibility(View.VISIBLE);
+            } else {
+                salesNullText_past.setVisibility(View.INVISIBLE);
+            }
         }
     }
 
@@ -186,7 +236,7 @@ public class SalesManagerActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         FirebaseAuth.getInstance().signOut();
                         finish();
-                        Intent intent = new Intent(SalesManagerActivity.this, MainActivity.class);
+                        Intent intent = new Intent(RevenueMainActivity.this, MainActivity.class);
                         startActivity(intent);
                     }
                 });
@@ -197,7 +247,7 @@ public class SalesManagerActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         finish();
-                        Intent intent = new Intent(SalesManagerActivity.this, SalesManagerActivity.class);
+                        Intent intent = new Intent(RevenueMainActivity.this, SalesManagerActivity.class);
                         startActivity(intent);
                     }
                 });
@@ -208,7 +258,7 @@ public class SalesManagerActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         finish();
-                        Intent intent = new Intent(SalesManagerActivity.this, RevenueMainActivity.class);
+                        Intent intent = new Intent(RevenueMainActivity.this, RevenueMainActivity.class);
                         startActivity(intent);
                     }
                 });
@@ -219,7 +269,7 @@ public class SalesManagerActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         finish();
-                        Intent intent = new Intent(SalesManagerActivity.this, ManagerEventSettingActivity.class);
+                        Intent intent = new Intent(RevenueMainActivity.this, ManagerEventSettingActivity.class);
                         startActivity(intent);
                     }
                 });
@@ -230,7 +280,7 @@ public class SalesManagerActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         finish();
-                        Intent intent = new Intent(SalesManagerActivity.this, ReviewMainActivity.class);
+                        Intent intent = new Intent(RevenueMainActivity.this, ReviewMainActivity.class);
                         startActivity(intent);
                     }
                 });
@@ -241,7 +291,7 @@ public class SalesManagerActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         finish();
-                        Intent intent = new Intent(SalesManagerActivity.this, MyReviewActivity.class);
+                        Intent intent = new Intent(RevenueMainActivity.this, MyReviewActivity.class);
                         startActivity(intent);
                     }
                 });
