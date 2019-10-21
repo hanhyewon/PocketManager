@@ -14,22 +14,24 @@ public class ReviewDTO {
     private String reviewDate;
 
     //Review Main Activity
-    public ReviewDTO(String reviewId, String uid, String category, String title, String reviewDate, String detailText) {
+    public ReviewDTO(String reviewId, String uid, String category, String title, String reviewDate, String detailText, String location) {
         this.reviewId = reviewId;
         this.uid = uid;
         this.category = category;
         this.title = title;
         this.reviewDate = reviewDate;
         this.detailText = detailText;
+        this.location = location;
     }
 
     //Review Add Activity (행사명 포함)
-    public ReviewDTO(String uid, String userName, String category, String title, String eventName, String salesDate,  float rating, String detailText, String reviewDate) {
+    public ReviewDTO(String uid, String userName, String category, String title, String eventName, String location, String salesDate, float rating, String detailText, String reviewDate) {
         this.uid = uid;
         this.userName = userName;
         this.category = category;
         this.title = title;
         this.eventName = eventName;
+        this.location = location;
         this.salesDate = salesDate;
         this.rating = rating;
         this.detailText = detailText;
@@ -37,11 +39,12 @@ public class ReviewDTO {
     }
 
     //Review Add Activity
-    public ReviewDTO(String uid, String userName, String category, String title, String salesDate,  float rating, String detailText, String reviewDate) {
+    public ReviewDTO(String uid, String userName, String category, String title, String location, String salesDate,  float rating, String detailText, String reviewDate) {
         this.uid = uid;
         this.userName = userName;
         this.category = category;
         this.title = title;
+        this.location = location;
         this.salesDate = salesDate;
         this.rating = rating;
         this.detailText = detailText;

@@ -11,14 +11,23 @@
         android:theme="@style/AppTheme">
         <activity android:name=".RevenueDetailActivity"></activity>
         <activity android:name=".RevenueMainActivity" />
+      
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAtvx8z0K2Fk2oKoPl25c6uHd_eAAIWK94" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name="com.example.soyeon.MapSearchActivity"
+            android:label="MapSearchActivity"></activity>
+      
         <activity android:name=".SalesManagerMainActivity" />
         <activity android:name=".SalesSettingActivity" />
         <activity android:name=".SalesManagerActivity" />
         <activity android:name=".SalesAddActivity" />
-        <activity
-            android:name="com.example.soyeon.MapsActivity"
-            android:label="MapsActivity" />
-        <activity android:name=".OrderAmountPriceAdapter" />
+        <activity android:name=".OrderAmountPriceAdapter"/>
         <activity android:name=".ReviewModifyActivity" />
         <activity android:name=".MyReviewActivity" />
         <activity android:name=".ReviewDetailActivity" />
@@ -65,6 +74,7 @@
         <activity android:name="com.example.soyeon.AddExpense" />
         <activity android:name="com.example.soyeon.EditExpense" />
         <activity android:name="com.example.soyeon.MainProduct" />
+        <activity android:name="com.example.soyeon.SearchActivity"/>
         <activity android:name="com.example.soyeon.MapSearchActivity" />
         <activity android:name=".OrderManagerActivity" />
         <activity android:name=".OrderAddActivity" />
