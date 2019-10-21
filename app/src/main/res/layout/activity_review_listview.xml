@@ -4,8 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="20dp"
-    android:background="@drawable/stroke_top_bottom">
+    android:paddingTop="25dp"
+    android:paddingBottom="25dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:background="@color/white">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,8 +25,8 @@
                 <TextView
                     android:id="@+id/categoryItemView"
                     android:text="카테고리"
-                    android:textSize="16sp"
-                    android:textColor="@color/mint_4"
+                    android:textSize="17sp"
+                    android:textColor="@color/mint_5"
                     android:layout_row="0"
                     android:layout_column="0"
                     android:layout_width="wrap_content"
@@ -31,7 +34,8 @@
                 <TextView
                     android:id="@+id/titleItemView"
                     android:text="리뷰 제목 길어지는 것도 생각"
-                    android:textSize="23sp"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
                     android:textColor="#333333"
                     android:maxLines="1"
                     android:ellipsize="end"
@@ -40,7 +44,6 @@
                     android:layout_column="0"
                     android:layout_width="280dp"
                     android:layout_height="wrap_content"/>
-
 
                 <ImageView
                     android:id="@+id/reviewMore"
@@ -53,14 +56,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-
             </GridLayout>
         </LinearLayout>
 
         <TextView
             android:id="@+id/reviewDateItemView"
             android:text="작성일"
-            android:textSize="16sp"
+            android:textSize="17sp"
             android:textColor="@color/gray_7"
             android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"
@@ -73,9 +75,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="상세리뷰의 일부를 보여주기"
-        android:textSize="17sp"
+        android:textSize="15sp"
         android:textColor="@color/gray_8"
-        android:maxLines="2"
+        android:maxLines="3"
         android:ellipsize="end"/>
 
 </LinearLayout>

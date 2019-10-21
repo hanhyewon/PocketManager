@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ManagerEventSettingActivity extends AppCompatActivity implements EventListviewAdapter.BtnClickListener {
 
@@ -42,6 +44,7 @@ public class ManagerEventSettingActivity extends AppCompatActivity implements Ev
     static ArrayList<EventDTO> arrayEvent = new ArrayList<EventDTO>();
 
     Intent detailIntent, modifyIntent;
+    boolean managerCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,11 @@ public class ManagerEventSettingActivity extends AppCompatActivity implements Ev
 
         database = FirebaseDatabase.getInstance();
         databaseRef = database.getReference("행사");
+        if(FirebaseAuth.getInstance().getCurrentUser().getDisplayName().equals("관리자")) {
+            managerCheck = true;
+        } else {
+            managerCheck = false;
+        }
 
         detailIntent = new Intent(ManagerEventSettingActivity.this, EventDetailActivity.class);
         modifyIntent = new Intent(ManagerEventSettingActivity.this, EventModifyActivity.class);
@@ -78,30 +86,28 @@ public class ManagerEventSettingActivity extends AppCompatActivity implements Ev
                 EventDTO eventDTO = (EventDTO) parent.getAdapter().getItem(position);
                 detailIntent.putExtra("eventId", eventDTO.getEventId()); //선택한 행사의 ID 넘기기
                 startActivity(detailIntent);
+                overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
             }
         });
 
         //행사등록 버튼
         ImageView eventInputBtn = findViewById(R.id.eventInputBtn);
-        eventInputBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ManagerEventSettingActivity.this, EventAddActivity.class);
-                startActivity(intent);
-            }
-        });
+        if(managerCheck) {
+            eventInputBtn.setVisibility(View.VISIBLE);
+            eventInputBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(ManagerEventSettingActivity.this, EventAddActivity.class);
+                    startActivity(intent);
+                }
+            });
+        } else {
+            eventInputBtn.setVisibility(View.GONE);
+        }
     }
-
-    /*
-    @Override
-    public void onStart() {
-        super.onStart();
-        setAdapter();
-    }
-     */
 
     private void setAdapter() {
-        eventAdapter = new EventListviewAdapter(this.getBaseContext(), this);
+        eventAdapter = new EventListviewAdapter(this.getBaseContext(), this, managerCheck);
         eventListview.setAdapter(eventAdapter);
     }
 
@@ -159,6 +165,7 @@ public class ManagerEventSettingActivity extends AppCompatActivity implements Ev
                     arrayEvent.add(eventDTO);
                 }
                 eventAdapter.addItems(arrayEvent);
+                Collections.reverse(arrayEvent); //최신정렬
                 eventAdapter.notifyDataSetChanged();
             }
 

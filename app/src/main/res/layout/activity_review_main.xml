@@ -12,41 +12,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <LinearLayout
-        android:padding="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <!-- TextView 임시용 -> 나중에 스피너로 검색기능 만들어야 함-->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:layout_marginRight="10dp"
-            android:text="최신순"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:background="@drawable/rounded_more_gray"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:layout_marginRight="10dp"
-            android:text="지역"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:background="@drawable/rounded_more_gray"/>
-
-    </LinearLayout>
-
+    <Spinner
+        android:id="@+id/rvSpinner1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="@color/transparent"
+        android:spinnerMode="dropdown" />
+    <!--        android:animateLayoutChanges="false"
+        android:dropDownWidth="wrap_content"-->
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -66,8 +42,8 @@
             android:id="@+id/reviewListview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="#f5f5f5"
-            android:dividerHeight="13dp"
+            android:divider="@color/transparent"
+            android:dividerHeight="15dp"
             android:listSelector="@android:color/transparent"
             android:scrollbars="none"
             android:cacheColorHint="@color/transparent" />

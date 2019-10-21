@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,7 +21,6 @@ import com.example.soyeon.MapSearchActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -31,6 +32,7 @@ import ru.slybeaver.slycalendarview.SlyCalendarDialog;
 
 public class ReviewAddActivity extends AppCompatActivity {
 
+    Toolbar toolbar;
     Spinner category;
     EditText reviewTitle, reviewEventName, reviewLocation, reviewDetailText;
     TextView reviewSalesDate, reviewSalesLocation;
@@ -51,6 +53,16 @@ public class ReviewAddActivity extends AppCompatActivity {
 
         databaseRef = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
+
+        //툴바 사용 설정
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        //툴바 타이틀명 설정
+        TextView toolbar_title = findViewById(R.id.toolbar_title);
+        toolbar_title.setText("리뷰 등록");
 
         category = findViewById(R.id.category);
         reviewTitle = findViewById(R.id.reviewTitle);
@@ -179,16 +191,30 @@ public class ReviewAddActivity extends AppCompatActivity {
         public void onDataSelected(Calendar firstDate, Calendar secondDate, int hours, int minutes) {
             if (firstDate != null) {
                 if (secondDate == null) {
-                    salesDate = new SimpleDateFormat("MM.dd(E)").format(firstDate.getTime());
+                    salesDate = new SimpleDateFormat("yy.MM.dd(E)").format(firstDate.getTime());
                     //eventDate.setText(date.substring(3, 11));
                     reviewSalesDate.setText(salesDate);
                 } else {
-                    salesDate = new SimpleDateFormat("MM.dd(E)").format(firstDate.getTime())
-                            + " - " + new SimpleDateFormat("MM.dd(E)").format(secondDate.getTime());
+                    salesDate = new SimpleDateFormat("yy.MM.dd(E)").format(firstDate.getTime())
+                            + " - " + new SimpleDateFormat("yy.MM.dd(E)").format(secondDate.getTime());
                     //String str = date.substring(3, 14) + date.substring(17, 25);
                     reviewSalesDate.setText(salesDate);
                 }
             }
         }
     };
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

@@ -10,7 +10,6 @@
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:layout_gravity="center"
-        android:src="@mipmap/ic_launcher"
         android:scaleType="centerCrop" />
 
 </FrameLayout>

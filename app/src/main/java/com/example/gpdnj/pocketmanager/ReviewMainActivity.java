@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,12 +21,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ReviewMainActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     FloatingActionButton reviewAddBtn;
     Intent addIntent, detailIntent;
+    Spinner rvSpinner;
+    final String[] showSpinner = {"카테고리","행사", "팝업스토어","푸드트럭","플리마켓","기타"};
 
     private ListView reviewListview;
     private ReviewListviewAdapter reviewAdapter;
@@ -56,9 +61,28 @@ public class ReviewMainActivity extends AppCompatActivity {
         TextView toolbar_title = findViewById(R.id.toolbar_title);
         toolbar_title.setText("커뮤니티");
 
+        //리뷰 어댑터와 리스트뷰 연결
         reviewListview = findViewById(R.id.reviewListview);
         setAdapter();
-        displayReviewList();
+
+        //카테고리 스피너 검색
+        rvSpinner = findViewById(R.id.rvSpinner1);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, R.layout.category_spinner, showSpinner);
+        spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        rvSpinner.setAdapter(spinnerAdapter);
+
+        rvSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String spItem = rvSpinner.getItemAtPosition(position).toString();
+                displaySpinnerList(spItem);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         //리뷰 등록화면으로 이동
         reviewAddBtn = findViewById(R.id.reviewAddBtn);
@@ -77,6 +101,7 @@ public class ReviewMainActivity extends AppCompatActivity {
                 detailIntent.putExtra("reviewId", reviewDTO.getReviewId()); //선택한 리뷰의 ID 넘기기
                 detailIntent.putExtra("Location", reviewDTO.getLocation());//위치값 넘기기
                 startActivity(detailIntent);
+                overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
             }
         });
     }
@@ -88,7 +113,7 @@ public class ReviewMainActivity extends AppCompatActivity {
     }
 
     //리뷰 DB 정보 출력
-    private void displayReviewList() {
+    private void displaySpinnerList(final String spItem) {
         databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -97,7 +122,7 @@ public class ReviewMainActivity extends AppCompatActivity {
                     String reviewId = data.getKey();
                     String reviewUid = (String) data.child("uid").getValue();
 
-                    String category = (String) data.child("category").getValue();
+                    final String category = (String) data.child("category").getValue();
                     String title = (String) data.child("title").getValue();
                     String reviewDate = (String) data.child("reviewDate").getValue();
                     String detailText = (String) data.child("detailText").getValue();
@@ -105,8 +130,19 @@ public class ReviewMainActivity extends AppCompatActivity {
 
                     ReviewDTO reviewDTO = new ReviewDTO(reviewId, reviewUid, category, title, reviewDate, detailText, location);
                     arrayReview.add(reviewDTO);
+                  
+                    if(spItem.equals(category)) {
+                        //카테고리 스피너 선택했을 경우에는 해당 카테고리 리뷰만 보여주기
+                        ReviewDTO reviewDTO = new ReviewDTO(reviewId, reviewUid, category, title, reviewDate, detailText);
+                        arrayReview.add(reviewDTO);
+                    } else if(spItem.equals("카테고리")) {
+                        //카테고리 선택 안했을 경우에는 전부 보여주기
+                        ReviewDTO reviewDTO = new ReviewDTO(reviewId, reviewUid, category, title, reviewDate, detailText);
+                        arrayReview.add(reviewDTO);
+                    }
                 }
                 reviewAdapter.addItems(arrayReview);
+                Collections.reverse(arrayReview); //최신정렬
                 reviewAdapter.notifyDataSetChanged();
             }
 
@@ -116,4 +152,5 @@ public class ReviewMainActivity extends AppCompatActivity {
             }
         });
     }
+
 }

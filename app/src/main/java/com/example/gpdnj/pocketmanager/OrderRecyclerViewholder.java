@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.soyeon.ProductListData;
+import com.example.soyeon.ProductDTO;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
@@ -48,10 +48,10 @@ public class OrderRecyclerViewholder extends RecyclerView.ViewHolder {
     }
 
     //setItem 메소드는 SingerItem 객체를 전달받아 뷰홀더 안에 있는 뷰에 데이터를 설정하는 역할을 합니다.
-    public void setItem(ProductListData item, final Context context) {
-        this.orderProductName.setText(item.getpName());
+    public void setItem(ProductDTO item, final Context context) {
+        this.orderProductName.setText(item.getName());
 
-        imgRef = FirebaseStorage.getInstance().getReference(item.getpImage()); //해당 경로명으로 참조하는 파일명 지정
+        imgRef = FirebaseStorage.getInstance().getReference(item.getImgUrl()); //해당 경로명으로 참조하는 파일명 지정
         imgRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() { //다운로드 Url 가져옴
             @Override
             public void onComplete(@NonNull Task<Uri> task) {

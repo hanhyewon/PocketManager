@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="reviewArray">
-        <item> 카테고리를 선택하세요 </item>
+        <item> 카테고리 </item>
         <item> 행사 </item>
+        <item> 팝업스토어 </item>
         <item> 푸드트럭 </item>
+        <item> 플리마켓 </item>
         <item> 기타 </item>
     </string-array>
 </resources>

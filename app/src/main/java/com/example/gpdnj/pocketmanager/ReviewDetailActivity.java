@@ -165,9 +165,16 @@ public class ReviewDetailActivity extends AppCompatActivity implements OnMapRead
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == android.R.id.home) {
             finish();
+            overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
     }
 }
 //Toast.makeText(getApplicationContext(), getIntent().getStringExtra("reviewLocation"), Toast.LENGTH_SHORT).show();
