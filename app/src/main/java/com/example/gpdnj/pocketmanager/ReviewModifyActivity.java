@@ -1,5 +1,6 @@
 package com.example.gpdnj.pocketmanager;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.soyeon.MapSearchActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -34,12 +36,13 @@ public class ReviewModifyActivity extends AppCompatActivity {
     Toolbar toolbar;
     Spinner category;
     EditText reviewTitle, reviewEventName, reviewLocation, reviewDetailText;
-    TextView reviewSalesDate;
+    TextView reviewSalesDate, reviewSalesLocation;
     RatingBar reviewRatingBar;
     Button reviewDataModifyBtn;
 
-    String selectedCategory, title, eventName, salesDate, detailText, reviewDate, uid, userName, reviewId;
+    String selectedCategory, title, eventName, salesDate, detailText, reviewDate, uid, userName, reviewId, location;
     float ratingScore = -1f;
+    private int REQUEST_TEST = 1;
 
     FirebaseDatabase database;
     DatabaseReference databaseRef;
@@ -69,6 +72,7 @@ public class ReviewModifyActivity extends AppCompatActivity {
         reviewRatingBar = findViewById(R.id.mReviewRatingBar);
         reviewDetailText = findViewById(R.id.mReviewDetailText);
         reviewDataModifyBtn = findViewById(R.id.mReviewDataModifyBtn);
+        reviewSalesLocation = findViewById(R.id.mReviewLocation);
 
         reviewId = getIntent().getStringExtra("reviewId");
 
@@ -120,6 +124,14 @@ public class ReviewModifyActivity extends AppCompatActivity {
             }
         });
 
+        reviewSalesLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ReviewModifyActivity.this, MapSearchActivity.class);
+                startActivityForResult(intent, REQUEST_TEST);
+            }
+        });
+
         //선택한 리뷰 DB 정보 세팅
         databaseRef.child(reviewId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -161,6 +173,21 @@ public class ReviewModifyActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_TEST) {
+            if (resultCode == RESULT_OK) {
+                //Toast.makeText(ReviewAddActivity.this, "Result: " + data.getStringExtra("result"), Toast.LENGTH_SHORT).show();
+                reviewSalesLocation.setText(data.getStringExtra("result"));
+                location = data.getStringExtra("result");
+            } else {   // RESULT_CANCEL
+                Toast.makeText(ReviewModifyActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     private void reviewDataModify() {
         ReviewDTO reviewDTO;
         title = reviewTitle.getText().toString();
@@ -168,9 +195,9 @@ public class ReviewModifyActivity extends AppCompatActivity {
 
         if(selectedCategory.equals("행사")) {
             eventName = reviewEventName.getText().toString();
-            reviewDTO = new ReviewDTO(uid, userName, selectedCategory, title, eventName, salesDate, ratingScore, detailText, reviewDate);
+            reviewDTO = new ReviewDTO(uid, userName, selectedCategory, title, eventName, location, salesDate, ratingScore, detailText, reviewDate);
         } else {
-            reviewDTO = new ReviewDTO(uid, userName, selectedCategory, title, salesDate, ratingScore, detailText, reviewDate);
+            reviewDTO = new ReviewDTO(uid, userName, selectedCategory, title, location, salesDate, ratingScore, detailText, reviewDate);
         }
 
         databaseRef.child(reviewId).setValue(reviewDTO).addOnCompleteListener(new OnCompleteListener<Void>() {

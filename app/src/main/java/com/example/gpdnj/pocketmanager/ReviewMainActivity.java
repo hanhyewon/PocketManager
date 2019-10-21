@@ -99,6 +99,7 @@ public class ReviewMainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ReviewDTO reviewDTO = (ReviewDTO) parent.getAdapter().getItem(position);
                 detailIntent.putExtra("reviewId", reviewDTO.getReviewId()); //선택한 리뷰의 ID 넘기기
+                detailIntent.putExtra("Location", reviewDTO.getLocation());//위치값 넘기기
                 startActivity(detailIntent);
                 overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
             }
@@ -125,7 +126,11 @@ public class ReviewMainActivity extends AppCompatActivity {
                     String title = (String) data.child("title").getValue();
                     String reviewDate = (String) data.child("reviewDate").getValue();
                     String detailText = (String) data.child("detailText").getValue();
+                    String location = (String) data.child("location").getValue();
 
+                    ReviewDTO reviewDTO = new ReviewDTO(reviewId, reviewUid, category, title, reviewDate, detailText, location);
+                    arrayReview.add(reviewDTO);
+                  
                     if(spItem.equals(category)) {
                         //카테고리 스피너 선택했을 경우에는 해당 카테고리 리뷰만 보여주기
                         ReviewDTO reviewDTO = new ReviewDTO(reviewId, reviewUid, category, title, reviewDate, detailText);

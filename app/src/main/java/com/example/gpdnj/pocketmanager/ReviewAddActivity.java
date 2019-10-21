@@ -1,5 +1,6 @@
 package com.example.gpdnj.pocketmanager;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.soyeon.MapSearchActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,12 +35,13 @@ public class ReviewAddActivity extends AppCompatActivity {
     Toolbar toolbar;
     Spinner category;
     EditText reviewTitle, reviewEventName, reviewLocation, reviewDetailText;
-    TextView reviewSalesDate;
+    TextView reviewSalesDate, reviewSalesLocation;
     RatingBar reviewRatingBar;
     Button reviewDataAddBtn;
 
-    String selectedCategory, title, eventName, salesDate, detailText, reviewDate, uid, userName;
+    String selectedCategory, title, eventName, salesDate, detailText, reviewDate, uid, userName, location;
     float ratingScore = -1f;
+    private int REQUEST_TEST = 1;
 
     DatabaseReference databaseRef;
     FirebaseAuth firebaseAuth;
@@ -68,6 +71,9 @@ public class ReviewAddActivity extends AppCompatActivity {
         reviewRatingBar = findViewById(R.id.reviewRatingBar);
         reviewDetailText = findViewById(R.id.reviewDetailText);
         reviewDataAddBtn = findViewById(R.id.reviewDataAddBtn);
+        reviewSalesLocation = findViewById(R.id.reviewLocation);
+
+        final Intent intent_Map = new Intent(this, MapSearchActivity.class);
 
         //Spinner 설정
         String[] str = getResources().getStringArray(R.array.reviewArray);
@@ -123,6 +129,29 @@ public class ReviewAddActivity extends AppCompatActivity {
                 reviewDataAdd();
             }
         });
+
+        reviewSalesLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ReviewAddActivity.this, MapSearchActivity.class);
+                startActivityForResult(intent, REQUEST_TEST);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_TEST) {
+            if (resultCode == RESULT_OK) {
+                //Toast.makeText(ReviewAddActivity.this, "Result: " + data.getStringExtra("result"), Toast.LENGTH_SHORT).show();
+                reviewSalesLocation.setText(data.getStringExtra("result"));
+                location = data.getStringExtra("result");
+            } else {   // RESULT_CANCEL
+                Toast.makeText(ReviewAddActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     //리뷰글 DB 등록
@@ -137,9 +166,9 @@ public class ReviewAddActivity extends AppCompatActivity {
 
         if(selectedCategory.equals("행사")) {
             eventName = reviewEventName.getText().toString();
-            reviewDTO = new ReviewDTO(uid, userName, selectedCategory, title, eventName, salesDate, ratingScore, detailText, reviewDate);
+            reviewDTO = new ReviewDTO(uid, userName, selectedCategory, title, eventName, location, salesDate, ratingScore, detailText, reviewDate);
         } else {
-            reviewDTO = new ReviewDTO(uid, userName, selectedCategory, title, salesDate, ratingScore, detailText, reviewDate);
+            reviewDTO = new ReviewDTO(uid, userName, selectedCategory, title, location, salesDate, ratingScore, detailText, reviewDate);
         }
 
         databaseRef.child("리뷰").push().setValue(reviewDTO).addOnCompleteListener(new OnCompleteListener<Void>() {
