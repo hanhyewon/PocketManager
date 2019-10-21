@@ -8,6 +8,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorControlHighlight">@color/mint_2</item>
+        <item name="android:statusBarColor">#62c9f8</item>
     </style>
 
     <!-- 툴바 아이콘 흰색으로 설정 -->

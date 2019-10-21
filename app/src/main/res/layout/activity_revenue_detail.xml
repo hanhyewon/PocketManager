@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:textSize="22sp"
+                android:text="순이익"
+                android:gravity="left"
+                android:textColor="@color/gray_10"
+                android:textStyle="bold"
+                android:paddingLeft="20dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:background="@color/gray_3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+
+            <TableLayout
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TableRow>
+                    <TextView
+                        android:text="수입"
+                        android:textSize="17sp"
+                        android:textColor="@color/mint_5"
+                        android:drawableLeft="@drawable/profit_mint"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:text="지출"
+                        android:textColor="#02C78F"
+                        android:textSize="17sp"
+                        android:drawableLeft="@drawable/expense_green"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:text="순이익"
+                        android:textSize="17sp"
+                        android:textColor="@color/gray_8"
+                        android:drawableLeft="@drawable/income_gray"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+                </TableRow>
+                <TableRow
+                    android:layout_marginTop="5dp">
+                    <TextView
+                        android:id="@+id/revenueDataView"
+                        android:textSize="17sp"
+                        android:textColor="@color/mint_5"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/expenseDataView"
+                        android:textSize="17sp"
+                        android:textColor="#02C78F"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/profitDataView"
+                        android:textSize="17sp"
+                        android:textColor="@color/gray_8"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+                </TableRow>
+            </TableLayout>
+
+            <View
+                android:layout_marginTop="15dp"
+                android:background="@color/gray_2"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"/>
+
+            <TextView
+                android:textSize="22sp"
+                android:text="결제수단/상품판매 분석"
+                android:gravity="left"
+                android:textColor="@color/gray_10"
+                android:textStyle="bold"
+                android:paddingLeft="20dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:background="@color/gray_3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+
+            <RadioGroup
+                android:id="@+id/chartRadioGroup"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RadioButton
+                    android:id="@+id/payRadioBtn"
+                    android:text="결제수단 비율"
+                    android:textColor="@color/gray_9"
+                    android:textSize="18sp"
+                    android:checked="true"
+                    android:buttonTint="@color/mint_5"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+                <RadioButton
+                    android:id="@+id/productRadioBtn"
+                    android:text="상품별 판매량"
+                    android:textColor="@color/gray_9"
+                    android:textSize="18sp"
+                    android:buttonTint="@color/mint_5"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+            </RadioGroup>
+
+            <RelativeLayout
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/payChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp" />
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/orderProductChart"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="320dp"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

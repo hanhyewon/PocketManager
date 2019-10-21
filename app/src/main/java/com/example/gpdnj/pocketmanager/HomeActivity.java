@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.jiyeong.pastSalesMode;
@@ -66,6 +67,27 @@ public class HomeActivity extends AppCompatActivity {
         //툴바 메뉴 클릭 시, 나타날 navigation 화면 설정
         slide_menu = new SimpleSideDrawer(this);
         slide_menu.setLeftBehindContentView(R.layout.navigation_menu);
+
+        LinearLayout revenueShowBtn = findViewById(R.id.revenueShowBtn);
+        LinearLayout communityShowBtn = findViewById(R.id.communityShowBtn);
+
+        //매출관리
+        revenueShowBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, RevenueMainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //커뮤니티
+        communityShowBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, ReviewMainActivity.class);
+                startActivity(intent);
+            }
+        });
 
         //행사정보 ViewPager
         imageModelArrayList = new ArrayList<>();
@@ -131,7 +153,7 @@ public class HomeActivity extends AppCompatActivity {
                 moneyTotalManagerBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(HomeActivity.this, pastSalesMode.class);
+                        Intent intent = new Intent(HomeActivity.this, RevenueMainActivity.class);
                         startActivity(intent);
                     }
                 });

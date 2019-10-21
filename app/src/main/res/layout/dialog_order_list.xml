@@ -66,8 +66,11 @@
         android:divider="@color/transparent"
         android:dividerHeight="15dp"
         android:listSelector="@android:color/transparent"
-        android:scrollbars="none"
         android:cacheColorHint="@color/transparent"
+        android:overScrollMode="never"
+        android:scrollbarStyle="outsideInset"
+        android:scrollbarThumbVertical="@color/mint_5"
+        android:scrollbarSize="3dp"
         android:layout_width="match_parent"
         android:layout_height="150dp"/>
 
@@ -95,7 +98,6 @@
             android:layout_height="wrap_content" />
         <TextView
             android:id="@+id/orderDialogPayInfo"
-            android:text="현금"
             android:textSize="17sp"
             android:gravity="right"
             android:textColor="@color/gray_8"
@@ -120,7 +122,6 @@
             android:layout_height="wrap_content" />
         <TextView
             android:id="@+id/orderDialogSumInfo"
-            android:text="12,800원"
             android:textSize="17sp"
             android:gravity="right"
             android:textColor="#CE1010"

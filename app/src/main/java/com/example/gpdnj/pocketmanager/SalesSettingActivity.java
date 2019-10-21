@@ -6,6 +6,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -78,7 +80,7 @@ public class SalesSettingActivity extends AppCompatActivity {
                                 database.getReference("상품/" + salesId).removeValue();
                                 database.getReference("주문/" + salesId).removeValue();
                                 database.getReference("지출/" + salesId).removeValue();
-                                //database.getReference("매출/" + salesId).removeValue();
+                                database.getReference("매출/" + salesId).removeValue();
                                 databaseRef.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
@@ -107,15 +109,67 @@ public class SalesSettingActivity extends AppCompatActivity {
         });
 
         //판매 종료하기
-        //다이얼로그 띄워서 한번 더 재확인
-        //state = false로 변경
+        TextView salesEndBtn = findViewById(R.id.salesEndBtn);
+        salesEndBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.setMessage("판매를 종료하시겠습니까?\n종료 시, 이후 해당 판매에 관한 데이터 수정이 불가합니다")
+                        .setPositiveButton("예", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                databaseRef.child("state").setValue(false).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(SalesManagerMainActivity.activity != null) {
+                                            SalesManagerMainActivity activity = SalesManagerMainActivity.activity;
+                                            activity.finish();
+                                            overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
+                                        }
+                                        finish();
+                                        overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
+                                    }
+                                });
+                            }
+                        })
+                        .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        })
+                        .setCancelable(false)
+                        .create();
+                dialog.show();
+            }
+        });
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.home, menu);
+
+        return true;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home) {
-            finish();
-            overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home : {
+                finish();
+                overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
+                return true;
+            }
+            case R.id.homeMove: {
+                if(SalesManagerActivity.activity != null && SalesManagerMainActivity.activity != null) {
+                    SalesManagerActivity activity1 = SalesManagerActivity.activity;
+                    SalesManagerMainActivity activity2 = SalesManagerMainActivity.activity;
+                    activity1.finish();
+                    activity2.finish();
+                    overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
+                }
+                finish();
+            }
         }
         return super.onOptionsItemSelected(item);
     }
