@@ -35,7 +35,7 @@ public class ReviewModifyActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     Spinner category;
-    EditText reviewTitle, reviewEventName, reviewLocation, reviewDetailText;
+    EditText reviewTitle, reviewEventName, reviewDetailText;
     TextView reviewSalesDate, reviewSalesLocation;
     RatingBar reviewRatingBar;
     Button reviewDataModifyBtn;
@@ -156,6 +156,8 @@ public class ReviewModifyActivity extends AppCompatActivity {
                 reviewDate = (String) data.child("reviewDate").getValue();
                 uid = (String) data.child("uid").getValue();
                 userName = (String) data.child("userName").getValue();
+                location = (String) data.child("location").getValue();
+                reviewSalesLocation.setText(location);
             }
 
             @Override
@@ -182,8 +184,6 @@ public class ReviewModifyActivity extends AppCompatActivity {
                 //Toast.makeText(ReviewAddActivity.this, "Result: " + data.getStringExtra("result"), Toast.LENGTH_SHORT).show();
                 reviewSalesLocation.setText(data.getStringExtra("result"));
                 location = data.getStringExtra("result");
-            } else {   // RESULT_CANCEL
-                Toast.makeText(ReviewModifyActivity.this, "Failed", Toast.LENGTH_SHORT).show();
             }
         }
     }

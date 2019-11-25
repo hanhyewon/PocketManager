@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.soyeon.MapSearchActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,13 +43,14 @@ public class EventAddActivity extends AppCompatActivity {
 
     Toolbar toolbar;
 
-    TextView eventDate;
+    TextView eventDate, eventLocation;
     EditText eventTitle, eventSubTitle, eventDetailText;
     ImageButton eventImgAddBtn;
     ImageView eventImgPreview;
     Button eventDataAddBtn;
 
-    String title, subTitle, detailText, date, img;
+    private int REQUEST_TEST = 1;
+    String title, subTitle, detailText, date, img, location;
 
     Uri imgUri;
 
@@ -80,6 +82,7 @@ public class EventAddActivity extends AppCompatActivity {
         eventDataAddBtn = findViewById(R.id.eventDataAddBtn);
         eventImgAddBtn = findViewById(R.id.eventImgAddBtn);
         eventImgPreview = findViewById(R.id.eventImgPreview);
+        eventLocation = findViewById(R.id.eventLocation);
 
         //이미지 선택
         eventImgAddBtn.setOnClickListener(new View.OnClickListener() {
@@ -103,6 +106,15 @@ public class EventAddActivity extends AppCompatActivity {
                         .setSelectedColor(Color.parseColor("#0eafc4"))
                         .setCallback(callback)
                         .show(getSupportFragmentManager(), "TAG_SLYCALENDAR");
+            }
+        });
+
+        //위치 선택
+        eventLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EventAddActivity.this, MapSearchActivity.class);
+                startActivityForResult(intent, REQUEST_TEST);
             }
         });
 
@@ -150,7 +162,7 @@ public class EventAddActivity extends AppCompatActivity {
         subTitle = eventSubTitle.getText().toString();
         detailText = eventDetailText.getText().toString();
 
-        EventDTO eventDTO = new EventDTO(title, subTitle, date, detailText, img);
+        EventDTO eventDTO = new EventDTO(title, subTitle, date, detailText, img, location);
 
         databaseRef.child("행사").push().setValue(eventDTO).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -174,6 +186,14 @@ public class EventAddActivity extends AppCompatActivity {
                 eventImgPreview.setClipToOutline(true);
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        }
+
+        if (requestCode == REQUEST_TEST) {
+            if (resultCode == RESULT_OK) {
+                //Toast.makeText(ReviewAddActivity.this, "Result: " + data.getStringExtra("result"), Toast.LENGTH_SHORT).show();
+                eventLocation.setText(data.getStringExtra("result"));
+                location = data.getStringExtra("result");
             }
         }
     }

@@ -53,6 +53,7 @@ public class SearchActivity extends BaseActivity implements PlaceAutocompleteAda
         init();
     }
 
+
     /**
      * 초기화
      **/

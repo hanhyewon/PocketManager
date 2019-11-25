@@ -111,7 +111,7 @@ public class MainExpense extends AppCompatActivity implements ExpenseListviewAda
         } else {
             //삭제를 선택했을 때
             final AlertDialog.Builder dialog = new AlertDialog.Builder(this, android.R.style.Theme_Material_Light_Dialog_NoActionBar_MinWidth);
-            dialog.setMessage("해당 상품을 삭제하시겠습니까?")
+            dialog.setMessage("해당 지출을 삭제하시겠습니까?")
                     .setPositiveButton("예", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

@@ -1,19 +1,31 @@
 package com.example.soyeon;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gpdnj.pocketmanager.R;
@@ -31,7 +43,14 @@ public class MapSearchActivity extends FragmentActivity implements OnMapReadyCal
 
     private GoogleMap mMap;
     private Geocoder geocoder;
-    private Button button, Complete;
+
+    //나의 위도 경도 고도
+    double mLatitude;  //위도
+    double mLongitude; //경도
+
+
+    private Button complete;
+    private TextView button;
     private EditText editText;
 
     private String address;
@@ -40,23 +59,26 @@ public class MapSearchActivity extends FragmentActivity implements OnMapReadyCal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_search);
-        editText = (EditText) findViewById(R.id.map_editText);
-        button=(Button)findViewById(R.id.map_Button);
-        Complete=(Button)findViewById(R.id.map_Complete);
+        editText = findViewById(R.id.map_editText);
+        button = findViewById(R.id.map_Button);
+        complete = findViewById(R.id.map_Complete);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
 
+    //구글맵 생성 콜백
     @Override
     public void onMapReady(final GoogleMap googleMap) {
         mMap = googleMap;
         geocoder = new Geocoder(this);
 
+        //지도타입 - 일반
+        //mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
         //지정완료 버튼
-        Complete.setOnClickListener(new View.OnClickListener() {
+        complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(address != null){
@@ -111,11 +133,9 @@ public class MapSearchActivity extends FragmentActivity implements OnMapReadyCal
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point,15));
             }
         });
-        ////////////////////
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng position = new LatLng( 37.5657037,126.9757673);
+        mMap.addMarker(new MarkerOptions().position(position).title("시청"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 15));
     }
 }

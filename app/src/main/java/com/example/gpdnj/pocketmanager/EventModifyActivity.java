@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.soyeon.MapSearchActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -45,13 +46,14 @@ import ru.slybeaver.slycalendarview.SlyCalendarDialog;
 public class EventModifyActivity extends AppCompatActivity {
 
     Toolbar toolbar;
-    TextView eventDate;
+    TextView eventDate, mEventLocation;
     EditText eventTitle, eventSubTitle, eventDetailText;
     ImageButton eventImgAddBtn;
     ImageView eventImgPreview;
     Button eventDataModifyBtn;
 
-    String title, subTitle, detailText, date, img, eventId;
+    private int REQUEST_TEST = 1;
+    String title, subTitle, detailText, date, img, eventId, location;
 
     Uri imgUri;
 
@@ -84,19 +86,22 @@ public class EventModifyActivity extends AppCompatActivity {
         eventImgPreview = findViewById(R.id.mEventImgPreview);
         eventDate = findViewById(R.id.mEventDate);
         eventDataModifyBtn = findViewById(R.id.eventDataModifyBtn);
+        mEventLocation = findViewById(R.id. mEventLocation);
 
         eventId = getIntent().getStringExtra("eventId");
 
         databaseRef.child(eventId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot data) {
-                img = data.child("imgUrl").getValue().toString();
-                date = data.child("date").getValue().toString();
+                img = (String) data.child("imgUrl").getValue();
+                date = (String) data.child("date").getValue();
+                location = (String)data.child("location").getValue();
 
                 eventTitle.setText(data.child("title").getValue().toString());
                 eventSubTitle.setText(data.child("subTitle").getValue().toString());
                 eventDate.setText(date);
                 eventDetailText.setText(data.child("detailText").getValue().toString());
+                mEventLocation.setText(location);
 
                 imgRef = FirebaseStorage.getInstance().getReference(img); //해당 경로명으로 참조하는 파일명 지정
                 imgRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() { //다운로드 Url 가져옴
@@ -135,6 +140,14 @@ public class EventModifyActivity extends AppCompatActivity {
                         .setSelectedColor(Color.parseColor("#0eafc4"))
                         .setCallback(callback)
                         .show(getSupportFragmentManager(), "TAG_SLYCALENDAR");
+            }
+        });
+
+        mEventLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EventModifyActivity.this, MapSearchActivity.class);
+                startActivityForResult(intent, REQUEST_TEST);
             }
         });
 
@@ -181,7 +194,7 @@ public class EventModifyActivity extends AppCompatActivity {
         subTitle = eventSubTitle.getText().toString();
         detailText = eventDetailText.getText().toString();
 
-        EventDTO eventDTO = new EventDTO(title, subTitle, date, detailText, img);
+        EventDTO eventDTO = new EventDTO(title, subTitle, date, detailText, img, location);
 
         databaseRef.child(eventId).setValue(eventDTO).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -205,6 +218,14 @@ public class EventModifyActivity extends AppCompatActivity {
                 eventImgPreview.setClipToOutline(true);
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        }
+
+        if (requestCode == REQUEST_TEST) {
+            if (resultCode == RESULT_OK) {
+                //Toast.makeText(ReviewAddActivity.this, "Result: " + data.getStringExtra("result"), Toast.LENGTH_SHORT).show();
+                mEventLocation.setText(data.getStringExtra("result"));
+                location = data.getStringExtra("result");
             }
         }
     }

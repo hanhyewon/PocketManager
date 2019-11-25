@@ -123,8 +123,9 @@ public class SalesManagerMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SalesManagerMainActivity.this, RevenueDetailActivity.class);
-                intent.putExtra("salesId", salesId); //해당 판매ID 넘기기
-                intent.putExtra("salesTitle", salesTitleMain.getText().toString()); //선택한 판매의 Title 넘기기
+                intent.putExtra("salesId", salesId);
+                intent.putExtra("salesTitle", salesTitleMain.getText().toString());
+                intent.putExtra("salesDate",salesDateMain.getText().toString());
                 startActivity(intent);
             }
         });

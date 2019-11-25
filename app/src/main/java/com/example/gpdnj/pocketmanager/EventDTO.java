@@ -5,27 +5,29 @@ public class EventDTO {
     private String title;
     private String subTitle;
     private String date;
-    //private String location;
+    private String location;
     private String detailText;
     private String imgUrl;
 
     //조회할 때
-    public EventDTO (String eventId, String title, String subTitle, String date, String detailText, String imgUrl) {
+    public EventDTO (String eventId, String title, String subTitle, String date, String detailText, String imgUrl, String location) {
         this.eventId = eventId;
         this.title = title;
         this.subTitle = subTitle;
         this.date = date;
         this.detailText = detailText;
         this.imgUrl = imgUrl;
+        this.location = location;
     }
 
     //등록할 때
-    public EventDTO (String title, String subTitle, String date, String detailText, String imgUrl) {
+    public EventDTO (String title, String subTitle, String date, String detailText, String imgUrl, String location) {
         this.title = title;
         this.subTitle = subTitle;
         this.date = date;
         this.detailText = detailText;
         this.imgUrl = imgUrl;
+        this.location = location;
     }
 
     public String getEventId() {
@@ -76,4 +78,11 @@ public class EventDTO {
         this.imgUrl = imgUrl;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 }

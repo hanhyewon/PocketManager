@@ -68,20 +68,18 @@ public class SocialLoginActivity extends AppCompatActivity {
         googleLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //System.out.println("클릭테스트");
                 Intent signInIntent = mGoogleSignInClient.getSignInIntent();
                 startActivityForResult(signInIntent, RC_SIGN_IN);
             }
         });
 
-        // Initialize Facebook Login button
+        //Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
         facebookLoginBtn = findViewById(R.id.facebookLoginBtn);
         facebookLoginBtn.setReadPermissions("email", "public_profile");
         facebookLoginBtn.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                //Log.d(TAG, "facebook:onSuccess:" + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
@@ -116,7 +114,6 @@ public class SocialLoginActivity extends AppCompatActivity {
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
@@ -126,7 +123,6 @@ public class SocialLoginActivity extends AppCompatActivity {
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 // Log.w(TAG, "Google sign in failed", e);
-                // ...
             }
         }
     }
@@ -145,28 +141,27 @@ public class SocialLoginActivity extends AppCompatActivity {
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()) {
-                            Toast.makeText(SocialLoginActivity.this, "Google 아이디 연동 실패", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SocialLoginActivity.this,
+                                    "Google 아이디 연동 실패", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
-        //Log.d(TAG, "handleFacebookAccessToken:" + token);
-
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()) {
-                            Toast.makeText(SocialLoginActivity.this, "Facebook 아이디 연동 실패", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SocialLoginActivity.this,
+                                    "Facebook 아이디 연동 실패", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

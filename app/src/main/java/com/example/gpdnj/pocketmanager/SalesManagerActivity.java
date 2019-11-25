@@ -85,7 +85,7 @@ public class SalesManagerActivity extends AppCompatActivity {
                 Intent mainIntent = new Intent(SalesManagerActivity.this, SalesManagerMainActivity.class);
                 SalesDTO salesDTO = (SalesDTO) parent.getAdapter().getItem(position);
 
-                mainIntent.putExtra("salesId", salesDTO.getSalesId()); //선택한 판매의 ID 넘기기
+                mainIntent.putExtra("salesId", salesDTO.getSalesId()); //선택한 판매의 Key 넘기기
                 startActivity(mainIntent);
 
                 overridePendingTransition(R.anim.right_in_activity, R.anim.not_move_activity);

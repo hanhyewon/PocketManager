@@ -13,9 +13,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +40,7 @@ public class ManagerEventSettingActivity extends AppCompatActivity implements Ev
 
     Toolbar toolbar;
     SimpleSideDrawer slide_menu;
+    Spinner eventSpinner1;
 
     private ListView eventListview;
     private EventListviewAdapter eventAdapter;
@@ -47,6 +50,8 @@ public class ManagerEventSettingActivity extends AppCompatActivity implements Ev
     DatabaseReference databaseRef;
 
     static ArrayList<EventDTO> arrayEvent = new ArrayList<EventDTO>();
+    final String[] showSpinner = {"지역","서울", "경기","인천", "강원", "대전", "세종" , "충남", "충북",
+            "부산", "울산", "경남", "경북", "대구", "광주", "전남", "전북", "제주", "전국"};
 
     Intent detailIntent, modifyIntent;
     boolean managerCheck;
@@ -88,7 +93,26 @@ public class ManagerEventSettingActivity extends AppCompatActivity implements Ev
         eventListview = findViewById(R.id.eventListview);
 
         setAdapter();
-        displayEventList();
+        //displayEventList();
+
+        //지역 스피너 검색
+        eventSpinner1 = findViewById(R.id.eventSpinner1);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, R.layout.event_spinner, showSpinner);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
+        eventSpinner1.setAdapter(spinnerAdapter);
+
+        eventSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String spItem = eventSpinner1.getItemAtPosition(position).toString();
+                displayEventList(spItem);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         //행사 상세정보 보기
         eventListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -159,7 +183,7 @@ public class ManagerEventSettingActivity extends AppCompatActivity implements Ev
 
 
     //행사 DB 정보 출력
-    private void displayEventList() {
+    private void displayEventList(final String spItem) {
         databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -167,13 +191,23 @@ public class ManagerEventSettingActivity extends AppCompatActivity implements Ev
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     String eventId = data.getKey();
 
-                    String title = data.child("title").getValue().toString();
-                    String subTitle = data.child("subTitle").getValue().toString();
-                    String date = data.child("date").getValue().toString();
-                    String imgUrl = data.child("imgUrl").getValue().toString();
+                    String title = (String) data.child("title").getValue();
+                    String subTitle = (String) data.child("subTitle").getValue();
+                    String date = (String) data.child("date").getValue();
+                    String imgUrl = (String) data.child("imgUrl").getValue();
+                    String location = (String) data.child("location").getValue();
 
-                    EventDTO eventDTO = new EventDTO(eventId, title, subTitle, date, null, imgUrl);
-                    arrayEvent.add(eventDTO);
+                    if(spItem != null) {
+                        if(location.contains(spItem)) {
+                            //지역 선택 했을 경우에는 해당 행사만 보여주기
+                            EventDTO eventDTO = new EventDTO(eventId, title, subTitle, date, null, imgUrl, location);
+                            arrayEvent.add(eventDTO);
+                        } else if(spItem.equals("지역") || spItem.equals("전국")) {
+                            //지역 선택 안했을 경우에는 전부 보여주기
+                            EventDTO eventDTO = new EventDTO(eventId, title, subTitle, date, null, imgUrl, location);
+                            arrayEvent.add(eventDTO);
+                        }
+                    }
                 }
                 eventAdapter.addItems(arrayEvent);
                 Collections.reverse(arrayEvent); //최신정렬

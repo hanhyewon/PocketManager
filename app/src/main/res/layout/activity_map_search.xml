@@ -2,37 +2,62 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:weightSum="10">
+    android:orientation="vertical">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_weight="9">
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="5dp"
+        android:orientation="horizontal">
 
         <EditText
             android:id="@+id/map_editText"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:hint="Enter the Address." />
+            android:paddingLeft="10dp"
+            android:layout_weight="5"
+            android:singleLine="true"
+            android:drawableStart="@drawable/location_mint"
+            android:inputType="textNoSuggestions"
+            android:textColor="@color/gray_9"
+            android:hint="장소, 주소 입력" />
 
+        <TextView
+            android:id="@+id/map_Button"
+            android:text="검색"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@drawable/rounded_light_lightgray"
+            android:textSize="17sp"
+            android:textColor="@color/gray_9"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <!--
         <Button
             android:id="@+id/map_Button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Search" />
+            android:background="@drawable/rounded_more_lightgray"
+            android:text="검색" />
+            -->
 
     </LinearLayout>
 
-
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:map="http://schemas.android.com/apk/res-auto"
+        <fragment
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -41,35 +66,25 @@
             tools:context="com.example.abcd.googlemap.MapsActivity" />
 
         <LinearLayout
+            android:gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="3">
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <Button
-                        android:id="@+id/map_Complete"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|center_horizontal"
-                        android:text="위치지정완료"/>
-                </FrameLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="7">
-
-            </LinearLayout>
+            <Button
+                android:id="@+id/map_Complete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="19sp"
+                android:textColor="@color/white"
+                android:background="@drawable/btn_mint"
+                android:paddingLeft="40dp"
+                android:paddingRight="40dp"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_gravity="center"
+                android:layout_marginTop="170dp"
+                android:text="위치지정 완료"/>
 
         </LinearLayout>
+    </RelativeLayout>
 
-
-
-    </FrameLayout>
 </LinearLayout>

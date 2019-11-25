@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="123dp"
+    android:layout_height="115dp"
     android:foreground="?android:attr/selectableItemBackground"
     android:focusable="true">
 
@@ -14,7 +14,7 @@
             android:id="@+id/orderProductImg"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
-            android:layout_height="123dp"/>
+            android:layout_height="115dp"/>
 
         <TextView
             android:id="@+id/orderProductNameItem"

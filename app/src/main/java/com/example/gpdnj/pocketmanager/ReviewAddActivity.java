@@ -148,8 +148,6 @@ public class ReviewAddActivity extends AppCompatActivity {
                 //Toast.makeText(ReviewAddActivity.this, "Result: " + data.getStringExtra("result"), Toast.LENGTH_SHORT).show();
                 reviewSalesLocation.setText(data.getStringExtra("result"));
                 location = data.getStringExtra("result");
-            } else {   // RESULT_CANCEL
-                Toast.makeText(ReviewAddActivity.this, "Failed", Toast.LENGTH_SHORT).show();
             }
         }
     }

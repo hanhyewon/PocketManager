@@ -429,7 +429,7 @@ public class RevenueDetailActivity extends AppCompatActivity {
         //행사명 스타일
         CellStyle style1 = xlsWb.createCellStyle();
         Font font1 = xlsWb.createFont();
-        font1.setFontHeightInPoints((short)20);
+        font1.setFontHeightInPoints((short)21);
         font1.setBoldweight(Font.BOLDWEIGHT_BOLD);
         style1.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
         style1.setFont(font1);
@@ -445,7 +445,7 @@ public class RevenueDetailActivity extends AppCompatActivity {
         //순이익, 결제수단/상품판매 분석 스타일
         CellStyle style3 = xlsWb.createCellStyle();
         Font font3 = xlsWb.createFont();
-        font3.setFontHeightInPoints((short)14);
+        font3.setFontHeightInPoints((short)15);
         font3.setBoldweight(Font.BOLDWEIGHT_BOLD);
         style3.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
         style3.setFont(font3);
@@ -454,7 +454,7 @@ public class RevenueDetailActivity extends AppCompatActivity {
         CellStyle style6 = xlsWb.createCellStyle();
         Font font6 = xlsWb.createFont();
         font6.setFontHeightInPoints((short)13);
-        font6.setBoldweight(Font.BOLDWEIGHT_BOLD);
+        //font6.setBoldweight(Font.BOLDWEIGHT_BOLD);
         style6.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
         style6.setFont(font6);
 
@@ -578,10 +578,10 @@ public class RevenueDetailActivity extends AppCompatActivity {
 
         row = sheet.createRow(13);
         cell = row.createCell(0);
-        cell.setCellValue(cashValue/(cashValue+accountValue)*100 + "%");
+        cell.setCellValue(Math.round(cashValue/(cashValue+accountValue)*100) + "%");
         cell.setCellStyle(style5);
         cell = row.createCell(1);
-        cell.setCellValue(accountValue/(cashValue+accountValue)*100 + "%");
+        cell.setCellValue(Math.round(accountValue/(cashValue+accountValue)*100) + "%");
         cell.setCellStyle(style5);
 
         row = sheet.createRow(15);
@@ -621,7 +621,6 @@ public class RevenueDetailActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //Toast.makeText(getApplicationContext(),xlsFile.getAbsolutePath()+"에 저장되었습니다",Toast.LENGTH_SHORT).show();
 
         Uri path = Uri.fromFile(xlsFile);
         Intent shareIntent = new Intent(Intent.ACTION_SEND);

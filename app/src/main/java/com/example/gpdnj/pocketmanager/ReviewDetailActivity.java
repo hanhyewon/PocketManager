@@ -38,7 +38,7 @@ public class ReviewDetailActivity extends AppCompatActivity implements OnMapRead
     private Geocoder geocoder;
 
     Toolbar toolbar;
-    TextView reviewCategoryView, reviewTitleView, reviewWriterDateView, reviewEventNameView, reviewSalesDateView, reviewDetailTextView;
+    TextView reviewCategoryView, reviewTitleView, reviewWriterDateView, reviewEventNameView, reviewSalesDateView, reviewDetailTextView, reviewSalesLocationView;
     TextView reviewEventNameRow;
     RatingBar reviewRatingView;
 
@@ -72,11 +72,12 @@ public class ReviewDetailActivity extends AppCompatActivity implements OnMapRead
         reviewEventNameView = findViewById(R.id.reviewEventNameView);
         reviewSalesDateView = findViewById(R.id.reviewSalesDateView);
         reviewDetailTextView = findViewById(R.id.reviewDetailTextView);
+        reviewSalesLocationView = findViewById(R.id.reviewSalesLocationView);
 
         reviewEventNameRow = findViewById(R.id.reviewEventNameRow);
         reviewRatingView = findViewById(R.id.reviewRatingView);
 
-    // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.r_map);
         mapFragment.getMapAsync(this);
@@ -90,8 +91,13 @@ public class ReviewDetailActivity extends AppCompatActivity implements OnMapRead
                 reviewSalesDateView.setText((String)data.child("salesDate").getValue());
                 reviewDetailTextView.setText((String)data.child("detailText").getValue());
 
-                float rate = Float.valueOf(data.child("rating").getValue().toString());
                 address = (String)data.child("location").getValue();
+                if (address != null) {
+                    String subAddress = address.substring(5);
+                    reviewSalesLocationView.setText(subAddress);
+                }
+
+                float rate = Float.valueOf(data.child("rating").getValue().toString());
                 reviewRatingView.setRating(rate);
 
                 userName = (String)data.child("userName").getValue();
@@ -177,4 +183,3 @@ public class ReviewDetailActivity extends AppCompatActivity implements OnMapRead
         overridePendingTransition(R.anim.not_move_activity, R.anim.not_move_activity);
     }
 }
-//Toast.makeText(getApplicationContext(), getIntent().getStringExtra("reviewLocation"), Toast.LENGTH_SHORT).show();
