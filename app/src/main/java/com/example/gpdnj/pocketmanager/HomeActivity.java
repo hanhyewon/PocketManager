@@ -3,6 +3,7 @@ package com.example.gpdnj.pocketmanager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,10 +12,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.jiyeong.pastSalesMode;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.navdrawer.SimpleSideDrawer;
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -32,7 +38,7 @@ public class HomeActivity extends AppCompatActivity {
     private static int NUM_PAGES = 0;
     private ArrayList<ImageModel> imageModelArrayList;
 
-    private int[] myImageList = new int[]{R.drawable.test1, R.drawable.test2, R.drawable.test3};
+    private int[] myImageList = new int[]{R.drawable.event_test, R.drawable.event_test_img};
 
     private TextView userName;
     private TextView userEmail;
@@ -41,11 +47,19 @@ public class HomeActivity extends AppCompatActivity {
     private TextView nav_userName;
     private TextView nav_userEmail;
 
+    FirebaseDatabase database;
+    DatabaseReference databaseRef;
+    SalesListviewAdapter salesListviewAdapter;
+
+    static ArrayList<SalesDTO> arraySales = new ArrayList<SalesDTO>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         firebaseAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        databaseRef = database.getReference("판매");
 
         //현재 회원의 정보 설정
         userName = findViewById(R.id.userName);
@@ -70,6 +84,37 @@ public class HomeActivity extends AppCompatActivity {
 
         LinearLayout revenueShowBtn = findViewById(R.id.revenueShowBtn);
         LinearLayout communityShowBtn = findViewById(R.id.communityShowBtn);
+
+        //판매관리
+        ListView homeSalesList = findViewById(R.id.homeSalesList);
+        salesListviewAdapter = new SalesListviewAdapter(getBaseContext());
+        homeSalesList.setAdapter(salesListviewAdapter);
+
+        databaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                arraySales.clear();
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    //현재 판매관리 중인(state == true) 판매만 보이기
+                    if((boolean)data.child("state").getValue()) {
+                        String salesId = data.getKey();
+
+                        String title = (String) data.child("title").getValue();
+                        String date = (String) data.child("date").getValue();
+
+                        SalesDTO salesDTO = new SalesDTO(salesId, title, date);
+                        arraySales.add(salesDTO);
+                    }
+                }
+                salesListviewAdapter.addItems(arraySales);
+                salesListviewAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         //매출관리
         revenueShowBtn.setOnClickListener(new View.OnClickListener() {
@@ -205,12 +250,10 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void init() {
-
-        mPager = (ViewPager) findViewById(R.id.pager);
+        mPager = findViewById(R.id.pager);
         mPager.setAdapter(new SlidingImage_Adapter(this, imageModelArrayList));
 
-        CirclePageIndicator indicator = (CirclePageIndicator) findViewById(R.id.indicator);
-
+        CirclePageIndicator indicator = findViewById(R.id.indicator);
         indicator.setViewPager(mPager);
 
         final float density = getResources().getDisplayMetrics().density;
@@ -236,7 +279,7 @@ public class HomeActivity extends AppCompatActivity {
             public void run() {
                 handler.post(Update);
             }
-        }, 3000, 3000);
+        }, 3500, 3500);
 
         // Pager listener over indicator
         indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {

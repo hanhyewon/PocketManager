@@ -35,8 +35,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //실험용 추가 인텐트
-        final Intent intent_PMain = new Intent(this, MapSearchActivity.class); //작동이 안됨!!!
-        startActivity(intent_PMain);
+        //final Intent intent_PMain = new Intent(this, MapSearchActivity.class);
+        //startActivity(intent_PMain);
 
         firebaseAuth = FirebaseAuth.getInstance();
         //getHashKey();
@@ -75,9 +75,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // 회원가입 이동
+        //회원가입으로 이동
         join = findViewById(R.id.join);
-
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

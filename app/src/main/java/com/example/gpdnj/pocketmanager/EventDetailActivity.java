@@ -27,8 +27,7 @@ public class EventDetailActivity extends AppCompatActivity {
 
     Toolbar toolbar;
 
-    //위치도 나중에 추가해야 함
-    TextView eventTitleView, eventDateView, eventDetailTextView;
+    TextView eventTitleView, eventDateView, eventDetailTextView, eventLocationView;
     ImageView eventImgView;
 
     String eventId;
@@ -59,6 +58,7 @@ public class EventDetailActivity extends AppCompatActivity {
         eventDateView = findViewById(R.id.eventDateView);
         eventDetailTextView = findViewById(R.id.eventDetailTextView);
         eventImgView = findViewById(R.id.eventImgView);
+        eventLocationView = findViewById(R.id.eventLocationView);
 
         eventId = getIntent().getStringExtra("eventId");
 
@@ -68,6 +68,8 @@ public class EventDetailActivity extends AppCompatActivity {
                 eventTitleView.setText(data.child("title").getValue().toString());
                 eventDateView.setText(data.child("date").getValue().toString());
                 eventDetailTextView.setText(data.child("detailText").getValue().toString());
+                String str = ((String)data.child("location").getValue()).substring(5);
+                eventLocationView.setText(str);
 
                 imgRef = FirebaseStorage.getInstance().getReference(data.child("imgUrl").getValue().toString()); //해당 경로명으로 참조하는 파일명 지정
                 imgRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() { //다운로드 Url 가져옴

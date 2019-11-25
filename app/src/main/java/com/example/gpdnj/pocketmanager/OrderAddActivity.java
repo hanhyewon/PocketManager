@@ -196,6 +196,7 @@ public class OrderAddActivity extends AppCompatActivity implements OrderAmountPr
     public void orderDataAdd() {
         String date = new SimpleDateFormat("yyyy.MM.dd HH:mm").format(new Date());
         final String orderId = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+
         OrderFirstDTO dto = new OrderFirstDTO(date, setPriceSum(), paySelect);
         databaseORef.child(orderId).setValue(dto).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
